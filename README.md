@@ -9,11 +9,17 @@ Aplikasi ini menyelaraskan capaian **Kurikulum Merdeka (Fase A, B, dan C)** deng
 
 ## 🌟 Fitur Unggulan Terbaru
 
-1. **Tingkat Kesulitan Berjenjang (*3-Tier Difficulty Selector*)**
-   - Bebas memilih level tantangan belajar sebelum memulai sesi latihan:
-     - 🟢 **Level 1 — Mudah (*Foundational*):** Fondasi konsep awal, representasi visual konkret, angka terpandu bersih tanpa teknik simpan/pinjam rumit, dan soal cerita 1–2 langkah langsung.
-     - 🟡 **Level 2 — Sedang (*Curriculum Standard*):** Hitung bersusun dengan teknik **simpan (*carry-over*)** dan **pinjam (*regrouping*)**, soal cerita 2–3 langkah komersial ($A \times B - C$ atau $A \times B \div C - D$), deret selisih bertingkat tingkat dua ($+2, +3, +4...$), bilangan segitiga (*triangular numbers*), dan bilangan kubik ($n^3$).
-     - 🔴 **Level 3 — Tantangan (*Enrichment & Olympiad Prep*):** Soal cerita pemodelan matematika multi-operasional 4–6 komponen (rekonsiliasi kas/anggaran, rasio berantai, manajemen pasokan industri multi-gudang), deret dua barisan mandiri bersilangan (*interleaved double sequence*), barisan rekursif olimpiade ($U_n = 2U_{n-1} + 3$), eksponensial biner Mersenne ($2^n - 1$), dan barisan bilangan pronik/persegi panjang ($n(n+1)$).
+1. **Kalibrasi Tingkat Kesulitan Berjenjang Penuh (*Comprehensive 3-Tier Difficulty Progression*)**
+   - Berlaku untuk **seluruh 21 modul/topik di semua jenjang Kelas 1 s/d 6 SD**:
+     - 🟢 **Level 1 — Mudah (*Foundational*):** Fondasi konsep awal, representasi visual konkret, angka terpandu bersih tanpa teknik simpan/pinjam rumit, pecahan satuan ($1/2, 1/3, 1/4$), desimal persepuluhan, persamaan 1 langkah ($n \pm a = b$), rasio sederhana, dan soal cerita 1 langkah langsung.
+     - 🟡 **Level 2 — Sedang (*Curriculum Standard*):** Hitung bersusun dengan teknik **simpan (*carry-over*)** dan **pinjam (*regrouping*)**, penyederhanaan pecahan senilai, desimal perseratusan, pecahan campuran dasar, persamaan aljabar 2 langkah ($an \pm b = c$), perbandingan jumlah total, masalah invers luas bangun datar, persen komersial (laba/rugi), deret bertingkat (+2, +3, +4...), dan bilangan kubik ($n^3$).
+     - 🔴 **Level 3 — Tantangan (*Enrichment & Olympiad Prep*):**
+       - **Operasi Hitung:** Perkalian 2 digit $\times$ 1 digit dan pembagian hasil puluhan ($96 \div 6 = 16, 135 \div 5 = 27$), hitung bersusun simpan/pinjam melintasi 100.
+       - **Pecahan & Desimal:** Pecahan komplementer menuju 1 utuh ($1 - a/b$), penjumlahan pecahan campuran dengan *regrouping*, pengurangan pecahan campuran dengan meminjam, operasi 3 pecahan, dan desimal melewati bilangan bulat ($0,7 + 0,6 = 1,3$).
+       - **Aljabar & Rasio:** Aljabar variabel di kedua sisi ($an + b = cn + d$), persamaan dengan tanda kurung distributif $a(n \pm b) = c$, perbandingan selisih kuantitas, dan perbandingan 3 variabel ($A : B : C$).
+       - **Teori Bilangan & Geometri:** Faktorisasi prima (pohon faktor: $24 = 2^3 \times 3$), pencacahan bilangan prima dalam rentang, uji keterbagian olimpiade, FPB/KPK 3 bilangan & aplikasi nyata (jadwal lampu berkedip / pembagian bingkisan sama rata), keliling diketahui mencari luas, dan luas persegi diketahui mencari keliling.
+       - **Persen Komersial:** Persentase terbalik (mencari harga barang sebelum diskon), diskon bertingkat dengan pajak PPN 10%, dan kalkulasi multi-item.
+       - **Pola Bilangan & Soal Cerita:** Soal cerita 4–6 operasi multi-gudang / rekonsiliasi anggaran, deret dua barisan mandiri bersilangan (*interleaved*), deret rekursif olimpiade ($U_n = 2U_{n-1} + 3$), bilangan Mersenne ($2^n - 1$), dan barisan pronik ($n(n+1)$).
    - **Rekomendasi Cerdas:** Sistem otomatis menyarankan *"Naik Level"* di halaman laporan saat akurasi anak mencapai $\ge 85\%$.
 
 2. **Bank Soal Prosedural Acak (*Fresh Endless Questions*)**
