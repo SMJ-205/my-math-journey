@@ -1,0 +1,1479 @@
+import { Question } from "./questionBank";
+
+function randInt(min: number, max: number): number {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+function pickRandom<T>(arr: T[]): T {
+  return arr[Math.floor(Math.random() * arr.length)];
+}
+
+function shuffle<T>(arr: T[]): T[] {
+  const result = [...arr];
+  for (let i = result.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [result[i], result[j]] = [result[j], result[i]];
+  }
+  return result;
+}
+
+const FRUITS_BILINGUAL = [
+  { id: "apel", en: "apples" },
+  { id: "jeruk", en: "oranges" },
+  { id: "stroberi", en: "strawberries" },
+  { id: "mangga", en: "mangoes" },
+  { id: "bintang", en: "stars" },
+  { id: "kelereng", en: "marbles" },
+  { id: "permen", en: "candies" },
+  { id: "kue", en: "cupcakes" },
+];
+const FRUIT_NAMES = FRUITS_BILINGUAL.map((f) => f.id);
+const NAMES = ["Budi", "Siti", "Adi", "Dayu", "Rini", "Edo", "Lani", "Udin", "Beni", "Doni"];
+const OBJECTS_BILINGUAL = [
+  { id: "kelereng", en: "marbles" },
+  { id: "permen", en: "candies" },
+  { id: "pensil", en: "pencils" },
+  { id: "buku cerita", en: "storybooks" },
+  { id: "stiker kartun", en: "stickers" },
+  { id: "kue donat", en: "donuts" },
+  { id: "balon warna-warni", en: "balloons" },
+  { id: "biskuit", en: "biscuits" },
+];
+
+// ─── 1. Pola Bilangan / Deret Matematika (Kelas 1 - 6) ────────────────────────
+export function generatePatternQuestions(grade: number, tier: number, count: number): Question[] {
+  const list: Question[] = [];
+
+  for (let i = 0; i < count; i++) {
+    let step = 2;
+    let start = 2;
+    const length = 5;
+    let customSeq: number[] | null = null;
+    let ruleTextId = "";
+    let ruleTextEn = "";
+
+    if (grade === 1) {
+      // Grade 1: Simple steps +1, +2, +5 with numbers <= 20
+      step = pickRandom([1, 2, 5]);
+      start = randInt(1, 10);
+      ruleTextId = `Bertambah ${step} setiap langkah`;
+      ruleTextEn = `Increases by ${step} each step`;
+    } else if (grade === 2) {
+      // Grade 2: Steps +2, +3, +5, +10, -2, -5 with numbers up to 50
+      step = pickRandom([2, 3, 5, 10, -2, -5]);
+      start = step > 0 ? randInt(2, 20) : randInt(30, 50);
+      ruleTextId = step > 0 ? `Bertambah ${step} setiap langkah` : `Berkurang ${Math.abs(step)} setiap langkah`;
+      ruleTextEn = step > 0 ? `Increases by ${step} each step` : `Decreases by ${Math.abs(step)} each step`;
+    } else if (grade === 3) {
+      // Grade 3: Foundations of multiplication tables: +3, +4, +6, +7, +8, +9, -3, -4 up to 100
+      step = pickRandom([3, 4, 6, 7, 8, 9, -3, -4]);
+      start = step > 0 ? randInt(3, 30) : randInt(50, 90);
+      ruleTextId = step > 0 ? `Bertambah ${step} setiap langkah` : `Berkurang ${Math.abs(step)} setiap langkah`;
+      ruleTextEn = step > 0 ? `Increases by ${step} each step` : `Decreases by ${Math.abs(step)} each step`;
+    } else if (grade === 4) {
+      // Grade 4: Double-digit steps: +12, +15, +20, +25, -6, -8, -12 up to 200
+      step = pickRandom([12, 15, 20, 25, -6, -8, -12]);
+      start = step > 0 ? randInt(10, 50) : randInt(100, 160);
+      ruleTextId = step > 0 ? `Bertambah ${step} setiap langkah` : `Berkurang ${Math.abs(step)} setiap langkah`;
+      ruleTextEn = step > 0 ? `Increases by ${step} each step` : `Decreases by ${Math.abs(step)} each step`;
+    } else if (grade === 5) {
+      // Grade 5: Large steps (+25, +50, +75, -25) or geometric doubling (*2)
+      if (i % 3 === 0) {
+        const mult = 2;
+        const s = pickRandom([2, 3, 4, 5]);
+        customSeq = [s, s * 2, s * 4, s * 8, s * 16];
+        ruleTextId = `Dikalikan 2 setiap langkah`;
+        ruleTextEn = `Multiplied by 2 each step`;
+      } else {
+        step = pickRandom([25, 50, 75, -20, -25]);
+        start = step > 0 ? randInt(25, 100) : randInt(200, 350);
+        ruleTextId = step > 0 ? `Bertambah ${step} setiap langkah` : `Berkurang ${Math.abs(step)} setiap langkah`;
+        ruleTextEn = step > 0 ? `Increases by ${step} each step` : `Decreases by ${Math.abs(step)} each step`;
+      }
+    } else {
+      // Grade 6: Squares (1, 4, 9, 16, 25 or 4, 9, 16, 25, 36) or geometric (*3, *2) or large progression
+      const mode = i % 3;
+      if (mode === 0) {
+        // Squares
+        const offset = pickRandom([1, 2, 3]);
+        customSeq = [
+          offset * offset,
+          (offset + 1) * (offset + 1),
+          (offset + 2) * (offset + 2),
+          (offset + 3) * (offset + 3),
+          (offset + 4) * (offset + 4),
+        ];
+        ruleTextId = `Pola bilangan kuadrat berturut-turut`;
+        ruleTextEn = `Consecutive square numbers pattern`;
+      } else if (mode === 1) {
+        // Geometric *3 or *2
+        const factor = pickRandom([2, 3]);
+        const s = factor === 3 ? pickRandom([2, 3, 4]) : pickRandom([5, 6, 7]);
+        customSeq = [s, s * factor, s * factor * factor, s * Math.pow(factor, 3), s * Math.pow(factor, 4)];
+        ruleTextId = `Dikalikan ${factor} setiap langkah`;
+        ruleTextEn = `Multiplied by ${factor} each step`;
+      } else {
+        step = pickRandom([35, 45, 50, -30, -40]);
+        start = step > 0 ? randInt(50, 200) : randInt(350, 500);
+        ruleTextId = step > 0 ? `Bertambah ${step} setiap langkah` : `Berkurang ${Math.abs(step)} setiap langkah`;
+        ruleTextEn = step > 0 ? `Increases by ${step} each step` : `Decreases by ${Math.abs(step)} each step`;
+      }
+    }
+
+    const seq: number[] = customSeq ?? [];
+    if (!customSeq) {
+      for (let k = 0; k < length; k++) {
+        seq.push(start + k * step);
+      }
+    }
+
+    // Pick missing index (index 2, 3, or 4 — keeping first two visible)
+    const missingIdx = randInt(2, length - 1);
+    const correctVal = seq[missingIdx];
+    const displaySeq: (number | null)[] = seq.map((v, idx) => (idx === missingIdx ? null : v));
+
+    const qId = `dyn-pat-${grade}-${Date.now()}-${i}-${randInt(100, 999)}`;
+    list.push({
+      id: qId,
+      grade,
+      difficultyTier: tier,
+      topic: "pola-bilangan",
+      question: {
+        id: `Perhatikan deret bilangan berikut. Berapakah angka yang tepat untuk mengisi kotak kosong?`,
+        en: `Observe the number sequence below. What number correctly fills the blank box?`,
+      },
+      simulator: {
+        type: "pattern-sequence",
+        sequence: displaySeq,
+        missingIndices: [missingIdx],
+        correctValues: [correctVal],
+        ruleDescription: ruleTextId,
+      },
+      options: [
+        { value: String(correctVal), isCorrect: true },
+        { value: String(correctVal + 1), isCorrect: false },
+        { value: String(correctVal - 1), isCorrect: false },
+      ],
+      smartHint: {
+        id: "Hitung selisih antara dua angka berurutan yang terlihat untuk mengetahui berapa penambahan atau pengurangannya.",
+        en: "Calculate the difference between adjacent visible numbers to discover the step pattern.",
+      },
+    });
+  }
+
+  return list;
+}
+
+// ─── 2. Soal Cerita Ekspresi Matematika (Differentiated Grades 1 - 6) ──────────
+export function generateWordProblemQuestions(grade: number, tier: number, count: number): Question[] {
+  const list: Question[] = [];
+
+  for (let i = 0; i < count; i++) {
+    const name = pickRandom(NAMES);
+    const objItem = pickRandom(OBJECTS_BILINGUAL);
+    const objId = objItem.id;
+    const objEn = objItem.en;
+
+    let textId = "";
+    let textEn = "";
+    let slots: { type: "number" | "operator"; target: string }[] = [];
+    let expectedAnswer = "0";
+    let hintId = "";
+    let hintEn = "";
+
+    // ── GRADE 1: Concrete Single Digits (A + B, A - B, A - B + C)
+    if (grade === 1) {
+      const mode = i % 3;
+      if (mode === 0) {
+        // A + B
+        const a = randInt(2, 6);
+        const b = randInt(1, 6);
+        const ans = a + b;
+        textId = `${name} memiliki ${a} ${objId}. Ibu memberikan ${b} ${objId} lagi. Berapa total ${objId} ${name} sekarang?`;
+        textEn = `${name} has ${a} ${objEn}. Mother gives ${b} more ${objEn}. How many total ${objEn} does ${name} have now?`;
+        slots = [
+          { type: "number", target: String(a) },
+          { type: "operator", target: "+" },
+          { type: "number", target: String(b) },
+        ];
+        expectedAnswer = String(ans);
+        hintId = "Tuliskan jumlah awal, lalu tambahkan (+) dengan jumlah yang diberikan Ibu.";
+        hintEn = "Write the initial amount, then add (+) the amount given by Mother.";
+      } else if (mode === 1) {
+        // A - B
+        const a = randInt(5, 10);
+        const b = randInt(1, a - 1);
+        const ans = a - b;
+        textId = `${name} mempunyai ${a} ${objId}. Sebanyak ${b} ${objId} diberikan kepada adik. Berapa sisa ${objId} ${name} sekarang?`;
+        textEn = `${name} has ${a} ${objEn}. ${name} gives ${b} ${objEn} to younger sibling. How many ${objEn} are left?`;
+        slots = [
+          { type: "number", target: String(a) },
+          { type: "operator", target: "−" },
+          { type: "number", target: String(b) },
+        ];
+        expectedAnswer = String(ans);
+        hintId = "Tuliskan jumlah awal, lalu kurangkan (−) dengan jumlah yang diberikan.";
+        hintEn = "Write the initial count, then subtract (−) the count given away.";
+      } else {
+        // A - B + C
+        const a = randInt(4, 8);
+        const b = randInt(1, a - 1);
+        const c = randInt(1, 4);
+        const ans = a - b + c;
+        textId = `Ibu memiliki ${a} ${objId}. Sebanyak ${b} ${objId} dimakan adik, lalu Kakak membawakan ${c} ${objId} lagi. Berapa jumlah ${objId} sekarang?`;
+        textEn = `Mother has ${a} ${objEn}. Little brother eats ${b} ${objEn}, then older sister brings ${c} more ${objEn}. How many ${objEn} are there now?`;
+        slots = [
+          { type: "number", target: String(a) },
+          { type: "operator", target: "−" },
+          { type: "number", target: String(b) },
+          { type: "operator", target: "+" },
+          { type: "number", target: String(c) },
+        ];
+        expectedAnswer = String(ans);
+        hintId = "Urutkan: jumlah awal dikurangi yang dimakan, lalu ditambah yang baru.";
+        hintEn = "Order: start count minus eaten items, then plus newly added items.";
+      }
+    }
+
+    // ── GRADE 2: 2-Digit Numbers up to 100 (A + B, A - B, A + B - C)
+    else if (grade === 2) {
+      const mode = i % 3;
+      if (mode === 0) {
+        // A + B (2-digit)
+        const a = randInt(20, 55);
+        const b = randInt(15, 35);
+        const ans = a + b;
+        textId = `Di perpustakaan sekolah terdapat ${a} buku cerita dan ${b} buku sains. Berapa jumlah seluruh buku tersebut?`;
+        textEn = `The school library has ${a} storybooks and ${b} science books. How many books are there in total?`;
+        slots = [
+          { type: "number", target: String(a) },
+          { type: "operator", target: "+" },
+          { type: "number", target: String(b) },
+        ];
+        expectedAnswer = String(ans);
+        hintId = "Jumlahkan kedua jenis buku tersebut untuk mengetahui total seluruhnya.";
+        hintEn = "Add the two quantities together to find the grand total.";
+      } else if (mode === 1) {
+        // A - B (2-digit)
+        const a = randInt(45, 95);
+        const b = randInt(15, a - 10);
+        const ans = a - b;
+        textId = `Sebuah toko memiliki persediaan ${a} ${objId}. Hari ini terjual ${b} ${objId}. Berapa sisa ${objId} yang ada di toko?`;
+        textEn = `A stationery shop has a stock of ${a} ${objEn}. Today, ${b} ${objEn} were sold. How many ${objEn} remain in the shop?`;
+        slots = [
+          { type: "number", target: String(a) },
+          { type: "operator", target: "−" },
+          { type: "number", target: String(b) },
+        ];
+        expectedAnswer = String(ans);
+        hintId = "Kurangkan stok awal dengan jumlah barang yang sudah terjual.";
+        hintEn = "Subtract the sold items from the initial inventory.";
+      } else {
+        // A + B - C (2-digit)
+        const a = randInt(25, 45);
+        const b = randInt(15, 35);
+        const c = randInt(10, 25);
+        const ans = a + b - c;
+        textId = `Paman memanen ${a} ${objId} di pagi hari dan ${b} ${objId} di siang hari. Sebanyak ${c} ${objId} dibagikan ke tetangga. Berapa sisa ${objId} Paman?`;
+        textEn = `Uncle harvested ${a} ${objEn} in the morning and ${b} ${objEn} in the afternoon. He gave ${c} ${objEn} to neighbors. How many ${objEn} does Uncle have left?`;
+        slots = [
+          { type: "number", target: String(a) },
+          { type: "operator", target: "+" },
+          { type: "number", target: String(b) },
+          { type: "operator", target: "−" },
+          { type: "number", target: String(c) },
+        ];
+        expectedAnswer = String(ans);
+        hintId = "Jumlahkan hasil panen pagi dan siang, lalu kurangkan dengan yang dibagikan.";
+        hintEn = "Add morning and afternoon harvests, then subtract the shared amount.";
+      }
+    }
+
+    // ── GRADE 3: Multiplication & Division (A × B, A ÷ B, A × B + C, A × B - C)
+    else if (grade === 3) {
+      const mode = i % 4;
+      if (mode === 0) {
+        // A * B
+        const a = randInt(3, 9);
+        const b = randInt(4, 9);
+        const ans = a * b;
+        textId = `${name} membeli ${a} kotak donat. Setiap kotak berisi ${b} buah donat. Berapa banyak donat yang dibeli ${name} seluruhnya?`;
+        textEn = `${name} buys ${a} boxes of donuts. Each box contains ${b} donuts. How many donuts did ${name} buy in total?`;
+        slots = [
+          { type: "number", target: String(a) },
+          { type: "operator", target: "×" },
+          { type: "number", target: String(b) },
+        ];
+        expectedAnswer = String(ans);
+        hintId = "Gunakan perkalian (×): kalikan jumlah kotak dengan isi per kotak.";
+        hintEn = "Use multiplication (×): multiply the number of boxes by the items per box.";
+      } else if (mode === 1) {
+        // A / B
+        const b = randInt(3, 8);
+        const ans = randInt(3, 9);
+        const a = b * ans;
+        textId = `Ibu guru membawa ${a} pensil untuk dibagikan sama rata kepada ${b} regu belajar. Berapa pensil yang diterima tiap regu?`;
+        textEn = `The teacher brings ${a} pencils to distribute equally among ${b} study teams. How many pencils does each team receive?`;
+        slots = [
+          { type: "number", target: String(a) },
+          { type: "operator", target: "÷" },
+          { type: "number", target: String(b) },
+        ];
+        expectedAnswer = String(ans);
+        hintId = "Gunakan pembagian (÷): bagi total pensil dengan jumlah regu.";
+        hintEn = "Use division (÷): divide the total pencils by the number of teams.";
+      } else if (mode === 2) {
+        // A * B + C
+        const a = randInt(3, 6);
+        const b = randInt(4, 8);
+        const c = randInt(2, 9);
+        const ans = a * b + c;
+        textId = `${name} memiliki ${a} kantong berisi ${b} butir ${objId} per kantong, ditambah ${c} butir ${objId} cadangan di luar kantong. Berapa total ${objId} ${name}?`;
+        textEn = `${name} has ${a} pouches with ${b} ${objEn} in each pouch, plus ${c} spare ${objEn} outside. What is the total count of ${objEn}?`;
+        slots = [
+          { type: "number", target: String(a) },
+          { type: "operator", target: "×" },
+          { type: "number", target: String(b) },
+          { type: "operator", target: "+" },
+          { type: "number", target: String(c) },
+        ];
+        expectedAnswer = String(ans);
+        hintId = "Kalikan jumlah kantong dengan isinya, lalu tambahkan cadangannya.";
+        hintEn = "Multiply pouches by their content, then add the spare items.";
+      } else {
+        // A * B - C
+        const a = randInt(4, 7);
+        const b = randInt(5, 9);
+        const c = randInt(3, 8);
+        const ans = a * b - c;
+        textId = `Pak Lurah menyiapkan ${a} dus air mineral yang masing-masing berisi ${b} botol. Selama rapat berlangsung, ${c} botol telah diminum. Berapa botol air yang tersisa?`;
+        textEn = `The community hall prepared ${a} packs of bottled water containing ${b} bottles each. During the meeting, ${c} bottles were consumed. How many bottles remain?`;
+        slots = [
+          { type: "number", target: String(a) },
+          { type: "operator", target: "×" },
+          { type: "number", target: String(b) },
+          { type: "operator", target: "−" },
+          { type: "number", target: String(c) },
+        ];
+        expectedAnswer = String(ans);
+        hintId = "Hitung dulu total botol dengan perkalian, lalu kurangkan botol yang diminum.";
+        hintEn = "Calculate the total bottles with multiplication first, then subtract the consumed bottles.";
+      }
+    }
+
+    // ── GRADE 4: Multi-Step & Commercial Units (100 - B × C, A × B ÷ C, A × B + C)
+    else if (grade === 4) {
+      const mode = i % 3;
+      if (mode === 0) {
+        // 100 - B * C
+        const b = randInt(2, 4);
+        const c = pickRandom([15, 20, 25]);
+        const ans = 100 - b * c;
+        textId = `${name} membawa uang 100 ribu rupiah. Ia membeli ${b} buku ensiklopedia seharga ${c} ribu rupiah per buku. Berapa ribu rupiah sisa uang ${name}?`;
+        textEn = `${name} brings 100 thousand rupiahs. He buys ${b} encyclopedia books at ${c} thousand rupiahs each. How many thousand rupiahs are left?`;
+        slots = [
+          { type: "number", target: "100" },
+          { type: "operator", target: "−" },
+          { type: "number", target: String(b) },
+          { type: "operator", target: "×" },
+          { type: "number", target: String(c) },
+        ];
+        expectedAnswer = String(ans);
+        hintId = "Uang awal (100) dikurangi perkalian jumlah barang dengan harga per barang.";
+        hintEn = "Start money (100) minus the product of items and unit price.";
+      } else if (mode === 1) {
+        // A * B / C
+        const a = randInt(4, 8);
+        const b = randInt(4, 9);
+        const c = pickRandom([2, 3, 4, 6]);
+        const total = a * b;
+        const adjustedTotal = Math.floor(total / c) * c;
+        const adjustedA = Math.max(2, Math.round(adjustedTotal / b));
+        const finalA = adjustedA;
+        const finalB = b;
+        const ans = (finalA * finalB) / c;
+        textId = `Sebanyak ${finalA} regu pramuka masing-masing beranggotakan ${finalB} anak berkumpul di lapangan. Mereka kemudian dibagi kembali menjadi ${c} barisan sama rata. Berapa anak pada setiap barisan?`;
+        textEn = `A total of ${finalA} scout troops with ${finalB} members each assemble on the field. They are then reorganized into ${c} equal rows. How many children are in each row?`;
+        slots = [
+          { type: "number", target: String(finalA) },
+          { type: "operator", target: "×" },
+          { type: "number", target: String(finalB) },
+          { type: "operator", target: "÷" },
+          { type: "number", target: String(c) },
+        ];
+        expectedAnswer = String(ans);
+        hintId = "Kalikan banyak regu dengan anggota, lalu bagi dengan jumlah barisan baru.";
+        hintEn = "Multiply troops by members to find total, then divide by the new rows.";
+      } else {
+        // A * B + C with 2-digit numbers
+        const a = randInt(12, 25);
+        const b = randInt(3, 6);
+        const c = randInt(15, 35);
+        const ans = a * b + c;
+        textId = `Sebuah toko roti mengemas roti ke dalam ${b} kardus besar berisi ${a} roti per kardus, serta terdapat ${c} roti dalam etalase toko. Berapa jumlah seluruh roti?`;
+        textEn = `A bakery packs loaves into ${b} large cartons containing ${a} loaves each, plus ${c} loaves on the shop shelf. What is the total count of loaves?`;
+        slots = [
+          { type: "number", target: String(a) },
+          { type: "operator", target: "×" },
+          { type: "number", target: String(b) },
+          { type: "operator", target: "+" },
+          { type: "number", target: String(c) },
+        ];
+        expectedAnswer = String(ans);
+        hintId = "Kalikan isi kardus dengan jumlah kardus, lalu tambahkan roti di etalase.";
+        hintEn = "Multiply carton capacity by count of cartons, then add display loaves.";
+      }
+    }
+
+    // ── GRADE 5: Advanced 3-Step Operations & Batch Proportions
+    else if (grade === 5) {
+      const mode = i % 3;
+      if (mode === 0) {
+        // A * B + C * D (two batches combined)
+        const a = randInt(3, 6);
+        const b = randInt(6, 12);
+        const c = randInt(2, 5);
+        const d = randInt(5, 10);
+        const ans = a * b + c * d;
+        textId = `Kantin memesan ${a} dus susu cokelat berisi ${b} kotak per dus, dan ${c} dus susu vanila berisi ${d} kotak per dus. Berapa total seluruh susu kotak yang dipesan?`;
+        textEn = `The cafeteria orders ${a} crates of chocolate milk with ${b} cartons each, and ${c} crates of vanilla milk with ${d} cartons each. How many cartons were ordered in total?`;
+        slots = [
+          { type: "number", target: String(a) },
+          { type: "operator", target: "×" },
+          { type: "number", target: String(b) },
+          { type: "operator", target: "+" },
+          { type: "number", target: String(c) },
+          { type: "operator", target: "×" },
+          { type: "number", target: String(d) },
+        ];
+        expectedAnswer = String(ans);
+        hintId = "Hitung perkalian kelompok pertama dan kelompok kedua, lalu jumlahkan keduanya.";
+        hintEn = "Calculate the product of the first batch and second batch, then add them.";
+      } else if (mode === 1) {
+        // A * B - C with hundreds
+        const a = randInt(6, 12);
+        const b = pickRandom([20, 25, 30]);
+        const c = randInt(25, 60);
+        const ans = a * b - c;
+        textId = `Gudang logistik menerima ${a} karung beras seberat ${b} kg per karung. Hari ini disalurkan bantuan sebanyak ${c} kg beras. Berapa kg beras yang tersisa di gudang?`;
+        textEn = `A logistics hub receives ${a} sacks of rice weighing ${b} kg each. Today, ${c} kg of rice was distributed for aid. How many kg of rice remain?`;
+        slots = [
+          { type: "number", target: String(a) },
+          { type: "operator", target: "×" },
+          { type: "number", target: String(b) },
+          { type: "operator", target: "−" },
+          { type: "number", target: String(c) },
+        ];
+        expectedAnswer = String(ans);
+        hintId = "Hitung berat total persediaan dengan perkalian, lalu kurangkan beras bantuan.";
+        hintEn = "Multiply sacks by unit weight to find total supply, then subtract distributed aid.";
+      } else {
+        // A * B / C + D
+        const c = pickRandom([3, 4, 5]);
+        const factor = randInt(4, 9);
+        const total = c * factor;
+        const b = pickRandom([6, 8, 10]);
+        const a = Math.round(total / b) || total;
+        const actualTotal = a * b;
+        const quotient = Math.floor(actualTotal / c);
+        const d = randInt(5, 20);
+        const ans = quotient + d;
+        textId = `Petani memetik ${a} keranjang buah berisi ${b} buah per keranjang. Buah tersebut dibagi rata ke ${c} peti besar, lalu setiap peti ditambah ${d} buah bonus. Berapa isi setiap peti sekarang?`;
+        textEn = `A farmer harvests ${a} fruit crates containing ${b} fruits each. The fruits are divided equally among ${c} large bins, and ${d} bonus fruits are added to each bin. How many fruits are in each bin now?`;
+        slots = [
+          { type: "number", target: String(a) },
+          { type: "operator", target: "×" },
+          { type: "number", target: String(b) },
+          { type: "operator", target: "÷" },
+          { type: "number", target: String(c) },
+          { type: "operator", target: "+" },
+          { type: "number", target: String(d) },
+        ];
+        expectedAnswer = String(ans);
+        hintId = "Kalikan isi keranjang, bagi dengan jumlah peti, lalu tambahkan buah bonus.";
+        hintEn = "Multiply crate content, divide by bin count, then add bonus fruits.";
+      }
+    }
+
+    // ── GRADE 6: Algebraic Modeling, Advanced Financial & Proportional Logic
+    else {
+      const mode = i % 3;
+      if (mode === 0) {
+        // Budget & Bulk Purchase: 200 - A * B
+        const a = randInt(3, 6);
+        const b = pickRandom([20, 25, 30]);
+        const ans = 200 - a * b;
+        textId = `Koperasi sekolah memiliki anggaran kas 200 ribu rupiah. Koperasi memesan ${a} paket perlengkapan seharga ${b} ribu rupiah per paket. Berapa ribu rupiah sisa saldo koperasi?`;
+        textEn = `A school cooperative holds a 200 thousand rupiah budget. It procures ${a} equipment bundles at ${b} thousand rupiahs per bundle. How many thousand rupiahs remain in balance?`;
+        slots = [
+          { type: "number", target: "200" },
+          { type: "operator", target: "−" },
+          { type: "number", target: String(a) },
+          { type: "operator", target: "×" },
+          { type: "number", target: String(b) },
+        ];
+        expectedAnswer = String(ans);
+        hintId = "Modal awal (200) dikurangi total biaya pembelian paket perlengkapan.";
+        hintEn = "Initial capital (200) minus the total expenditure on equipment bundles.";
+      } else if (mode === 1) {
+        // Ratio Word Expression: A * B / C
+        const c = randInt(2, 4);
+        const b = randInt(3, 7);
+        const mult = randInt(10, 25);
+        const a = c * mult;
+        const ans = (a * b) / c;
+        textId = `Perbandingan antara banyak buku fiksi dan non-fiksi adalah ${c} : ${b}. Jika perpustakaan memiliki ${a} buku fiksi, susun kalimat matematika dan hitung jumlah buku non-fiksi!`;
+        textEn = `The ratio of fiction to non-fiction books is ${c} : ${b}. If the library holds ${a} fiction books, formulate the math sentence and solve for non-fiction books!`;
+        slots = [
+          { type: "number", target: String(a) },
+          { type: "operator", target: "×" },
+          { type: "number", target: String(b) },
+          { type: "operator", target: "÷" },
+          { type: "number", target: String(c) },
+        ];
+        expectedAnswer = String(ans);
+        hintId = "Gunakan prinsip rasio: kalikan jumlah buku yang diketahui dengan rasio target, lalu bagi dengan rasio asal.";
+        hintEn = "Apply ratio rule: multiply known book count by target ratio, then divide by initial ratio.";
+      } else {
+        // Multi-Step Commercial: A * B - C * D
+        const a = randInt(5, 8);
+        const b = pickRandom([20, 25, 30]);
+        const c = randInt(2, 4);
+        const d = pickRandom([10, 15]);
+        const ans = a * b - c * d;
+        textId = `Toko grosir membeli ${a} koli barang seharga ${b} ribu rupiah per koli dan memperoleh potongan diskon berupa ${c} voucer senilai ${d} ribu rupiah per voucer. Berapa ribu rupiah total bersih yang dibayar?`;
+        textEn = `A wholesale shop buys ${a} cartons of merchandise at ${b} thousand rupiahs each and receives a discount of ${c} coupons worth ${d} thousand rupiahs each. What is the net payable in thousand rupiahs?`;
+        slots = [
+          { type: "number", target: String(a) },
+          { type: "operator", target: "×" },
+          { type: "number", target: String(b) },
+          { type: "operator", target: "−" },
+          { type: "number", target: String(c) },
+          { type: "operator", target: "×" },
+          { type: "number", target: String(d) },
+        ];
+        expectedAnswer = String(ans);
+        hintId = `Hitung harga bruto (${a} × ${b}) lalu kurangkan dengan nilai diskon (${c} × ${d}).`;
+        hintEn = `Calculate gross cost (${a} × ${b}) then subtract the total discount (${c} × ${d}).`;
+      }
+    }
+
+    const qId = `dyn-wp-${grade}-${Date.now()}-${i}-${randInt(100, 999)}`;
+    list.push({
+      id: qId,
+      grade,
+      difficultyTier: tier,
+      topic: "soal-cerita",
+      question: { id: textId, en: textEn },
+      simulator: {
+        type: "word-problem-builder",
+        storyText: textId,
+        storyTextEn: textEn,
+        slots,
+        expectedAnswer,
+      },
+      options: [
+        { value: expectedAnswer, isCorrect: true },
+        { value: String(parseInt(expectedAnswer, 10) + 1), isCorrect: false },
+        { value: String(parseInt(expectedAnswer, 10) - 1), isCorrect: false },
+      ],
+      smartHint: {
+        id: hintId,
+        en: hintEn,
+      },
+    });
+  }
+
+  return list;
+}
+
+// ─── 3. Penjumlahan & Pengurangan Dasar (Kelas 1) ──────────────────────────────
+export function generateBasicArithmeticQuestions(
+  grade: number,
+  topic: "penjumlahan-dasar" | "pengurangan-dasar",
+  tier: number,
+  count: number
+): Question[] {
+  const list: Question[] = [];
+
+  for (let i = 0; i < count; i++) {
+    const fruitItem = pickRandom(FRUITS_BILINGUAL);
+    const fruitId = fruitItem.id;
+    const fruitEn = fruitItem.en;
+    const isAdd = topic === "penjumlahan-dasar";
+
+    let a: number, b: number, ans: number;
+    if (isAdd) {
+      if (tier === 1) {
+        a = randInt(2, 6);
+        b = randInt(1, 9 - a);
+      } else {
+        a = randInt(5, 9);
+        b = randInt(3, 9);
+      }
+      ans = a + b;
+    } else {
+      if (tier === 1) {
+        a = randInt(4, 9);
+        b = randInt(1, a - 1);
+      } else {
+        a = randInt(10, 18);
+        b = randInt(3, 9);
+      }
+      ans = a - b;
+    }
+
+    const qTextId = isAdd
+      ? `Ada ${a} ${fruitId}, lalu ditambah ${b} ${fruitId} lagi. Berapa jumlahnya?`
+      : `Ada ${a} ${fruitId}, diambil ${b} ${fruitId}. Berapa sisa ${fruitId}?`;
+    const qTextEn = isAdd
+      ? `There are ${a} ${fruitEn}, then ${b} more ${fruitEn} are added. What is the total?`
+      : `There are ${a} ${fruitEn}, and ${b} ${fruitEn} are taken away. How many ${fruitEn} remain?`;
+
+    const hintId = isAdd
+      ? "Hitung maju mulai dari angka pertama sebanyak angka kedua."
+      : "Hitung mundur dari jumlah mula-mula sebanyak buah yang diambil.";
+    const hintEn = isAdd
+      ? "Count forward from the first number by the second number."
+      : "Count backwards from the initial amount by the removed amount.";
+
+    const qId = `dyn-basic-${topic}-${Date.now()}-${i}-${randInt(100, 999)}`;
+    list.push({
+      id: qId,
+      grade,
+      difficultyTier: tier,
+      topic,
+      question: { id: qTextId, en: qTextEn },
+      simulator: {
+        type: "fruit-basket",
+        fruits: [fruitId],
+        initialCount: a,
+        addCount: isAdd ? b : 0,
+        removeCount: !isAdd ? b : 0,
+      },
+      options: [
+        { value: String(ans), isCorrect: true },
+        { value: String(ans + 1), isCorrect: false, misconceptionTag: "off-by-one-count" },
+        { value: String(ans - 1), isCorrect: false, misconceptionTag: "off-by-one-count" },
+      ],
+      smartHint: {
+        id: hintId,
+        en: hintEn,
+      },
+    });
+  }
+
+  return list;
+}
+
+// ─── 4. Penjumlahan & Pengurangan Dua Digit Bersusun (Kelas 2) ─────────────────
+export function generateColumnArithmeticQuestions(
+  grade: number,
+  topic: "penjumlahan-dua-digit" | "pengurangan-dua-digit",
+  tier: number,
+  count: number
+): Question[] {
+  const list: Question[] = [];
+
+  for (let i = 0; i < count; i++) {
+    const isAdd = topic === "penjumlahan-dua-digit";
+    let a: number, b: number, ans: number;
+
+    if (isAdd) {
+      if (tier === 1) {
+        // Without carry
+        const tensA = randInt(1, 5);
+        const unitsA = randInt(1, 5);
+        const tensB = randInt(1, 4);
+        const unitsB = randInt(1, 9 - unitsA);
+        a = tensA * 10 + unitsA;
+        b = tensB * 10 + unitsB;
+      } else {
+        // With carry
+        const tensA = randInt(2, 6);
+        const unitsA = randInt(5, 9);
+        const tensB = randInt(1, 3);
+        const unitsB = randInt(10 - unitsA, 9);
+        a = tensA * 10 + unitsA;
+        b = tensB * 10 + unitsB;
+      }
+      ans = a + b;
+    } else {
+      if (tier === 1) {
+        // Without regrouping
+        const tensA = randInt(4, 9);
+        const unitsA = randInt(4, 9);
+        const tensB = randInt(1, tensA - 1);
+        const unitsB = randInt(1, unitsA);
+        a = tensA * 10 + unitsA;
+        b = tensB * 10 + unitsB;
+      } else {
+        // With regrouping (pinjam)
+        const tensA = randInt(5, 9);
+        const unitsA = randInt(1, 5);
+        const tensB = randInt(1, tensA - 2);
+        const unitsB = randInt(unitsA + 2, 9);
+        a = tensA * 10 + unitsA;
+        b = tensB * 10 + unitsB;
+      }
+      ans = a - b;
+    }
+
+    const qTextId = isAdd ? `Berapa hasil ${a} + ${b}?` : `Berapa hasil ${a} dikurangi ${b}?`;
+    const qTextEn = isAdd ? `What is ${a} + ${b}?` : `What is ${a} minus ${b}?`;
+
+    const hintId = isAdd
+      ? "Hitung kolom satuan di sebelah kanan terlebih dahulu, lalu lanjutkan dengan kolom puluhan."
+      : "Kurangkan kolom satuan di kanan terlebih dahulu. Jika angka atas lebih kecil, pinjam 1 puluhan dari sebelahnya.";
+    const hintEn = isAdd
+      ? "Calculate the ones column on the right first, then move to the tens column."
+      : "Subtract the ones column on the right first. If the top digit is smaller, regroup (borrow) 1 ten from the left.";
+
+    const qId = `dyn-col-${topic}-${Date.now()}-${i}-${randInt(100, 999)}`;
+    list.push({
+      id: qId,
+      grade,
+      difficultyTier: tier,
+      topic,
+      question: { id: qTextId, en: qTextEn },
+      simulator: {
+        type: "column-arithmetic",
+        operation: isAdd ? "add" : "subtract",
+        operands: [a, b],
+        digitCount: 2,
+      },
+      options: [
+        { value: String(ans), isCorrect: true },
+        { value: String(ans + 1), isCorrect: false },
+        { value: String(ans - 1), isCorrect: false },
+      ],
+      smartHint: {
+        id: hintId,
+        en: hintEn,
+      },
+    });
+  }
+
+  return list;
+}
+
+// ─── 5. Perkalian & Pembagian (Kelas 3) ────────────────────────────────────────
+export function generateMultDivQuestions(
+  grade: number,
+  topic: "perkalian" | "pembagian",
+  tier: number,
+  count: number
+): Question[] {
+  const list: Question[] = [];
+
+  for (let i = 0; i < count; i++) {
+    const isMult = topic === "perkalian";
+    let a: number, b: number, ans: number;
+
+    if (isMult) {
+      a = tier === 1 ? randInt(2, 6) : randInt(6, 9);
+      b = tier === 1 ? randInt(3, 7) : randInt(6, 9);
+      ans = a * b;
+      const qId = `dyn-mult-${Date.now()}-${i}-${randInt(100, 999)}`;
+      list.push({
+        id: qId,
+        grade,
+        difficultyTier: tier,
+        topic: "perkalian",
+        question: {
+          id: `Berapa hasil ${a} dikali ${b}?`,
+          en: `What is ${a} times ${b}?`,
+        },
+        simulator: {
+          type: "column-arithmetic",
+          operation: "multiply",
+          operands: [a, b],
+          digitCount: String(ans).length,
+        },
+        options: [
+          { value: String(ans), isCorrect: true },
+          { value: String(ans + a), isCorrect: false },
+          { value: String(ans - 1), isCorrect: false },
+        ],
+        smartHint: {
+          id: `Perkalian adalah penjumlahan berulang: hitung penjumlahan angka ${a} sebanyak ${b} kali.`,
+          en: `Multiplication is repeated addition: add the number ${a} a total of ${b} times.`,
+        },
+      });
+    } else {
+      const quotient = tier === 1 ? randInt(2, 6) : randInt(5, 9);
+      b = tier === 1 ? randInt(2, 5) : randInt(6, 9);
+      a = quotient * b;
+      ans = quotient;
+      const qId = `dyn-div-${Date.now()}-${i}-${randInt(100, 999)}`;
+      list.push({
+        id: qId,
+        grade,
+        difficultyTier: tier,
+        topic: "pembagian",
+        question: {
+          id: `Berapa hasil ${a} dibagi ${b}?`,
+          en: `What is ${a} divided by ${b}?`,
+        },
+        simulator: {
+          type: "column-arithmetic",
+          operation: "divide",
+          operands: [a, b],
+          digitCount: 1,
+        },
+        options: [
+          { value: String(ans), isCorrect: true },
+          { value: String(ans + 1), isCorrect: false },
+          { value: String(ans - 1), isCorrect: false },
+        ],
+        smartHint: {
+          id: `Pikirkan kebalikan dari pembagian: angka berapa yang jika dikalikan ${b} hasilnya sama dengan ${a}?`,
+          en: `Think of division as reverse multiplication: what number times ${b} equals ${a}?`,
+        },
+      });
+    }
+  }
+
+  return list;
+}
+
+// ─── 6. Pecahan Dasar (Kelas 3) ──────────────────────────────────────────────
+export function generateBasicFractionQuestions(grade: number, tier: number, count: number): Question[] {
+  const list: Question[] = [];
+  const denominators = tier === 1 ? [2, 3, 4, 6] : [3, 4, 5, 6, 8];
+
+  for (let i = 0; i < count; i++) {
+    const den = pickRandom(denominators);
+    const num = randInt(1, den - 1);
+    const qId = `dyn-frac-basic-${Date.now()}-${i}-${randInt(100, 999)}`;
+    const correctVal = `${num}/${den}`;
+
+    const distractors = new Set<string>();
+    if (den - num !== num) {
+      distractors.add(`${den - num}/${den}`);
+    }
+    if (den - num > 0) {
+      distractors.add(`${num}/${den - num}`);
+    }
+    distractors.add(`${den}/${num}`);
+    if (distractors.size < 3) distractors.add(`${Math.min(den, num + 1)}/${den}`);
+    if (distractors.size < 3) distractors.add(`${Math.max(1, num - 1)}/${den}`);
+    if (distractors.size < 3) distractors.add(`1/${den}`);
+
+    const rawOptions = [
+      { value: correctVal, isCorrect: true },
+      ...Array.from(distractors)
+        .filter((v) => v !== correctVal)
+        .slice(0, 3)
+        .map((v) => ({
+          value: v,
+          isCorrect: false,
+        })),
+    ];
+
+    list.push({
+      id: qId,
+      grade,
+      difficultyTier: tier,
+      topic: "pecahan-dasar",
+      question: {
+        id: "Berapa nilai pecahan untuk bagian yang diwarnai?",
+        en: "What fraction represents the shaded portion?",
+      },
+      simulator: {
+        type: "circle-fraction",
+        totalSegments: den,
+        filledSegments: num,
+        interactive: false,
+        showFractionLabel: false,
+      },
+      options: shuffle(rawOptions),
+      smartHint: {
+        id: "Angka atas (pembilang) menunjukkan bagian yang diwarnai. Angka bawah (penyebut) menunjukkan total semua bagian potongan.",
+        en: "The top number (numerator) represents shaded parts. The bottom number (denominator) represents total sliced parts.",
+      },
+    });
+  }
+
+  return list;
+}
+
+// ─── 7. Pecahan Senilai (Kelas 4) ─────────────────────────────────────────────
+export function generateEquivalentFractionQuestions(grade: number, tier: number, count: number): Question[] {
+  const list: Question[] = [];
+  const baseFractions = [
+    { num: 1, den: 2 },
+    { num: 1, den: 3 },
+    { num: 2, den: 3 },
+    { num: 1, den: 4 },
+    { num: 3, den: 4 },
+    { num: 2, den: 5 },
+    { num: 3, den: 5 },
+  ];
+
+  for (let i = 0; i < count; i++) {
+    const base = pickRandom(baseFractions);
+    const mult = tier === 1 ? pickRandom([2, 3]) : pickRandom([3, 4, 5]);
+    const eqNum = base.num * mult;
+    const eqDen = base.den * mult;
+    const correctVal = `${eqNum}/${eqDen}`;
+    const qId = `dyn-frac-eq-${Date.now()}-${i}-${randInt(100, 999)}`;
+
+    const distractors = new Set<string>();
+    distractors.add(`${Math.max(1, eqNum - 1)}/${eqDen}`);
+    distractors.add(`${eqNum + 1}/${eqDen}`);
+    distractors.add(`${base.num}/${eqDen}`);
+    distractors.add(`${eqDen}/${eqNum}`);
+
+    const rawOptions = [
+      { value: correctVal, isCorrect: true },
+      ...Array.from(distractors)
+        .filter((v) => v !== correctVal)
+        .slice(0, 3)
+        .map((v) => ({
+          value: v,
+          isCorrect: false,
+        })),
+    ];
+
+    list.push({
+      id: qId,
+      grade,
+      difficultyTier: tier,
+      topic: "pecahan-senilai",
+      question: {
+        id: `Pecahan manakah di bawah ini yang senilai dengan ${base.num}/${base.den}?`,
+        en: `Which fraction below is equivalent to ${base.num}/${base.den}?`,
+      },
+      simulator: {
+        type: "circle-fraction",
+        totalSegments: eqDen <= 12 ? eqDen : base.den,
+        filledSegments: eqDen <= 12 ? eqNum : base.num,
+        interactive: false,
+        showFractionLabel: false,
+      },
+      options: shuffle(rawOptions),
+      smartHint: {
+        id: `Kalikan pembilang (angka atas) dan penyebut (angka bawah) dengan bilangan yang sama untuk menemukan pecahan senilai.`,
+        en: `Multiply both numerator (top) and denominator (bottom) by the same non-zero number to get an equivalent fraction.`,
+      },
+    });
+  }
+
+  return list;
+}
+
+// ─── 8. Desimal Dasar (Kelas 4) ───────────────────────────────────────────────
+export function generateDecimalQuestions(grade: number, tier: number, count: number): Question[] {
+  const list: Question[] = [];
+
+  for (let i = 0; i < count; i++) {
+    const qId = `dyn-dec-${Date.now()}-${i}-${randInt(100, 999)}`;
+
+    if (i % 2 === 0) {
+      const num = randInt(1, 9);
+      const correctVal = `0,${num}`;
+      const distractors = [`0,0${num}`, `${num},0`, `0,${num > 5 ? num - 2 : num + 2}`].filter(
+        (v) => v !== correctVal
+      );
+
+      const rawOptions = [
+        { value: correctVal, isCorrect: true },
+        ...distractors.slice(0, 3).map((v) => ({ value: v, isCorrect: false })),
+      ];
+
+      list.push({
+        id: qId,
+        grade,
+        difficultyTier: tier,
+        topic: "desimal-dasar",
+        question: {
+          id: `Berapakah bentuk desimal dari pecahan ${num}/10?`,
+          en: `What is the decimal equivalent of the fraction ${num}/10?`,
+        },
+        simulator: {
+          type: "circle-fraction",
+          totalSegments: 10,
+          filledSegments: num,
+          interactive: false,
+          showFractionLabel: false,
+        },
+        options: shuffle(rawOptions),
+        smartHint: {
+          id: "Pecahan persepuluhan ditulis dengan 1 angka di belakang koma (misalnya 1/10 = 0,1).",
+          en: "Tenth fractions are written with 1 decimal digit (for example 1/10 = 0.1).",
+        },
+      });
+    } else {
+      const a = randInt(1, 4);
+      const b = randInt(1, 5);
+      const sum = a + b;
+      const correctVal = `0,${sum}`;
+      const distractors = [`0,0${sum}`, `${sum},0`, `0,${sum + 1}`].filter((v) => v !== correctVal);
+
+      const rawOptions = [
+        { value: correctVal, isCorrect: true },
+        ...distractors.slice(0, 3).map((v) => ({ value: v, isCorrect: false })),
+      ];
+
+      list.push({
+        id: qId,
+        grade,
+        difficultyTier: tier,
+        topic: "desimal-dasar",
+        question: {
+          id: `Berapakah hasil dari 0,${a} + 0,${b}?`,
+          en: `What is 0.${a} + 0.${b}?`,
+        },
+        simulator: {
+          type: "circle-fraction",
+          totalSegments: 10,
+          filledSegments: Math.min(10, sum),
+          interactive: false,
+          showFractionLabel: false,
+        },
+        options: shuffle(rawOptions),
+        smartHint: {
+          id: `Jumlahkan angka di belakang koma: ${a} + ${b} = ${sum}, sehingga hasilnya adalah 0,${sum}.`,
+          en: `Add the digits after the decimal point: ${a} + ${b} = ${sum}, making the result 0.${sum}.`,
+        },
+      });
+    }
+  }
+
+  return list;
+}
+
+// ─── 9. Pecahan Campuran (Kelas 5) ────────────────────────────────────────────
+export function generateMixedFractionQuestions(grade: number, tier: number, count: number): Question[] {
+  const list: Question[] = [];
+
+  for (let i = 0; i < count; i++) {
+    const den = tier === 1 ? pickRandom([2, 3, 4]) : pickRandom([3, 4, 5, 6, 8]);
+    const whole = tier === 1 ? randInt(1, 3) : randInt(2, 5);
+    const rem = randInt(1, den - 1);
+    const improperNum = whole * den + rem;
+    const qId = `dyn-mix-${Date.now()}-${i}-${randInt(100, 999)}`;
+
+    if (i % 2 === 0) {
+      const correctVal = `${whole} ${rem}/${den}`;
+      const distractors = [
+        `${whole + 1} ${rem}/${den}`,
+        `${whole} ${den - rem}/${den}`,
+        `${rem} ${whole}/${den}`,
+      ].filter((v) => v !== correctVal);
+
+      const rawOptions = [
+        { value: correctVal, isCorrect: true },
+        ...distractors.slice(0, 3).map((v) => ({ value: v, isCorrect: false })),
+      ];
+
+      list.push({
+        id: qId,
+        grade,
+        difficultyTier: tier,
+        topic: "pecahan-campuran",
+        question: {
+          id: `Ubahlah pecahan biasa ${improperNum}/${den} menjadi bentuk pecahan campuran:`,
+          en: `Convert the improper fraction ${improperNum}/${den} into a mixed number:`,
+        },
+        simulator: {
+          type: "circle-fraction",
+          totalSegments: den,
+          filledSegments: rem,
+          interactive: false,
+          showFractionLabel: false,
+        },
+        options: shuffle(rawOptions),
+        smartHint: {
+          id: `Bagi pembilang dengan penyebut: ${improperNum} dibagi ${den} menghasilkan ${whole} bersisa ${rem}. Maka bentuk campurannya adalah ${whole} ${rem}/${den}.`,
+          en: `Divide numerator by denominator: ${improperNum} divided by ${den} is ${whole} with remainder ${rem}. The mixed fraction is ${whole} ${rem}/${den}.`,
+        },
+      });
+    } else {
+      const correctVal = `${improperNum}/${den}`;
+      const distractors = [
+        `${whole * den}/${den}`,
+        `${whole + rem}/${den}`,
+        `${improperNum + 1}/${den}`,
+      ].filter((v) => v !== correctVal);
+
+      const rawOptions = [
+        { value: correctVal, isCorrect: true },
+        ...distractors.slice(0, 3).map((v) => ({ value: v, isCorrect: false })),
+      ];
+
+      list.push({
+        id: qId,
+        grade,
+        difficultyTier: tier,
+        topic: "pecahan-campuran",
+        question: {
+          id: `Ubahlah pecahan campuran ${whole} ${rem}/${den} menjadi bentuk pecahan biasa:`,
+          en: `Convert the mixed fraction ${whole} ${rem}/${den} into an improper fraction:`,
+        },
+        simulator: {
+          type: "circle-fraction",
+          totalSegments: den,
+          filledSegments: rem,
+          interactive: false,
+          showFractionLabel: false,
+        },
+        options: shuffle(rawOptions),
+        smartHint: {
+          id: `Kalikan bilangan bulat di depan dengan penyebut, lalu tambahkan sisa pembilang: (${whole} × ${den}) + ${rem} = ${improperNum}.`,
+          en: `Multiply the whole number by denominator, then add the numerator: (${whole} × ${den}) + ${rem} = ${improperNum}.`,
+        },
+      });
+    }
+  }
+
+  return list;
+}
+
+// ─── 10. Persen (Kelas 5) ─────────────────────────────────────────────────────
+export function generatePercentageQuestions(grade: number, tier: number, count: number): Question[] {
+  const list: Question[] = [];
+  const pairsTier1 = [
+    { num: 1, den: 2, pct: 50 },
+    { num: 1, den: 4, pct: 25 },
+    { num: 3, den: 4, pct: 75 },
+    { num: 1, den: 5, pct: 20 },
+    { num: 1, den: 10, pct: 10 },
+  ];
+  const pairsTier2 = [
+    { num: 2, den: 5, pct: 40 },
+    { num: 3, den: 5, pct: 60 },
+    { num: 4, den: 5, pct: 80 },
+    { num: 7, den: 10, pct: 70 },
+    { num: 9, den: 10, pct: 90 },
+  ];
+  const pairs = tier === 1 ? pairsTier1 : pairsTier2;
+
+  for (let i = 0; i < count; i++) {
+    const pair = pickRandom(pairs);
+    const qId = `dyn-pct-${Date.now()}-${i}-${randInt(100, 999)}`;
+
+    if (i % 2 === 0) {
+      const correctVal = `${pair.pct}%`;
+      const distractors = [
+        `${pair.pct + 10}%`,
+        `${Math.max(5, pair.pct - 10)}%`,
+        `${pair.num * 10}%`,
+      ].filter((v) => v !== correctVal);
+
+      const rawOptions = [
+        { value: correctVal, isCorrect: true },
+        ...distractors.slice(0, 3).map((v) => ({ value: v, isCorrect: false })),
+      ];
+
+      list.push({
+        id: qId,
+        grade,
+        difficultyTier: tier,
+        topic: "persen",
+        question: {
+          id: `Berapakah bentuk persen (%) dari pecahan ${pair.num}/${pair.den}?`,
+          en: `What is the percentage (%) equivalent of the fraction ${pair.num}/${pair.den}?`,
+        },
+        simulator: {
+          type: "circle-fraction",
+          totalSegments: pair.den,
+          filledSegments: pair.num,
+          interactive: false,
+          showFractionLabel: false,
+        },
+        options: shuffle(rawOptions),
+        smartHint: {
+          id: `Persen artinya per seratus. Kalikan pecahan dengan 100%: (${pair.num}/${pair.den}) × 100%.`,
+          en: `Percent means per hundred. Multiply fraction by 100%: (${pair.num}/${pair.den}) × 100%.`,
+        },
+      });
+    } else {
+      const correctVal = `${pair.num}/${pair.den}`;
+      const distractors = [
+        `${pair.den}/${pair.num}`,
+        `${pair.num + 1}/${pair.den}`,
+        `1/${pair.den}`,
+      ].filter((v) => v !== correctVal);
+
+      const rawOptions = [
+        { value: correctVal, isCorrect: true },
+        ...distractors.slice(0, 3).map((v) => ({ value: v, isCorrect: false })),
+      ];
+
+      list.push({
+        id: qId,
+        grade,
+        difficultyTier: tier,
+        topic: "persen",
+        question: {
+          id: `Bentuk pecahan biasa yang paling sederhana dari ${pair.pct}% adalah:`,
+          en: `What is the simplest fraction form of ${pair.pct}%?`,
+        },
+        simulator: {
+          type: "circle-fraction",
+          totalSegments: pair.den,
+          filledSegments: pair.num,
+          interactive: false,
+          showFractionLabel: false,
+        },
+        options: shuffle(rawOptions),
+        smartHint: {
+          id: `Tuliskan ${pair.pct}% sebagai ${pair.pct}/100, lalu sederhanakan dengan membagi pembilang dan penyebut dengan angka yang sama.`,
+          en: `Write ${pair.pct}% as ${pair.pct}/100, then simplify by dividing numerator and denominator by common factors.`,
+        },
+      });
+    }
+  }
+
+  return list;
+}
+
+// ─── 11. Aljabar Dasar (Kelas 6 — 1 Step & 2 Step Progression) ────────────────
+export function generateBasicAlgebraQuestions(grade: number, tier: number, count: number): Question[] {
+  const list: Question[] = [];
+
+  for (let i = 0; i < count; i++) {
+    const qId = `dyn-alg-${Date.now()}-${i}-${randInt(100, 999)}`;
+    let qTextId = "";
+    let qTextEn = "";
+    let leftExpr = "";
+    let rightExpr = "";
+    let ans = 0;
+    let hintId = "";
+    let hintEn = "";
+
+    if (tier === 1) {
+      // Tier 1: 1-step equations (n + a = b, n - a = b, a * n = b)
+      const opType = pickRandom(["add", "sub", "mult"]);
+      if (opType === "add") {
+        const a = randInt(5, 25);
+        ans = randInt(5, 30);
+        const b = ans + a;
+        leftExpr = `n + ${a}`;
+        rightExpr = String(b);
+        qTextId = `Tentukan nilai n dari persamaan: n + ${a} = ${b}`;
+        qTextEn = `Find the value of n in the equation: n + ${a} = ${b}`;
+        hintId = `Kurangkan kedua sisi dengan ${a}: n = ${b} − ${a}.`;
+        hintEn = `Subtract ${a} from both sides: n = ${b} − ${a}.`;
+      } else if (opType === "sub") {
+        const a = randInt(5, 20);
+        ans = randInt(10, 35);
+        const b = ans - a;
+        leftExpr = `n − ${a}`;
+        rightExpr = String(b);
+        qTextId = `Tentukan nilai n dari persamaan: n − ${a} = ${b}`;
+        qTextEn = `Find the value of n in the equation: n − ${a} = ${b}`;
+        hintId = `Tambahkan kedua sisi dengan ${a}: n = ${b} + ${a}.`;
+        hintEn = `Add ${a} to both sides: n = ${b} + ${a}.`;
+      } else {
+        const a = randInt(3, 9);
+        ans = randInt(3, 9);
+        const b = a * ans;
+        leftExpr = `${a} × n`;
+        rightExpr = String(b);
+        qTextId = `Tentukan nilai n dari persamaan: ${a} × n = ${b}`;
+        qTextEn = `Find the value of n in the equation: ${a} × n = ${b}`;
+        hintId = `Bagi kedua sisi dengan ${a}: n = ${b} ÷ ${a}.`;
+        hintEn = `Divide both sides by ${a}: n = ${b} ÷ ${a}.`;
+      }
+    } else {
+      // Tier 2: 2-step equations (a * n + b = c or a * n - b = c)
+      const a = randInt(2, 5);
+      ans = randInt(3, 9);
+      const b = randInt(2, 10);
+      const isPlus = i % 2 === 0;
+      const c = isPlus ? a * ans + b : a * ans - b;
+      leftExpr = isPlus ? `${a}n + ${b}` : `${a}n − ${b}`;
+      rightExpr = String(c);
+      qTextId = `Tentukan nilai n dari persamaan 2 langkah: ${leftExpr} = ${rightExpr}`;
+      qTextEn = `Find the value of n in the 2-step equation: ${leftExpr} = ${rightExpr}`;
+      hintId = isPlus
+        ? `Langkah 1: Kurangkan ${b} dari ${c} (= ${c - b}). Langkah 2: Bagi hasilnya dengan ${a}.`
+        : `Langkah 1: Tambahkan ${b} ke ${c} (= ${c + b}). Langkah 2: Bagi hasilnya dengan ${a}.`;
+      hintEn = isPlus
+        ? `Step 1: Subtract ${b} from ${c} (= ${c - b}). Step 2: Divide by ${a}.`
+        : `Step 1: Add ${b} to ${c} (= ${c + b}). Step 2: Divide by ${a}.`;
+    }
+
+    const correctVal = String(ans);
+    const distractors = [
+      String(ans + 2),
+      String(Math.max(1, ans - 2)),
+      String(ans + 5),
+    ].filter((v) => v !== correctVal);
+
+    const rawOptions = [
+      { value: correctVal, isCorrect: true },
+      ...distractors.slice(0, 3).map((v) => ({ value: v, isCorrect: false })),
+    ];
+
+    list.push({
+      id: qId,
+      grade,
+      difficultyTier: tier,
+      topic: "aljabar-dasar",
+      question: { id: qTextId, en: qTextEn },
+      simulator: {
+        type: "algebra-balance",
+        leftExpr,
+        rightExpr,
+        variableName: "n",
+      },
+      options: shuffle(rawOptions),
+      smartHint: {
+        id: hintId,
+        en: hintEn,
+      },
+    });
+  }
+
+  return list;
+}
+
+// ─── 12. Perbandingan (Kelas 6) ───────────────────────────────────────────────
+export function generateRatioQuestions(grade: number, tier: number, count: number): Question[] {
+  const list: Question[] = [];
+  const baseRatios = [
+    { a: 1, b: 2 },
+    { a: 2, b: 3 },
+    { a: 3, b: 4 },
+    { a: 2, b: 5 },
+    { a: 3, b: 5 },
+    { a: 4, b: 5 },
+  ];
+
+  for (let i = 0; i < count; i++) {
+    const qId = `dyn-ratio-${Date.now()}-${i}-${randInt(100, 999)}`;
+    const base = pickRandom(baseRatios);
+    const mult = tier === 1 ? randInt(2, 5) : randInt(5, 12);
+
+    if (i % 2 === 0) {
+      const a = base.a * mult;
+      const b = base.b * mult;
+      const correctVal = `${base.a} : ${base.b}`;
+      const distractors = [
+        `${base.b} : ${base.a}`,
+        `${base.a + 1} : ${base.b}`,
+        `${base.a} : ${base.b + 1}`,
+      ].filter((v) => v !== correctVal);
+
+      const rawOptions = [
+        { value: correctVal, isCorrect: true },
+        ...distractors.slice(0, 3).map((v) => ({ value: v, isCorrect: false })),
+      ];
+
+      list.push({
+        id: qId,
+        grade,
+        difficultyTier: tier,
+        topic: "perbandingan",
+        question: {
+          id: `Bentuk paling sederhana dari perbandingan ${a} : ${b} adalah:`,
+          en: `What is the simplest form of the ratio ${a} : ${b}?`,
+        },
+        simulator: {
+          type: "circle-fraction",
+          totalSegments: base.a + base.b,
+          filledSegments: base.a,
+          interactive: false,
+          showFractionLabel: false,
+        },
+        options: shuffle(rawOptions),
+        smartHint: {
+          id: `Bagi kedua angka perbandingan dengan faktor pembagi yang sama sampai tidak bisa dibagi lagi.`,
+          en: `Divide both ratio values by their common divisor until they cannot be reduced further.`,
+        },
+      });
+    } else {
+      const name1 = pickRandom(NAMES);
+      const name2 = pickRandom(NAMES.filter((n) => n !== name1));
+      const objItem = pickRandom(OBJECTS_BILINGUAL);
+      const objId = objItem.id;
+      const objEn = objItem.en;
+      const count1 = base.a * mult;
+      const count2 = base.b * mult;
+      const correctVal = String(count2);
+      const distractors = [
+        String(count2 + mult),
+        String(Math.max(1, count2 - mult)),
+        String((base.a + base.b) * mult),
+      ].filter((v) => v !== correctVal);
+
+      const rawOptions = [
+        { value: correctVal, isCorrect: true },
+        ...distractors.slice(0, 3).map((v) => ({ value: v, isCorrect: false })),
+      ];
+
+      list.push({
+        id: qId,
+        grade,
+        difficultyTier: tier,
+        topic: "perbandingan",
+        question: {
+          id: `Perbandingan banyak ${objId} ${name1} dan ${name2} adalah ${base.a} : ${base.b}. Jika ${name1} memiliki ${count1} ${objId}, berapa banyak ${objId} ${name2}?`,
+          en: `The ratio of ${objEn} between ${name1} and ${name2} is ${base.a} : ${base.b}. If ${name1} has ${count1} ${objEn}, how many ${objEn} does ${name2} have?`,
+        },
+        simulator: {
+          type: "circle-fraction",
+          totalSegments: base.a + base.b,
+          filledSegments: base.a,
+          interactive: false,
+          showFractionLabel: false,
+        },
+        options: shuffle(rawOptions),
+        smartHint: {
+          id: `Cari faktor pengali: ${count1} dibagi ${base.a} = ${mult}. Lalu kalikan ${base.b} dengan ${mult}.`,
+          en: `Find the multiplier: ${count1} divided by ${base.a} = ${mult}. Then multiply ${base.b} by ${mult}.`,
+        },
+      });
+    }
+  }
+
+  return list;
+}
+
+// ─── 13. Master Generator ─────────────────────────────────────────────────────
+export function generateSessionQuestions(grade: number, topic: string, tier: number = 1, count: number = 10): Question[] {
+  if (topic === "pola-bilangan") {
+    return generatePatternQuestions(grade, tier, count);
+  }
+  if (topic === "soal-cerita") {
+    return generateWordProblemQuestions(grade, tier, count);
+  }
+  if (topic === "penjumlahan-dasar" || topic === "pengurangan-dasar") {
+    return generateBasicArithmeticQuestions(grade, topic, tier, count);
+  }
+  if (topic === "penjumlahan-dua-digit" || topic === "pengurangan-dua-digit") {
+    return generateColumnArithmeticQuestions(grade, topic, tier, count);
+  }
+  if (topic === "perkalian" || topic === "pembagian") {
+    return generateMultDivQuestions(grade, topic, tier, count);
+  }
+  if (topic === "pecahan-dasar") {
+    return generateBasicFractionQuestions(grade, tier, count);
+  }
+  if (topic === "pecahan-senilai") {
+    return generateEquivalentFractionQuestions(grade, tier, count);
+  }
+  if (topic === "desimal-dasar") {
+    return generateDecimalQuestions(grade, tier, count);
+  }
+  if (topic === "pecahan-campuran") {
+    return generateMixedFractionQuestions(grade, tier, count);
+  }
+  if (topic === "persen") {
+    return generatePercentageQuestions(grade, tier, count);
+  }
+  if (topic === "aljabar-dasar") {
+    return generateBasicAlgebraQuestions(grade, tier, count);
+  }
+  if (topic === "perbandingan") {
+    return generateRatioQuestions(grade, tier, count);
+  }
+
+  // Strictly return empty list if topic is unknown - NEVER fallback to another topic
+  console.warn(`[generateSessionQuestions] Unhandled topic: ${topic} for grade ${grade}`);
+  return [];
+}
