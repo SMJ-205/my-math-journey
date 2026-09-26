@@ -1635,7 +1635,13 @@ export function generateNumberTheoryQuestions(grade: number, tier: number, count
           id: `Bilangan ${num} adalah bilangan...`,
           en: `The number ${num} is a...`,
         },
-        simulator: { type: "pattern-sequence", sequence: [num], missingIndices: [], correctValues: [], ruleDescription: `Bilangan prima atau komposit?` },
+        simulator: {
+          type: "circle-fraction",
+          totalSegments: isPrimeQ ? 2 : 4,
+          filledSegments: isPrimeQ ? 2 : 3,
+          interactive: false,
+          showFractionLabel: false,
+        },
         options: shuffle([
           { value: correctVal, isCorrect: true },
           { value: isPrimeQ ? "Komposit" : "Prima", isCorrect: false },
@@ -1837,11 +1843,11 @@ export function generateGCFLCMQuestions(grade: number, tier: number, count: numb
           en: `What is the GCF (Greatest Common Factor) of ${pair.a} and ${pair.b}?`,
         },
         simulator: {
-          type: "pattern-sequence",
-          sequence: [pair.a, pair.b],
-          missingIndices: [],
-          correctValues: [],
-          ruleDescription: `FPB dari ${pair.a} dan ${pair.b}`,
+          type: "circle-fraction",
+          totalSegments: pair.a,
+          filledSegments: pair.gcf,
+          interactive: false,
+          showFractionLabel: false,
         },
         options: shuffle([
           { value: correctVal, isCorrect: true },
@@ -1870,11 +1876,11 @@ export function generateGCFLCMQuestions(grade: number, tier: number, count: numb
           en: `What is the LCM (Lowest Common Multiple) of ${pair.a} and ${pair.b}?`,
         },
         simulator: {
-          type: "pattern-sequence",
-          sequence: [pair.a, pair.b],
-          missingIndices: [],
-          correctValues: [],
-          ruleDescription: `KPK dari ${pair.a} dan ${pair.b}`,
+          type: "circle-fraction",
+          totalSegments: pair.b,
+          filledSegments: pair.a % pair.b === 0 ? pair.a % pair.b || 1 : pair.a % pair.b,
+          interactive: false,
+          showFractionLabel: false,
         },
         options: shuffle([
           { value: correctVal, isCorrect: true },
@@ -1924,7 +1930,13 @@ export function generateCommercialPercentageQuestions(grade: number, tier: numbe
           id: `Harga sebuah buku Rp ${priceStr}.000. Ada diskon ${disc}%. Berapa harga yang harus dibayar?`,
           en: `A book costs Rp ${priceStr},000. There is a ${disc}% discount. How much must be paid?`,
         },
-        simulator: { type: "pattern-sequence", sequence: [price / 1000, disc, finalPrice / 1000], missingIndices: [], correctValues: [], ruleDescription: `Harga ${priceStr}rb − diskon ${disc}%` },
+        simulator: {
+          type: "circle-fraction",
+          totalSegments: 100,
+          filledSegments: disc,
+          interactive: false,
+          showFractionLabel: false,
+        },
         options: shuffle([
           { value: correctVal, isCorrect: true },
           ...distractors.slice(0, 3).map((v) => ({ value: v, isCorrect: false })),
@@ -1958,7 +1970,13 @@ export function generateCommercialPercentageQuestions(grade: number, tier: numbe
           id: `Pedagang membeli barang seharga Rp ${buy}.000 dan menjualnya Rp ${sell}.000. Berapa persen ${isProfitQ ? "keuntungan" : "kerugian"}-nya?`,
           en: `A merchant buys goods for Rp ${buy},000 and sells them for Rp ${sell},000. What is the percentage ${isProfitQ ? "profit" : "loss"}?`,
         },
-        simulator: { type: "pattern-sequence", sequence: [buy, sell], missingIndices: [], correctValues: [], ruleDescription: `Harga beli ${buy}rb → jual ${sell}rb` },
+        simulator: {
+          type: "circle-fraction",
+          totalSegments: 100,
+          filledSegments: pctChange,
+          interactive: false,
+          showFractionLabel: false,
+        },
         options: shuffle([
           { value: correctVal, isCorrect: true },
           ...distractors.slice(0, 3).map((v) => ({ value: v, isCorrect: false })),
