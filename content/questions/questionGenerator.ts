@@ -1906,7 +1906,7 @@ export function generateCommercialPercentageQuestions(grade: number, tier: numbe
     const mode = i % 3;
 
     if (mode === 0) {
-      // Diskon (Discount)
+      // Diskon (Discount) — formula: harga − (harga × disc ÷ 100) = bayar
       const prices = tier === 1 ? [50000, 80000, 100000, 120000] : [150000, 200000, 250000, 350000];
       const discounts = tier === 1 ? [10, 20, 25, 50] : [15, 20, 25, 30];
       const price = pickRandom(prices);
@@ -1914,10 +1914,14 @@ export function generateCommercialPercentageQuestions(grade: number, tier: numbe
       const discAmt = (price * disc) / 100;
       const finalPrice = price - discAmt;
       const priceStr = (price / 1000).toFixed(0);
-      const correctVal = `Rp ${(finalPrice / 1000).toFixed(0)}.000`;
+      const discAmtStr = (discAmt / 1000).toFixed(0);
+      const finalStr = (finalPrice / 1000).toFixed(0);
+      const storyTextId = `Harga sebuah buku Rp ${priceStr}.000. Ada diskon ${disc}%. Susun kalimat matematika untuk menghitung harga yang harus dibayar!`;
+      const storyTextEn = `A book costs Rp ${priceStr},000 with a ${disc}% discount. Build the math expression to calculate the price to pay!`;
+      const correctVal = `Rp ${finalStr}.000`;
       const distractors = [
-        `Rp ${(price / 1000).toFixed(0)}.000`,
-        `Rp ${(discAmt / 1000).toFixed(0)}.000`,
+        `Rp ${priceStr}.000`,
+        `Rp ${discAmtStr}.000`,
         `Rp ${((finalPrice + 10000) / 1000).toFixed(0)}.000`,
       ].filter((v) => v !== correctVal);
 
@@ -1931,23 +1935,29 @@ export function generateCommercialPercentageQuestions(grade: number, tier: numbe
           en: `A book costs Rp ${priceStr},000. There is a ${disc}% discount. How much must be paid?`,
         },
         simulator: {
-          type: "circle-fraction",
-          totalSegments: 100,
-          filledSegments: disc,
-          interactive: false,
-          showFractionLabel: false,
+          type: "word-problem-builder",
+          storyText: storyTextId,
+          storyTextEn: storyTextEn,
+          slots: [
+            { type: "number", target: priceStr },
+            { type: "operator", target: "×" },
+            { type: "number", target: String(disc) },
+            { type: "operator", target: "÷" },
+            { type: "number", target: "100" },
+          ],
+          expectedAnswer: discAmtStr,
         },
         options: shuffle([
           { value: correctVal, isCorrect: true },
           ...distractors.slice(0, 3).map((v) => ({ value: v, isCorrect: false })),
         ]),
         smartHint: {
-          id: `Hitung nilai diskon: ${disc}% × ${priceStr}.000 = ${(discAmt / 1000).toFixed(0)}.000. Harga akhir = ${priceStr}.000 − ${(discAmt / 1000).toFixed(0)}.000 = ${(finalPrice / 1000).toFixed(0)}.000.`,
-          en: `Calculate discount: ${disc}% × ${priceStr},000 = ${(discAmt / 1000).toFixed(0)},000. Final price = ${priceStr},000 − ${(discAmt / 1000).toFixed(0)},000 = ${(finalPrice / 1000).toFixed(0)},000.`,
+          id: `Langkah 1: Hitung diskon = ${disc}% × Rp ${priceStr}.000 = Rp ${discAmtStr}.000. Langkah 2: Harga bayar = Rp ${priceStr}.000 − Rp ${discAmtStr}.000 = Rp ${finalStr}.000.`,
+          en: `Step 1: Discount = ${disc}% × Rp ${priceStr},000 = Rp ${discAmtStr},000. Step 2: Price to pay = Rp ${priceStr},000 − Rp ${discAmtStr},000 = Rp ${finalStr},000.`,
         },
       });
     } else if (mode === 1) {
-      // Untung/Rugi (Profit/Loss)
+      // Untung/Rugi (Profit/Loss) — formula: |jual − beli| ÷ beli × 100
       const buyPrices = tier === 1 ? [40, 60, 80, 100] : [120, 150, 200, 240];
       const buy = pickRandom(buyPrices);
       const isProfitQ = i % 4 < 2;
@@ -1960,6 +1970,9 @@ export function generateCommercialPercentageQuestions(grade: number, tier: numbe
         `${Math.max(5, pctChange - 5)}%`,
         `${pctChange * 2}%`,
       ].filter((v) => v !== correctVal);
+      const diff = Math.abs(sell - buy);
+      const storyTextId = `Pedagang membeli barang Rp ${buy}.000, jual Rp ${sell}.000. Susun rumus untuk menghitung persen ${isProfitQ ? "keuntungan" : "kerugian"}!`;
+      const storyTextEn = `A merchant buys for Rp ${buy},000, sells for Rp ${sell},000. Build the formula to find the ${isProfitQ ? "profit" : "loss"} percentage!`;
 
       list.push({
         id: qId,
@@ -1971,23 +1984,29 @@ export function generateCommercialPercentageQuestions(grade: number, tier: numbe
           en: `A merchant buys goods for Rp ${buy},000 and sells them for Rp ${sell},000. What is the percentage ${isProfitQ ? "profit" : "loss"}?`,
         },
         simulator: {
-          type: "circle-fraction",
-          totalSegments: 100,
-          filledSegments: pctChange,
-          interactive: false,
-          showFractionLabel: false,
+          type: "word-problem-builder",
+          storyText: storyTextId,
+          storyTextEn: storyTextEn,
+          slots: [
+            { type: "number", target: String(diff) },
+            { type: "operator", target: "÷" },
+            { type: "number", target: String(buy) },
+            { type: "operator", target: "×" },
+            { type: "number", target: "100" },
+          ],
+          expectedAnswer: String(pctChange),
         },
         options: shuffle([
           { value: correctVal, isCorrect: true },
           ...distractors.slice(0, 3).map((v) => ({ value: v, isCorrect: false })),
         ]),
         smartHint: {
-          id: `Persen ${isProfitQ ? "untung" : "rugi"} = (|jual − beli| ÷ beli) × 100% = (${Math.abs(sell - buy)} ÷ ${buy}) × 100% = ${pctChange}%.`,
-          en: `% ${isProfitQ ? "profit" : "loss"} = (|sell − buy| ÷ buy) × 100% = (${Math.abs(sell - buy)} ÷ ${buy}) × 100% = ${pctChange}%.`,
+          id: `Persen ${isProfitQ ? "untung" : "rugi"} = (|jual − beli| ÷ beli) × 100% = (${diff} ÷ ${buy}) × 100% = ${pctChange}%.`,
+          en: `% ${isProfitQ ? "profit" : "loss"} = (|sell − buy| ÷ buy) × 100% = (${diff} ÷ ${buy}) × 100% = ${pctChange}%.`,
         },
       });
     } else {
-      // Persentase nilai (percentage of quantity)
+      // Persentase nilai (percentage of quantity) — formula: total × pct ÷ 100
       const totals = tier === 1 ? [100, 200, 400, 500] : [250, 400, 600, 800];
       const total = pickRandom(totals);
       const pct = tier === 1 ? pickRandom([10, 20, 25, 50, 75]) : pickRandom([15, 30, 35, 40, 60]);
@@ -1998,6 +2017,8 @@ export function generateCommercialPercentageQuestions(grade: number, tier: numbe
         String(Math.max(1, ans - 10)),
         String(total - ans),
       ].filter((v) => v !== correctVal);
+      const storyTextId = `Susun kalimat matematika untuk menghitung ${pct}% dari ${total}!`;
+      const storyTextEn = `Build the math expression to calculate ${pct}% of ${total}!`;
 
       list.push({
         id: qId,
@@ -2009,25 +2030,32 @@ export function generateCommercialPercentageQuestions(grade: number, tier: numbe
           en: `What is ${pct}% of ${total}?`,
         },
         simulator: {
-          type: "circle-fraction",
-          totalSegments: 100,
-          filledSegments: pct,
-          interactive: false,
-          showFractionLabel: false,
+          type: "word-problem-builder",
+          storyText: storyTextId,
+          storyTextEn: storyTextEn,
+          slots: [
+            { type: "number", target: String(total) },
+            { type: "operator", target: "×" },
+            { type: "number", target: String(pct) },
+            { type: "operator", target: "÷" },
+            { type: "number", target: "100" },
+          ],
+          expectedAnswer: String(ans),
         },
         options: shuffle([
           { value: correctVal, isCorrect: true },
           ...distractors.slice(0, 3).map((v) => ({ value: v, isCorrect: false })),
         ]),
         smartHint: {
-          id: `${pct}% dari ${total} = (${pct} ÷ 100) × ${total} = ${ans}.`,
-          en: `${pct}% of ${total} = (${pct} ÷ 100) × ${total} = ${ans}.`,
+          id: `${pct}% dari ${total} = (${total} × ${pct}) ÷ 100 = ${ans}.`,
+          en: `${pct}% of ${total} = (${total} × ${pct}) ÷ 100 = ${ans}.`,
         },
       });
     }
   }
   return list;
 }
+
 
 // ─── 19. Master Generator ─────────────────────────────────────────────────────
 export function generateSessionQuestions(grade: number, topic: string, tier: number = 1, count: number = 10): Question[] {
