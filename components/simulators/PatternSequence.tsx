@@ -214,7 +214,9 @@ export function PatternSequenceSimulator({
             ? `Pattern Rule: ${ruleDescription
                 .replace(/Bertambah (\d+) setiap langkah/i, "Increases by $1 each step")
                 .replace(/Berkurang (\d+) setiap langkah/i, "Decreases by $1 each step")
-                .replace(/Kelipatan (\d+)/i, "Multiples of $1")}`
+                .replace(/Kelipatan (\d+)/i, "Multiples of $1")
+                .replace(/Dikalikan (\d+) setiap langkah/i, "Multiplied by $1 each step")
+                .replace(/Pola bilangan kuadrat berturut-turut/i, "Consecutive square numbers pattern")}`
             : `Kunci Pola: ${ruleDescription}`}
         </motion.div>
       )}

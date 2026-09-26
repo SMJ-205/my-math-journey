@@ -60,7 +60,7 @@ function SmartStepsCard({
           </div>
           <h3 className="font-fredoka text-lg font-semibold text-gray-800">{title}</h3>
         </div>
-        <p className="text-gray-600 text-base leading-relaxed">{hint}</p>
+        <p className="text-gray-600 text-base leading-relaxed whitespace-pre-wrap">{hint}</p>
         <button
           id="btn-dismiss-hint"
           onClick={onDismiss}

@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { useSessionStore } from "@/store/sessionStore";
 import { useLanguageStore } from "@/store/languageStore";
-import { translations } from "@/lib/translations";
+import { translations, getTopicLabel } from "@/lib/translations";
 import { LanguageSwitch } from "@/components/shared/LanguageSwitch";
 import { buildReport, getRecommendationText, getMisconceptionLabel } from "@/lib/reportEngine";
 import { Star, ArrowRight, RotateCcw, Home, ChevronDown } from "lucide-react";
@@ -33,7 +33,8 @@ export function SessionReportPage({
     sessionId, profileId, grade, topic, tier, startedAt, answers,
   });
 
-  const recommendation = getRecommendationText(report);
+  const topicLabel = getTopicLabel(topic, language);
+  const recommendation = getRecommendationText(report, language, topicLabel);
 
   // Confetti on mount for high scores
   useEffect(() => {
@@ -192,7 +193,7 @@ export function SessionReportPage({
                   <p className="text-sm font-bold text-red-700">{isEn ? "Detected Mistake Patterns" : "Pola Kesalahan Terdeteksi"}</p>
                   {Object.entries(report.misconceptionSummary).map(([tag, count]) => (
                     <div key={tag} className="flex items-center justify-between text-sm">
-                      <span className="text-gray-700">{getMisconceptionLabel(tag)}</span>
+                      <span className="text-gray-700">{getMisconceptionLabel(tag, language)}</span>
                       <span className="font-bold text-red-500">{count}x</span>
                     </div>
                   ))}
@@ -217,7 +218,9 @@ export function SessionReportPage({
                     <span className="text-gray-700 flex-1">{isEn ? `Question ${i + 1}` : `Soal ${i + 1}`}</span>
                     <span className="font-semibold text-gray-500">{a.chosenValue}</span>
                     {a.misconceptionTag && (
-                      <span className="text-xs text-red-400 italic">{a.misconceptionTag}</span>
+                      <span className="text-xs text-red-400 italic">
+                        {getMisconceptionLabel(a.misconceptionTag, language)}
+                      </span>
                     )}
                   </div>
                 ))}
