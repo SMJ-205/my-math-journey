@@ -11,9 +11,9 @@ Aplikasi ini menyelaraskan capaian **Kurikulum Merdeka (Fase A, B, dan C)** deng
 
 1. **Tingkat Kesulitan Berjenjang (*3-Tier Difficulty Selector*)**
    - Bebas memilih level tantangan belajar sebelum memulai sesi latihan:
-     - 🟢 **Level 1 — Mudah (*Foundational*):** Fondasi konsep awal, representasi visual konkret, dan angka terpandu bersih tanpa teknik simpan/pinjam rumit.
-     - 🟡 **Level 2 — Sedang (*Curriculum Standard*):** Hitung bersusun dengan teknik **simpan (*carry-over*)** dan **pinjam (*regrouping*)**, serta soal cerita **3x penambahan / pengurangan berturut-turut** ($A + B + C$ atau $A - B - C$).
-     - 🔴 **Level 3 — Tantangan (*Enrichment & Olympiad Prep*):** Perhitungan melampaui ratusan ($>100$), pengurangan meminjam 3 digit, soal cerita multi-langkah 4 komponen ($A + B + C - D$), dan pola barisan bilangan kuadrat.
+     - 🟢 **Level 1 — Mudah (*Foundational*):** Fondasi konsep awal, representasi visual konkret, angka terpandu bersih tanpa teknik simpan/pinjam rumit, dan soal cerita 1–2 langkah langsung.
+     - 🟡 **Level 2 — Sedang (*Curriculum Standard*):** Hitung bersusun dengan teknik **simpan (*carry-over*)** dan **pinjam (*regrouping*)**, soal cerita 2–3 langkah komersial ($A \times B - C$ atau $A \times B \div C - D$), deret selisih bertingkat tingkat dua ($+2, +3, +4...$), bilangan segitiga (*triangular numbers*), dan bilangan kubik ($n^3$).
+     - 🔴 **Level 3 — Tantangan (*Enrichment & Olympiad Prep*):** Soal cerita pemodelan matematika multi-operasional 4–6 komponen (rekonsiliasi kas/anggaran, rasio berantai, manajemen pasokan industri multi-gudang), deret dua barisan mandiri bersilangan (*interleaved double sequence*), barisan rekursif olimpiade ($U_n = 2U_{n-1} + 3$), eksponensial biner Mersenne ($2^n - 1$), dan barisan bilangan pronik/persegi panjang ($n(n+1)$).
    - **Rekomendasi Cerdas:** Sistem otomatis menyarankan *"Naik Level"* di halaman laporan saat akurasi anak mencapai $\ge 85\%$.
 
 2. **Bank Soal Prosedural Acak (*Fresh Endless Questions*)**

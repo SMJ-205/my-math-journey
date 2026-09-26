@@ -31,8 +31,8 @@ export function ParentGuideModal({ onClose }: ParentGuideModalProps) {
           desc: "Parents and educators can freely tailor the challenge level before every practice session:",
           points: [
             "Level 1 — Easy (Foundational): Core concepts, guided numbers, clean calculations without heavy carry/borrow.",
-            "Level 2 — Medium (Curriculum Standard): Column addition with carry-over, subtraction with regrouping (borrowing), and 3-step word problems (e.g. A + B + C or A − B − C).",
-            "Level 3 — Challenge (Enrichment & Olympiad Prep): Multi-digit calculations exceeding 100, 4-component multi-step stories (A + B + C − D), and consecutive square sequences.",
+            "Level 2 — Medium (Curriculum Standard): Column addition with carry-over, regrouping subtraction, 2–3 step commercial word problems, second-order difference patterns (+2, +3, +4...), triangular numbers, and cubic sequences.",
+            "Level 3 — Challenge (Enrichment & Olympiad Prep): Multi-tier word problems (4–6 operations: budget reconciliation, cascading ratios, multi-warehouse logistics), interleaved double sequences, recursive olympiad patterns (Un = 2Un-1 + 3), Mersenne powers (2ⁿ − 1), and oblong/pronic numbers.",
             "Smart Recommendation: When your child scores ≥ 85% accuracy, the report automatically recommends leveling up!",
           ],
         },
@@ -73,8 +73,8 @@ export function ParentGuideModal({ onClose }: ParentGuideModalProps) {
           desc: "Orang tua dan guru dapat memilih level tantangan belajar sesuai kesiapan anak sebelum memulai latihan:",
           points: [
             "Level 1 — Mudah (Fondasi): Konsep inti dengan visual terpandu, angka bersih tanpa teknik simpan/pinjam rumit.",
-            "Level 2 — Sedang (Standar Kurikulum): Penjumlahan simpan (carry-over), pengurangan pinjam (regrouping), dan soal cerita 3x operasi penambahan/pengurangan (misal A + B + C atau A − B − C).",
-            "Level 3 — Tantangan (Pengayaan & Lomba): Hitung bersusun angka ratusan (>100), soal cerita multi-langkah 4 komponen (A + B + C − D), dan barisan bilangan kuadrat berturut-turut.",
+            "Level 2 — Sedang (Standar Kurikulum): Penjumlahan simpan (carry-over), pengurangan pinjam (regrouping), soal cerita 2–3 langkah komersial, deret selisih bertingkat (+2, +3, +4...), bilangan segitiga, dan bilangan kubik.",
+            "Level 3 — Tantangan (Pengayaan & Olimpiade SD): Soal cerita multi-operasional 4–6 komponen (rekonsiliasi kas/anggaran, rasio bertingkat, logistik multi-gudang), deret dua barisan mandiri bersilangan (interleaved double sequence), rekursif olimpiade (Un = 2Un-1 + 3), eksponensial Mersenne (2ⁿ − 1), dan bilangan pronik n(n+1).",
             "Rekomendasi Cerdas: Ketika anak mencapai akurasi ≥ 85%, sistem di halaman laporan otomatis menyarankan untuk 'Naik Level'!",
           ],
         },
