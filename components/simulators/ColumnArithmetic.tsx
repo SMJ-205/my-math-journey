@@ -202,115 +202,102 @@ export function ColumnArithmeticSimulator({
       {/* Card */}
       <div className="bg-white rounded-3xl shadow-lg border-2 border-amber-100 p-6 flex flex-col items-center gap-2 w-full max-w-md">
         {/* Place-value header */}
-        <div className="flex items-center gap-3">
-          <div style={gridStyle}>
-            {placeLabels.map((label, i) => (
-              <div
-                key={i}
-                className="w-14 text-center text-[10px] font-bold text-gray-400 uppercase tracking-widest"
-              >
-                {label}
-              </div>
-            ))}
-          </div>
-          <div className="w-8 flex-shrink-0" />
+        <div style={gridStyle}>
+          {placeLabels.map((label, i) => (
+            <div
+              key={i}
+              className="w-14 text-center text-[10px] font-bold text-gray-400 uppercase tracking-widest"
+            >
+              {label}
+            </div>
+          ))}
         </div>
 
         {/* Row A */}
-        <div className="flex items-center gap-3">
-          <div style={gridStyle}>
-            {digitsA.map((d, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: -8 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: i * 0.06 }}
-                className="h-14 w-14 rounded-xl border-2 border-gray-200 bg-gray-50 flex items-center justify-center text-2xl font-black text-gray-700"
-              >
-                {d === "0" && i === 0 && cols > 1 ? "" : d}
-              </motion.div>
-            ))}
-          </div>
-          <div className="w-8 flex-shrink-0" />
+        <div style={gridStyle}>
+          {digitsA.map((d, i) => (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, y: -8 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: i * 0.06 }}
+              className="h-14 w-14 rounded-xl border-2 border-gray-200 bg-gray-50 flex items-center justify-center text-2xl font-black text-gray-700"
+            >
+              {d === "0" && i === 0 && cols > 1 ? "" : d}
+            </motion.div>
+          ))}
         </div>
 
         {/* Row B */}
-        <div className="flex items-center gap-3">
-          <div style={gridStyle}>
-            {digitsB.map((d, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: -8 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.15 + i * 0.06 }}
-                className="h-14 w-14 rounded-xl border-2 border-gray-200 bg-gray-50 flex items-center justify-center text-2xl font-black text-gray-700"
-              >
-                {d === "0" && i === 0 && cols > 1 ? "" : d}
-              </motion.div>
-            ))}
-          </div>
-          <div className="w-8 flex-shrink-0" />
+        <div style={gridStyle}>
+          {digitsB.map((d, i) => (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, y: -8 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.15 + i * 0.06 }}
+              className="h-14 w-14 rounded-xl border-2 border-gray-200 bg-gray-50 flex items-center justify-center text-2xl font-black text-gray-700"
+            >
+              {d === "0" && i === 0 && cols > 1 ? "" : d}
+            </motion.div>
+          ))}
         </div>
 
-        {/* ── Divider line + Operator (SEJAJAR GARIS ABU & DI SEBELAH KANAN) ── */}
-        <div className="flex items-center gap-3 my-1">
-          <div
-            className="h-[3px] rounded-full bg-gray-300"
-            style={{ width: `calc(${cols} * 3.5rem + ${cols - 1} * 0.5rem)` }}
-          />
-          <span className="text-2xl font-black text-blue-500 select-none flex-shrink-0 w-8 text-center leading-none">
+        {/* ── Divider line + Operator (Centered divider, operator pinned right without offsetting center) ── */}
+        <div
+          className="relative my-1 h-[3px] rounded-full bg-gray-300 flex items-center"
+          style={{ width: `calc(${cols} * 3.5rem + ${cols - 1} * 0.5rem)` }}
+        >
+          <span className="absolute left-[calc(100%+0.75rem)] text-2xl font-black text-blue-500 select-none pointer-events-none leading-none">
             {operationSymbols[operation]}
           </span>
         </div>
 
         {/* Result row — tappable cells */}
-        <div className="flex items-center gap-3">
-          <div style={gridStyle}>
-            {Array.from({ length: cols }).map((_, i) => {
-              const filled = filledDigits[i];
-              const isActive = activeCell === i;
-              const ok = cellCorrectness[i];
+        <div style={gridStyle}>
+          {Array.from({ length: cols }).map((_, i) => {
+            const filled = filledDigits[i];
+            const isActive = activeCell === i;
+            const ok = cellCorrectness[i];
 
-              const base = "h-14 w-14 rounded-xl border-2 flex items-center justify-center transition-all active:scale-95";
-              let variant =
-                "border-dashed border-amber-300 bg-amber-50 cursor-pointer hover:border-amber-400";
-              if (isActive) variant = "border-solid border-amber-500 bg-amber-100 cursor-pointer ring-2 ring-amber-300 ring-offset-1";
-              else if (filled !== null && submitted)
-                variant = ok
-                  ? "border-solid border-green-400 bg-green-50 cursor-default"
-                  : "border-solid border-red-400 bg-red-50 cursor-default";
-              else if (filled !== null)
-                variant = "border-solid border-amber-400 bg-amber-50 cursor-pointer";
+            const base = "h-14 w-14 rounded-xl border-2 flex items-center justify-center transition-all active:scale-95";
+            let variant =
+              "border-dashed border-amber-300 bg-amber-50 cursor-pointer hover:border-amber-400";
+            if (isActive) variant = "border-solid border-amber-500 bg-amber-100 cursor-pointer ring-2 ring-amber-300 ring-offset-1";
+            else if (filled !== null && submitted)
+              variant = ok
+                ? "border-solid border-green-400 bg-green-50 cursor-default"
+                : "border-solid border-red-400 bg-red-50 cursor-default";
+            else if (filled !== null)
+              variant = "border-solid border-amber-400 bg-amber-50 cursor-pointer";
 
-              return (
-                <motion.button
-                  key={i}
-                  id={`result-cell-${i}`}
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ delay: 0.4 + i * 0.06 }}
-                  onClick={() => handleCellTap(i)}
-                  disabled={submitted}
-                  className={`${base} ${variant}`}
-                >
-                  {filled !== null ? (
-                    <span
-                      className={`text-2xl font-black ${
-                        submitted
-                          ? ok ? "text-green-600" : "text-red-500"
-                          : "text-amber-700"
-                      }`}
-                    >
-                      {filled}
-                    </span>
-                  ) : (
-                    <span className="text-amber-400 text-2xl font-black">?</span>
-                  )}
-                </motion.button>
-              );
-            })}
-          </div>
-          <div className="w-8 flex-shrink-0" />
+            return (
+              <motion.button
+                key={i}
+                id={`result-cell-${i}`}
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 0.4 + i * 0.06 }}
+                onClick={() => handleCellTap(i)}
+                disabled={submitted}
+                className={`${base} ${variant}`}
+              >
+                {filled !== null ? (
+                  <span
+                    className={`text-2xl font-black ${
+                      submitted
+                        ? ok ? "text-green-600" : "text-red-500"
+                        : "text-amber-700"
+                    }`}
+                  >
+                    {filled}
+                  </span>
+                ) : (
+                  <span className="text-amber-400 text-2xl font-black">?</span>
+                )}
+              </motion.button>
+            );
+          })}
         </div>
 
         {/* Mini helper popup */}
