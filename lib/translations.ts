@@ -57,6 +57,12 @@ export const translations = {
     topic_persen: "Persen",
     topic_aljabar_dasar: "Aljabar Dasar",
     topic_perbandingan: "Perbandingan",
+    topic_perkalian_awal: "Perkalian Awal (×2, ×5, ×10)",
+    topic_pecahan_operasi: "Operasi Pecahan (+ dan −)",
+    topic_teori_bilangan: "Teori Bilangan (Faktor & Kelipatan)",
+    topic_luas_bangun_datar: "Luas & Keliling Bangun Datar",
+    topic_fpb_kpk: "FPB & KPK",
+    topic_persen_komersial: "Persen Komersial (Diskon & Untung/Rugi)",
 
     // Session Player
     questionProgress: "Soal {current} dari {total}",
@@ -167,6 +173,12 @@ export const translations = {
     topic_persen: "Percentages",
     topic_aljabar_dasar: "Basic Algebra",
     topic_perbandingan: "Ratios & Proportions",
+    topic_perkalian_awal: "Early Multiplication (×2, ×5, ×10)",
+    topic_pecahan_operasi: "Fraction Operations (+ and −)",
+    topic_teori_bilangan: "Number Theory (Factors & Multiples)",
+    topic_luas_bangun_datar: "Area & Perimeter of Shapes",
+    topic_fpb_kpk: "GCF & LCM",
+    topic_persen_komersial: "Commercial Percentages (Discount & Profit/Loss)",
 
     // Session Player
     questionProgress: "Question {current} of {total}",

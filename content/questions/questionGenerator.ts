@@ -1434,7 +1434,584 @@ export function generateRatioQuestions(grade: number, tier: number, count: numbe
   return list;
 }
 
-// ─── 13. Master Generator ─────────────────────────────────────────────────────
+// ─── 13. Perkalian Awal / Intro Multiplication (Grade 2 - Cambridge Stage 2) ──
+// Cambridge: 2Ni.05 - understand multiplication as repeated addition (×2, ×3, ×5, ×10)
+export function generateEarlyMultiplicationQuestions(grade: number, tier: number, count: number): Question[] {
+  const list: Question[] = [];
+  const NAMES_LOCAL = NAMES;
+
+  for (let i = 0; i < count; i++) {
+    const qId = `dyn-earlymult-${Date.now()}-${i}-${randInt(100, 999)}`;
+    // Tier 1: ×2, ×5, ×10. Tier 2: ×2, ×3, ×4, ×5, ×10
+    const tables = tier === 1 ? [2, 5, 10] : [2, 3, 4, 5, 10];
+    const multiplier = pickRandom(tables);
+    const factor = tier === 1 ? randInt(1, 6) : randInt(1, 10);
+    const ans = multiplier * factor;
+    const name = pickRandom(NAMES_LOCAL);
+    const objItem = pickRandom(OBJECTS_BILINGUAL);
+    const objId = objItem.id;
+    const objEn = objItem.en;
+
+    const textId = `${name} menyusun ${factor} baris ${objId}. Setiap baris berisi ${multiplier} ${objId}. Berapa jumlah ${objId} seluruhnya?`;
+    const textEn = `${name} arranges ${factor} rows of ${objEn}. Each row has ${multiplier} ${objEn}. How many ${objEn} are there in total?`;
+
+    const distractors = [
+      String(ans + multiplier),
+      String(Math.max(1, ans - multiplier)),
+      String(factor + multiplier),
+    ].filter((v) => v !== String(ans));
+
+    list.push({
+      id: qId,
+      grade,
+      difficultyTier: tier,
+      topic: "perkalian-awal",
+      question: { id: textId, en: textEn },
+      simulator: {
+        type: "column-arithmetic",
+        operation: "multiply",
+        operands: [factor, multiplier],
+        digitCount: String(ans).length,
+      },
+      options: shuffle([
+        { value: String(ans), isCorrect: true },
+        ...distractors.slice(0, 3).map((v) => ({ value: v, isCorrect: false })),
+      ]),
+      smartHint: {
+        id: `Perkalian adalah penjumlahan berulang: tambahkan ${multiplier} sebanyak ${factor} kali.`,
+        en: `Multiplication is repeated addition: add ${multiplier} a total of ${factor} times.`,
+      },
+    });
+  }
+  return list;
+}
+
+// ─── 14. Pecahan Operasi — Add/Subtract Same Denominator (Grade 3) ─────────────
+// Cambridge: 3Nf.07 - add/subtract fractions with same denominator within 1 whole
+export function generateFractionOperationQuestions(grade: number, tier: number, count: number): Question[] {
+  const list: Question[] = [];
+
+  for (let i = 0; i < count; i++) {
+    const qId = `dyn-fracop-${Date.now()}-${i}-${randInt(100, 999)}`;
+    const denominators = tier === 1 ? [2, 3, 4] : [4, 5, 6, 8];
+    const den = pickRandom(denominators);
+
+    const isAdd = i % 2 === 0;
+    if (isAdd) {
+      // a/d + b/d where a+b < d (result stays within 1)
+      const maxNum = den - 1;
+      const a = randInt(1, Math.max(1, Math.floor(maxNum / 2)));
+      const b = randInt(1, maxNum - a);
+      const resultNum = a + b;
+      const correctVal = resultNum === den ? `1` : `${resultNum}/${den}`;
+      const distractors = [
+        `${resultNum}/${den * 2}`,
+        `${a}/${den + b}`,
+        `${Math.max(1, resultNum - 1)}/${den}`,
+      ].filter((v) => v !== correctVal);
+
+      list.push({
+        id: qId,
+        grade,
+        difficultyTier: tier,
+        topic: "pecahan-operasi",
+        question: {
+          id: `Berapa hasil dari ${a}/${den} + ${b}/${den}?`,
+          en: `What is ${a}/${den} + ${b}/${den}?`,
+        },
+        simulator: {
+          type: "circle-fraction",
+          totalSegments: den,
+          filledSegments: a,
+          interactive: false,
+          showFractionLabel: false,
+        },
+        options: shuffle([
+          { value: correctVal, isCorrect: true },
+          ...distractors.slice(0, 3).map((v) => ({ value: v, isCorrect: false })),
+        ]),
+        smartHint: {
+          id: `Jika penyebutnya sama, cukup jumlahkan pembilangnya: ${a} + ${b} = ${resultNum}. Penyebutnya tetap ${den}.`,
+          en: `When denominators are the same, just add the numerators: ${a} + ${b} = ${resultNum}. The denominator stays ${den}.`,
+        },
+      });
+    } else {
+      // a/d - b/d where a > b
+      const a = randInt(2, den - 1);
+      const b = randInt(1, a - 1);
+      const resultNum = a - b;
+      const correctVal = `${resultNum}/${den}`;
+      const distractors = [
+        `${a + b}/${den}`,
+        `${resultNum}/${den + 1}`,
+        `${Math.min(den - 1, resultNum + 1)}/${den}`,
+      ].filter((v) => v !== correctVal);
+
+      list.push({
+        id: qId,
+        grade,
+        difficultyTier: tier,
+        topic: "pecahan-operasi",
+        question: {
+          id: `Berapa hasil dari ${a}/${den} − ${b}/${den}?`,
+          en: `What is ${a}/${den} − ${b}/${den}?`,
+        },
+        simulator: {
+          type: "circle-fraction",
+          totalSegments: den,
+          filledSegments: a,
+          interactive: false,
+          showFractionLabel: false,
+        },
+        options: shuffle([
+          { value: correctVal, isCorrect: true },
+          ...distractors.slice(0, 3).map((v) => ({ value: v, isCorrect: false })),
+        ]),
+        smartHint: {
+          id: `Jika penyebutnya sama, kurangkan pembilangnya saja: ${a} − ${b} = ${resultNum}. Penyebutnya tetap ${den}.`,
+          en: `When denominators are the same, subtract only the numerators: ${a} − ${b} = ${resultNum}. The denominator stays ${den}.`,
+        },
+      });
+    }
+  }
+  return list;
+}
+
+// ─── 15. Teori Bilangan — Factors, Multiples, Prime (Grade 4) ─────────────────
+// Cambridge: 4Ni.05 - divisibility, prime numbers; 4Ni.01 - factors and multiples
+export function generateNumberTheoryQuestions(grade: number, tier: number, count: number): Question[] {
+  const list: Question[] = [];
+  const primes = [2, 3, 5, 7, 11, 13, 17, 19];
+  const composites = [4, 6, 8, 9, 10, 12, 14, 15, 16, 18, 20, 21, 22, 24, 25];
+
+  for (let i = 0; i < count; i++) {
+    const qId = `dyn-numtheory-${Date.now()}-${i}-${randInt(100, 999)}`;
+    const mode = i % 3;
+
+    if (mode === 0) {
+      // Find all factors of a number
+      const num = tier === 1 ? pickRandom([12, 16, 18, 20, 24]) : pickRandom([36, 48, 60, 72, 100]);
+      const factors = [];
+      for (let f = 1; f <= num; f++) if (num % f === 0) factors.push(f);
+      const correctVal = `${factors.length}`;
+      const distractors = [
+        String(factors.length + 1),
+        String(Math.max(1, factors.length - 1)),
+        String(factors.length + 2),
+      ].filter((v) => v !== correctVal);
+
+      list.push({
+        id: qId,
+        grade,
+        difficultyTier: tier,
+        topic: "teori-bilangan",
+        question: {
+          id: `Bilangan ${num} memiliki berapa faktor (bilangan pembagi habis)?`,
+          en: `How many factors (exact divisors) does the number ${num} have?`,
+        },
+        simulator: { type: "pattern-sequence", sequence: factors.map(Number), missingIndices: [], correctValues: [], ruleDescription: `Faktor dari ${num}` },
+        options: shuffle([
+          { value: correctVal, isCorrect: true },
+          ...distractors.slice(0, 3).map((v) => ({ value: v, isCorrect: false })),
+        ]),
+        smartHint: {
+          id: `Faktor adalah bilangan yang membagi habis ${num}. Coba periksa satu per satu: 1, 2, 3, ... sampai ${num}.`,
+          en: `A factor divides ${num} exactly. Check each number 1, 2, 3, ... up to ${num}.`,
+        },
+      });
+    } else if (mode === 1) {
+      // Identify prime or composite
+      const isPrimeQ = i % 4 < 2;
+      const num = isPrimeQ ? pickRandom(primes.filter(p => p < (tier === 1 ? 13 : 20))) : pickRandom(composites.filter(c => c < (tier === 1 ? 21 : 31)));
+      const correctVal = isPrimeQ ? "Prima" : "Komposit";
+      const correctValEn = isPrimeQ ? "Prime" : "Composite";
+
+      list.push({
+        id: qId,
+        grade,
+        difficultyTier: tier,
+        topic: "teori-bilangan",
+        question: {
+          id: `Bilangan ${num} adalah bilangan...`,
+          en: `The number ${num} is a...`,
+        },
+        simulator: { type: "pattern-sequence", sequence: [num], missingIndices: [], correctValues: [], ruleDescription: `Bilangan prima atau komposit?` },
+        options: shuffle([
+          { value: correctVal, isCorrect: true },
+          { value: isPrimeQ ? "Komposit" : "Prima", isCorrect: false },
+          { value: "Genap Sempurna", isCorrect: false },
+        ]),
+        smartHint: {
+          id: isPrimeQ
+            ? `Bilangan prima hanya memiliki tepat 2 faktor: 1 dan dirinya sendiri. ${num} hanya bisa dibagi 1 dan ${num}.`
+            : `Bilangan komposit memiliki lebih dari 2 faktor. ${num} bisa dibagi oleh bilangan lain selain 1 dan ${num}.`,
+          en: isPrimeQ
+            ? `A prime number has exactly 2 factors: 1 and itself. ${num} can only be divided by 1 and ${num}.`
+            : `A composite number has more than 2 factors. ${num} has divisors other than 1 and ${num}.`,
+        },
+      });
+    } else {
+      // Kelipatan (Multiples)
+      const base = tier === 1 ? pickRandom([2, 3, 4, 5, 10]) : pickRandom([6, 7, 8, 9, 11, 12]);
+      const nth = randInt(2, tier === 1 ? 8 : 12);
+      const correctVal = String(base * nth);
+      const distractors = [
+        String(base * (nth + 1)),
+        String(base * (nth - 1)),
+        String(base * nth + 1),
+      ].filter((v) => v !== correctVal);
+
+      list.push({
+        id: qId,
+        grade,
+        difficultyTier: tier,
+        topic: "teori-bilangan",
+        question: {
+          id: `Berapakah kelipatan ke-${nth} dari bilangan ${base}?`,
+          en: `What is the ${nth}${nth === 1 ? "st" : nth === 2 ? "nd" : nth === 3 ? "rd" : "th"} multiple of ${base}?`,
+        },
+        simulator: { type: "pattern-sequence", sequence: Array.from({ length: nth }, (_, k) => (k + 1) * base), missingIndices: [nth - 1], correctValues: [base * nth], ruleDescription: `Kelipatan ${base}` },
+        options: shuffle([
+          { value: correctVal, isCorrect: true },
+          ...distractors.slice(0, 3).map((v) => ({ value: v, isCorrect: false })),
+        ]),
+        smartHint: {
+          id: `Kelipatan ke-${nth} dari ${base} adalah ${base} × ${nth} = ${base * nth}.`,
+          en: `The ${nth}th multiple of ${base} is ${base} × ${nth} = ${base * nth}.`,
+        },
+      });
+    }
+  }
+  return list;
+}
+
+// ─── 16. Luas Bangun Datar — Area of Rectangles & Squares (Grade 4) ───────────
+// Cambridge: 4Gg.01 - find and apply area formula (L = p × l) and perimeter
+export function generateAreaQuestions(grade: number, tier: number, count: number): Question[] {
+  const list: Question[] = [];
+  const NAMES_LOCAL = NAMES;
+
+  for (let i = 0; i < count; i++) {
+    const qId = `dyn-area-${Date.now()}-${i}-${randInt(100, 999)}`;
+    const isArea = i % 3 !== 2; // 2/3 are area, 1/3 is perimeter
+
+    if (isArea) {
+      // Area of rectangle or square
+      const isSquare = i % 5 === 0;
+      let p: number, l: number, ans: number;
+      if (isSquare) {
+        p = tier === 1 ? randInt(3, 9) : randInt(8, 20);
+        l = p;
+        ans = p * l;
+      } else {
+        p = tier === 1 ? randInt(4, 12) : randInt(8, 25);
+        l = tier === 1 ? randInt(2, 8) : randInt(5, 18);
+        ans = p * l;
+      }
+
+      const shapeId = isSquare ? "persegi" : "persegi panjang";
+      const shapeEn = isSquare ? "square" : "rectangle";
+      const descId = isSquare
+        ? `Sebuah ${shapeId} memiliki panjang sisi ${p} cm. Hitung luasnya!`
+        : `Sebuah ${shapeId} memiliki panjang ${p} cm dan lebar ${l} cm. Hitung luasnya!`;
+      const descEn = isSquare
+        ? `A ${shapeEn} has a side length of ${p} cm. Find its area!`
+        : `A ${shapeEn} has a length of ${p} cm and width of ${l} cm. Find its area!`;
+      const correctVal = `${ans} cm²`;
+
+      const distractors = [
+        `${(p + l) * 2} cm²`,
+        `${ans + p} cm²`,
+        `${Math.max(1, ans - l)} cm²`,
+      ].filter((v) => v !== correctVal);
+
+      list.push({
+        id: qId,
+        grade,
+        difficultyTier: tier,
+        topic: "luas-bangun-datar",
+        question: { id: descId, en: descEn },
+        simulator: {
+          type: "column-arithmetic",
+          operation: "multiply",
+          operands: [p, l],
+          digitCount: String(ans).length,
+        },
+        options: shuffle([
+          { value: correctVal, isCorrect: true },
+          ...distractors.slice(0, 3).map((v) => ({ value: v, isCorrect: false })),
+        ]),
+        smartHint: {
+          id: isSquare
+            ? `Luas persegi = sisi × sisi = ${p} × ${p} = ${ans} cm².`
+            : `Luas persegi panjang = panjang × lebar = ${p} × ${l} = ${ans} cm².`,
+          en: isSquare
+            ? `Area of square = side × side = ${p} × ${p} = ${ans} cm².`
+            : `Area of rectangle = length × width = ${p} × ${l} = ${ans} cm².`,
+        },
+      });
+    } else {
+      // Perimeter
+      const p = tier === 1 ? randInt(4, 12) : randInt(8, 20);
+      const l = tier === 1 ? randInt(2, 8) : randInt(5, 15);
+      const ans = 2 * (p + l);
+      const correctVal = `${ans} cm`;
+      const distractors = [
+        `${p * l} cm`,
+        `${ans + 2} cm`,
+        `${ans - 2} cm`,
+      ].filter((v) => v !== correctVal);
+
+      list.push({
+        id: qId,
+        grade,
+        difficultyTier: tier,
+        topic: "luas-bangun-datar",
+        question: {
+          id: `Sebuah persegi panjang memiliki panjang ${p} cm dan lebar ${l} cm. Berapa keliling (perimeter)-nya?`,
+          en: `A rectangle has a length of ${p} cm and width of ${l} cm. What is its perimeter?`,
+        },
+        simulator: {
+          type: "column-arithmetic",
+          operation: "multiply",
+          operands: [p + l, 2],
+          digitCount: String(ans).length,
+        },
+        options: shuffle([
+          { value: correctVal, isCorrect: true },
+          ...distractors.slice(0, 3).map((v) => ({ value: v, isCorrect: false })),
+        ]),
+        smartHint: {
+          id: `Keliling persegi panjang = 2 × (panjang + lebar) = 2 × (${p} + ${l}) = 2 × ${p + l} = ${ans} cm.`,
+          en: `Perimeter of rectangle = 2 × (length + width) = 2 × (${p} + ${l}) = 2 × ${p + l} = ${ans} cm.`,
+        },
+      });
+    }
+  }
+  return list;
+}
+
+// ─── 17. FPB & KPK — GCF and LCM (Grade 5) ────────────────────────────────────
+// Cambridge: 5Ni.01 - find common factors and LCM; aligned with Kurikulum Merdeka Fase C
+export function generateGCFLCMQuestions(grade: number, tier: number, count: number): Question[] {
+  const list: Question[] = [];
+
+  const pairsT1 = [
+    { a: 6, b: 9, gcf: 3, lcm: 18 },
+    { a: 8, b: 12, gcf: 4, lcm: 24 },
+    { a: 4, b: 6, gcf: 2, lcm: 12 },
+    { a: 10, b: 15, gcf: 5, lcm: 30 },
+    { a: 6, b: 8, gcf: 2, lcm: 24 },
+    { a: 9, b: 12, gcf: 3, lcm: 36 },
+  ];
+  const pairsT2 = [
+    { a: 12, b: 18, gcf: 6, lcm: 36 },
+    { a: 15, b: 25, gcf: 5, lcm: 75 },
+    { a: 16, b: 24, gcf: 8, lcm: 48 },
+    { a: 20, b: 30, gcf: 10, lcm: 60 },
+    { a: 18, b: 24, gcf: 6, lcm: 72 },
+    { a: 14, b: 21, gcf: 7, lcm: 42 },
+  ];
+  const pairs = tier === 1 ? pairsT1 : pairsT2;
+
+  for (let i = 0; i < count; i++) {
+    const qId = `dyn-gcflcm-${Date.now()}-${i}-${randInt(100, 999)}`;
+    const pair = pickRandom(pairs);
+    const isFPB = i % 2 === 0;
+
+    if (isFPB) {
+      const correctVal = String(pair.gcf);
+      const distractors = [
+        String(pair.gcf + 1),
+        String(pair.gcf * 2),
+        String(Math.max(1, pair.gcf - 1)),
+      ].filter((v) => v !== correctVal);
+
+      list.push({
+        id: qId,
+        grade,
+        difficultyTier: tier,
+        topic: "fpb-kpk",
+        question: {
+          id: `Berapakah FPB (Faktor Persekutuan Terbesar) dari ${pair.a} dan ${pair.b}?`,
+          en: `What is the GCF (Greatest Common Factor) of ${pair.a} and ${pair.b}?`,
+        },
+        simulator: {
+          type: "pattern-sequence",
+          sequence: [pair.a, pair.b],
+          missingIndices: [],
+          correctValues: [],
+          ruleDescription: `FPB dari ${pair.a} dan ${pair.b}`,
+        },
+        options: shuffle([
+          { value: correctVal, isCorrect: true },
+          ...distractors.slice(0, 3).map((v) => ({ value: v, isCorrect: false })),
+        ]),
+        smartHint: {
+          id: `Faktor dari ${pair.a}: cari semua bilangan yang membagi habis ${pair.a}. Kemudian cari yang sama dengan faktor ${pair.b}. Faktor persekutuan terbesar adalah ${pair.gcf}.`,
+          en: `Find all factors of ${pair.a}, then find the ones shared with ${pair.b}. The greatest common factor is ${pair.gcf}.`,
+        },
+      });
+    } else {
+      const correctVal = String(pair.lcm);
+      const distractors = [
+        String(pair.a * pair.b),
+        String(pair.lcm + pair.gcf),
+        String(Math.max(pair.a, pair.b)),
+      ].filter((v) => v !== correctVal);
+
+      list.push({
+        id: qId,
+        grade,
+        difficultyTier: tier,
+        topic: "fpb-kpk",
+        question: {
+          id: `Berapakah KPK (Kelipatan Persekutuan Terkecil) dari ${pair.a} dan ${pair.b}?`,
+          en: `What is the LCM (Lowest Common Multiple) of ${pair.a} and ${pair.b}?`,
+        },
+        simulator: {
+          type: "pattern-sequence",
+          sequence: [pair.a, pair.b],
+          missingIndices: [],
+          correctValues: [],
+          ruleDescription: `KPK dari ${pair.a} dan ${pair.b}`,
+        },
+        options: shuffle([
+          { value: correctVal, isCorrect: true },
+          ...distractors.slice(0, 3).map((v) => ({ value: v, isCorrect: false })),
+        ]),
+        smartHint: {
+          id: `Daftarkan kelipatan dari ${pair.a}: ${pair.a}, ${pair.a * 2}, ${pair.a * 3}, … dan dari ${pair.b}: ${pair.b}, ${pair.b * 2}, … Kelipatan persekutuan terkecil pertama yang sama adalah ${pair.lcm}.`,
+          en: `List multiples of ${pair.a}: ${pair.a}, ${pair.a * 2}, ${pair.a * 3}, … and of ${pair.b}: ${pair.b}, ${pair.b * 2}, … The smallest common multiple is ${pair.lcm}.`,
+        },
+      });
+    }
+  }
+  return list;
+}
+
+// ─── 18. Persen Komersial — Commercial Percentage (Grade 6) ───────────────────
+// Cambridge: 6Nf.04 - percentage of quantities, discount, tax, profit/loss
+export function generateCommercialPercentageQuestions(grade: number, tier: number, count: number): Question[] {
+  const list: Question[] = [];
+
+  for (let i = 0; i < count; i++) {
+    const qId = `dyn-pctcom-${Date.now()}-${i}-${randInt(100, 999)}`;
+    const mode = i % 3;
+
+    if (mode === 0) {
+      // Diskon (Discount)
+      const prices = tier === 1 ? [50000, 80000, 100000, 120000] : [150000, 200000, 250000, 350000];
+      const discounts = tier === 1 ? [10, 20, 25, 50] : [15, 20, 25, 30];
+      const price = pickRandom(prices);
+      const disc = pickRandom(discounts);
+      const discAmt = (price * disc) / 100;
+      const finalPrice = price - discAmt;
+      const priceStr = (price / 1000).toFixed(0);
+      const correctVal = `Rp ${(finalPrice / 1000).toFixed(0)}.000`;
+      const distractors = [
+        `Rp ${(price / 1000).toFixed(0)}.000`,
+        `Rp ${(discAmt / 1000).toFixed(0)}.000`,
+        `Rp ${((finalPrice + 10000) / 1000).toFixed(0)}.000`,
+      ].filter((v) => v !== correctVal);
+
+      list.push({
+        id: qId,
+        grade,
+        difficultyTier: tier,
+        topic: "persen-komersial",
+        question: {
+          id: `Harga sebuah buku Rp ${priceStr}.000. Ada diskon ${disc}%. Berapa harga yang harus dibayar?`,
+          en: `A book costs Rp ${priceStr},000. There is a ${disc}% discount. How much must be paid?`,
+        },
+        simulator: { type: "pattern-sequence", sequence: [price / 1000, disc, finalPrice / 1000], missingIndices: [], correctValues: [], ruleDescription: `Harga ${priceStr}rb − diskon ${disc}%` },
+        options: shuffle([
+          { value: correctVal, isCorrect: true },
+          ...distractors.slice(0, 3).map((v) => ({ value: v, isCorrect: false })),
+        ]),
+        smartHint: {
+          id: `Hitung nilai diskon: ${disc}% × ${priceStr}.000 = ${(discAmt / 1000).toFixed(0)}.000. Harga akhir = ${priceStr}.000 − ${(discAmt / 1000).toFixed(0)}.000 = ${(finalPrice / 1000).toFixed(0)}.000.`,
+          en: `Calculate discount: ${disc}% × ${priceStr},000 = ${(discAmt / 1000).toFixed(0)},000. Final price = ${priceStr},000 − ${(discAmt / 1000).toFixed(0)},000 = ${(finalPrice / 1000).toFixed(0)},000.`,
+        },
+      });
+    } else if (mode === 1) {
+      // Untung/Rugi (Profit/Loss)
+      const buyPrices = tier === 1 ? [40, 60, 80, 100] : [120, 150, 200, 240];
+      const buy = pickRandom(buyPrices);
+      const isProfitQ = i % 4 < 2;
+      const pctChange = tier === 1 ? pickRandom([10, 20, 25]) : pickRandom([15, 20, 25, 30]);
+      const change = (buy * pctChange) / 100;
+      const sell = isProfitQ ? buy + change : buy - change;
+      const correctVal = `${pctChange}%`;
+      const distractors = [
+        `${pctChange + 5}%`,
+        `${Math.max(5, pctChange - 5)}%`,
+        `${pctChange * 2}%`,
+      ].filter((v) => v !== correctVal);
+
+      list.push({
+        id: qId,
+        grade,
+        difficultyTier: tier,
+        topic: "persen-komersial",
+        question: {
+          id: `Pedagang membeli barang seharga Rp ${buy}.000 dan menjualnya Rp ${sell}.000. Berapa persen ${isProfitQ ? "keuntungan" : "kerugian"}-nya?`,
+          en: `A merchant buys goods for Rp ${buy},000 and sells them for Rp ${sell},000. What is the percentage ${isProfitQ ? "profit" : "loss"}?`,
+        },
+        simulator: { type: "pattern-sequence", sequence: [buy, sell], missingIndices: [], correctValues: [], ruleDescription: `Harga beli ${buy}rb → jual ${sell}rb` },
+        options: shuffle([
+          { value: correctVal, isCorrect: true },
+          ...distractors.slice(0, 3).map((v) => ({ value: v, isCorrect: false })),
+        ]),
+        smartHint: {
+          id: `Persen ${isProfitQ ? "untung" : "rugi"} = (|jual − beli| ÷ beli) × 100% = (${Math.abs(sell - buy)} ÷ ${buy}) × 100% = ${pctChange}%.`,
+          en: `% ${isProfitQ ? "profit" : "loss"} = (|sell − buy| ÷ buy) × 100% = (${Math.abs(sell - buy)} ÷ ${buy}) × 100% = ${pctChange}%.`,
+        },
+      });
+    } else {
+      // Persentase nilai (percentage of quantity)
+      const totals = tier === 1 ? [100, 200, 400, 500] : [250, 400, 600, 800];
+      const total = pickRandom(totals);
+      const pct = tier === 1 ? pickRandom([10, 20, 25, 50, 75]) : pickRandom([15, 30, 35, 40, 60]);
+      const ans = (total * pct) / 100;
+      const correctVal = String(ans);
+      const distractors = [
+        String(ans + 10),
+        String(Math.max(1, ans - 10)),
+        String(total - ans),
+      ].filter((v) => v !== correctVal);
+
+      list.push({
+        id: qId,
+        grade,
+        difficultyTier: tier,
+        topic: "persen-komersial",
+        question: {
+          id: `Berapa ${pct}% dari ${total}?`,
+          en: `What is ${pct}% of ${total}?`,
+        },
+        simulator: {
+          type: "circle-fraction",
+          totalSegments: 100,
+          filledSegments: pct,
+          interactive: false,
+          showFractionLabel: false,
+        },
+        options: shuffle([
+          { value: correctVal, isCorrect: true },
+          ...distractors.slice(0, 3).map((v) => ({ value: v, isCorrect: false })),
+        ]),
+        smartHint: {
+          id: `${pct}% dari ${total} = (${pct} ÷ 100) × ${total} = ${ans}.`,
+          en: `${pct}% of ${total} = (${pct} ÷ 100) × ${total} = ${ans}.`,
+        },
+      });
+    }
+  }
+  return list;
+}
+
+// ─── 19. Master Generator ─────────────────────────────────────────────────────
 export function generateSessionQuestions(grade: number, topic: string, tier: number = 1, count: number = 10): Question[] {
   if (topic === "pola-bilangan") {
     return generatePatternQuestions(grade, tier, count);
@@ -1451,11 +2028,17 @@ export function generateSessionQuestions(grade: number, topic: string, tier: num
   if (topic === "perkalian" || topic === "pembagian") {
     return generateMultDivQuestions(grade, topic, tier, count);
   }
+  if (topic === "perkalian-awal") {
+    return generateEarlyMultiplicationQuestions(grade, tier, count);
+  }
   if (topic === "pecahan-dasar") {
     return generateBasicFractionQuestions(grade, tier, count);
   }
   if (topic === "pecahan-senilai") {
     return generateEquivalentFractionQuestions(grade, tier, count);
+  }
+  if (topic === "pecahan-operasi") {
+    return generateFractionOperationQuestions(grade, tier, count);
   }
   if (topic === "desimal-dasar") {
     return generateDecimalQuestions(grade, tier, count);
@@ -1466,11 +2049,23 @@ export function generateSessionQuestions(grade: number, topic: string, tier: num
   if (topic === "persen") {
     return generatePercentageQuestions(grade, tier, count);
   }
+  if (topic === "persen-komersial") {
+    return generateCommercialPercentageQuestions(grade, tier, count);
+  }
   if (topic === "aljabar-dasar") {
     return generateBasicAlgebraQuestions(grade, tier, count);
   }
   if (topic === "perbandingan") {
     return generateRatioQuestions(grade, tier, count);
+  }
+  if (topic === "teori-bilangan") {
+    return generateNumberTheoryQuestions(grade, tier, count);
+  }
+  if (topic === "luas-bangun-datar") {
+    return generateAreaQuestions(grade, tier, count);
+  }
+  if (topic === "fpb-kpk") {
+    return generateGCFLCMQuestions(grade, tier, count);
   }
 
   // Strictly return empty list if topic is unknown - NEVER fallback to another topic

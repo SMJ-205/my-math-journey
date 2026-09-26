@@ -28,7 +28,7 @@ export const gradeConfigs: GradeConfig[] = [
     mascotEmoji: "kucing",
     color: "#FB7185",
     bgColor: "#FFE4E6",
-    topics: ["penjumlahan-dua-digit", "pengurangan-dua-digit", "pola-bilangan", "soal-cerita"],
+    topics: ["penjumlahan-dua-digit", "pengurangan-dua-digit", "perkalian-awal", "pola-bilangan", "soal-cerita"],
   },
   {
     grade: 3,
@@ -38,7 +38,7 @@ export const gradeConfigs: GradeConfig[] = [
     mascotEmoji: "kelinci",
     color: "#34D399",
     bgColor: "#D1FAE5",
-    topics: ["perkalian", "pembagian", "pecahan-dasar", "pola-bilangan", "soal-cerita"],
+    topics: ["perkalian", "pembagian", "pecahan-dasar", "pecahan-operasi", "pola-bilangan", "soal-cerita"],
   },
   {
     grade: 4,
@@ -48,7 +48,7 @@ export const gradeConfigs: GradeConfig[] = [
     mascotEmoji: "rubah",
     color: "#38BDF8",
     bgColor: "#E0F2FE",
-    topics: ["pecahan-senilai", "pola-bilangan", "soal-cerita", "desimal-dasar"],
+    topics: ["pecahan-senilai", "teori-bilangan", "luas-bangun-datar", "pola-bilangan", "soal-cerita", "desimal-dasar"],
   },
   {
     grade: 5,
@@ -58,7 +58,7 @@ export const gradeConfigs: GradeConfig[] = [
     mascotEmoji: "beruang",
     color: "#A78BFA",
     bgColor: "#EDE9FE",
-    topics: ["pecahan-campuran", "persen", "pola-bilangan", "soal-cerita"],
+    topics: ["pecahan-campuran", "persen", "fpb-kpk", "pola-bilangan", "soal-cerita"],
   },
   {
     grade: 6,
@@ -68,9 +68,10 @@ export const gradeConfigs: GradeConfig[] = [
     mascotEmoji: "elang",
     color: "#F97316",
     bgColor: "#FEF3C7",
-    topics: ["aljabar-dasar", "pola-bilangan", "soal-cerita", "perbandingan"],
+    topics: ["aljabar-dasar", "pola-bilangan", "soal-cerita", "perbandingan", "persen-komersial"],
   },
 ];
+
 
 export const phaseLabels: Record<string, string> = {
   A: "Fase A — Kelas 1 dan 2",
