@@ -17,53 +17,85 @@ export function ParentGuideModal({ onClose }: ParentGuideModalProps) {
     ? [
         {
           icon: <Compass className="text-amber-500" size={24} />,
-          title: "Learning Approach & Concrete Visuals",
-          desc: "My Math Journey is built around the CPA (Concrete-Pictorial-Abstract) framework. By using interactive visual manipulatives (fruit baskets, pizza slices, balance scales, animated number patterns), children grasp core mathematical ideas intuitively before memorizing abstract formulas.",
+          title: "Integrated Curriculum: Merdeka & Cambridge Primary",
+          desc: "My Math Journey integrates Indonesia's Kurikulum Merdeka learning phases with the globally recognized Cambridge Primary Mathematics curriculum, adopting the CPA (Concrete — Pictorial — Abstract) framework:",
+          points: [
+            "Phase A (Grades 1–2): Concrete number sense, place values, 2-digit column addition & subtraction (including carry-over and borrowing introduced early).",
+            "Phase B (Grades 3–4): Times tables, fair sharing division, visual fractions, number theory (factors, multiples, prime numbers), and 2D area & perimeter.",
+            "Phase C (Grades 5–6): Mixed fractions, GCF & LCM, commercial percentages (discounts, profit/loss), proportional ratios, and balance-scale algebra modeling.",
+          ],
+        },
+        {
+          icon: <Sparkles className="text-violet-500" size={24} />,
+          title: "3-Tier Difficulty Progression",
+          desc: "Parents and educators can freely tailor the challenge level before every practice session:",
+          points: [
+            "Level 1 — Easy (Foundational): Core concepts, guided numbers, clean calculations without heavy carry/borrow.",
+            "Level 2 — Medium (Curriculum Standard): Column addition with carry-over, subtraction with regrouping (borrowing), and 3-step word problems (e.g. A + B + C or A − B − C).",
+            "Level 3 — Challenge (Enrichment & Olympiad Prep): Multi-digit calculations exceeding 100, 4-component multi-step stories (A + B + C − D), and consecutive square sequences.",
+            "Smart Recommendation: When your child scores ≥ 85% accuracy, the report automatically recommends leveling up!",
+          ],
         },
         {
           icon: <HeartHandshake className="text-pink-500" size={24} />,
           title: "Tips for Accompanying Your Child",
           points: [
-            "Provide Thinking Time: Let children interact with the buttons and explore the numbers independently.",
-            "Make Use of 'Smart Hints': If your child hesitates, invite them to read the Smart Hint for problem-solving strategies without spoiling the answer.",
-            "Praise the Effort: Celebrate persistence and courage when tackling new challenge formats like number series and word problems.",
+            "Provide Thinking Time: Let children interact with number buttons and visual manipulatives independently before giving answers.",
+            "Make Use of 'Smart Hints': If your child hesitates, encourage them to open Smart Hints. It explains conceptual steps and formulas without spoiling the answer numbers.",
+            "Praise the Process: Appreciate resilience and logical effort rather than speed. Mistakes are treated as valuable learning checkpoints.",
           ],
         },
         {
           icon: <Clock className="text-blue-500" size={24} />,
-          title: "Recommended Daily Routine",
-          desc: "Just 10–15 minutes (1 session = 10 questions) each day consistently. A short, joyful daily session builds confidence and long-term retention far better than lengthy, overwhelming study blocks.",
+          title: "Recommended Daily Routine & Star Rewards",
+          desc: "Just 10–15 minutes (1 session = 10 questions) each day consistently. Every completed session earns 1 to 3 stars, permanently accumulating on the child's profile and across Grade Cards (Grades 1–6) to celebrate everyday progress.",
         },
         {
           icon: <Award className="text-emerald-500" size={24} />,
-          title: "Progress Report & Misconception Insights",
-          desc: "Upon finishing each 10-question session, the system summarizes the child's understanding. Parents can view specific misconception types (such as carryover slips in column addition or pattern step calculation) with personalized next-step recommendations.",
+          title: "Session Report & Misconception Insights",
+          desc: "Upon finishing each session, the report summarizes performance. The Parent & Educator View reveals specific mistake patterns (such as forgetting to carry tens, miscounting segments, or swapping numerator-denominator) with targeted next-step recommendations.",
         },
       ]
     : [
         {
           icon: <Compass className="text-amber-500" size={24} />,
-          title: "Pendekatan Belajar & Kurikulum Merdeka",
-          desc: "My Math Journey disusun selaras dengan Capaian Pembelajaran Kurikulum Merdeka SD (Fase A: Kelas 1-2, Fase B: Kelas 3-4, Fase C: Kelas 5-6). Kami menggunakan pendekatan CPA (Concrete-Pictorial-Abstract) melalui simulator visual manipulatif sehingga anak memahami konsep dasarnya terlebih dahulu, bukan sekadar menghafal rumus.",
+          title: "Kurikulum Terintegrasi: Kurikulum Merdeka & Cambridge Primary",
+          desc: "My Math Journey menggabungkan capaian Kurikulum Merdeka SD dengan standar internasional Cambridge Primary Mathematics melalui pendekatan CPA (Concrete — Pictorial — Abstract):",
+          points: [
+            "Fase A (Kelas 1–2): Pemahaman bilangan konkret, nilai tempat, penjumlahan & pengurangan 2 digit bersusun (termasuk teknik simpan dan pinjam yang diperkenalkan sejak dini).",
+            "Fase B (Kelas 3–4): Perkalian tabel dasar, pembagian, pecahan lingkaran visual, teori bilangan (faktor, kelipatan, bilangan prima), serta luas & keliling bangun datar.",
+            "Fase C (Kelas 5–6): Pecahan campuran, FPB & KPK, persen komersial (diskon & untung/rugi), rasio perbandingan, dan pemodelan aljabar timbangan.",
+          ],
+        },
+        {
+          icon: <Sparkles className="text-violet-500" size={24} />,
+          title: "Tingkat Kesulitan Soal (3-Tier Difficulty Progression)",
+          desc: "Orang tua dan guru dapat memilih level tantangan belajar sesuai kesiapan anak sebelum memulai latihan:",
+          points: [
+            "Level 1 — Mudah (Fondasi): Konsep inti dengan visual terpandu, angka bersih tanpa teknik simpan/pinjam rumit.",
+            "Level 2 — Sedang (Standar Kurikulum): Penjumlahan simpan (carry-over), pengurangan pinjam (regrouping), dan soal cerita 3x operasi penambahan/pengurangan (misal A + B + C atau A − B − C).",
+            "Level 3 — Tantangan (Pengayaan & Lomba): Hitung bersusun angka ratusan (>100), soal cerita multi-langkah 4 komponen (A + B + C − D), dan barisan bilangan kuadrat berturut-turut.",
+            "Rekomendasi Cerdas: Ketika anak mencapai akurasi ≥ 85%, sistem di halaman laporan otomatis menyarankan untuk 'Naik Level'!",
+          ],
         },
         {
           icon: <HeartHandshake className="text-pink-500" size={24} />,
           title: "Tips Mendampingi Anak Belajar",
           points: [
-            "Berikan Ruang Berpikir: Biarkan anak mencoba menekan kotak bilangan dan bereksplorasi secara mandiri.",
-            "Manfaatkan Trik Pintar: Jika anak ragu, ajak membuka fitur 'Trik Pintar' yang memberikan strategi pemecahan masalah tanpa membocorkan jawaban langsung.",
-            "Fokus Pada Usaha: Apresiasi ketekunan dan keberanian anak mencoba soal-soal baru seperti pola bilangan dan soal cerita.",
+            "Berikan Ruang Berpikir: Biarkan anak bereksplorasi dengan simulator dan mini numberpad secara mandiri.",
+            "Manfaatkan Trik Pintar: Ajak anak membaca 'Trik Pintar' jika ragu. Fitur ini menguraikan logika konsep dan rumus tanpa membocorkan angka jawaban langsung.",
+            "Rayakan Proses: Apresiasi keberanian mencoba dan ketekunan anak, bukan sekadar nilai. Kesalahan adalah kesempatan belajar, bukan kegagalan.",
           ],
         },
         {
           icon: <Clock className="text-blue-500" size={24} />,
-          title: "Durasi & Rutinitas yang Dianjurkan",
-          desc: "Cukup 10–15 menit (1 sesi = 10 soal) setiap hari secara konsisten. Latihan harian yang singkat namun menyenangkan jauh lebih efektif membangun kepercayaan diri dan memori jangka panjang anak dibandingkan belajar lama yang membebani.",
+          title: "Rutinitas Belajar & Akumulasi Bintang",
+          desc: "Cukup 10–15 menit (1 sesi = 10 soal acak tak terbatas) setiap hari secara konsisten. Bintang yang diperoleh (1–3 bintang per sesi) kini tersimpan permanen di profil anak dan terakumulasi di kartu kelas (Kelas 1–6) sebagai apresiasi nyata atas kebiasaan baik anak.",
         },
         {
           icon: <Award className="text-emerald-500" size={24} />,
-          title: "Laporan Kemajuan & Deteksi Miskonsepsi",
-          desc: "Setelah menyelesaikan 10 soal, sistem secara otomatis menganalisis pemahaman anak. Orang tua dapat melihat tipe kesalahan spesifik (seperti lupa simpanan pada penjumlahan bersusun atau salah menentukan selisih deret) beserta rekomendasi materi selanjutnya.",
+          title: "Laporan Sesi & Deteksi Miskonsepsi untuk Orang Tua",
+          desc: "Setelah sesi selesai, fitur Catatan Orang Tua/Pendidik menyajikan analisis spesifik pola kekeliruan anak (seperti lupa simpanan puluhan, salah hitung segmen, atau tertukar pembilang-penyebut) lengkap dengan saran materi lanjutan.",
         },
       ];
 
