@@ -29,6 +29,7 @@ export default function App() {
   const [view, setView]               = useState<AppView>("main-menu");
   const [selectedGrade, setGrade]     = useState(1);
   const [selectedTopic, setTopic]     = useState("");
+  const [selectedTier, setTier]       = useState(1);
   const [questionIds, setQIds]        = useState<string[]>([]);
   const [sessionStartedAt, setSAt]    = useState("");
   const [sessionId, setSId]           = useState("");
@@ -49,16 +50,16 @@ export default function App() {
 
   const goTo = (v: AppView) => setView(v);
 
-  const startSession = (grade: number, topic: string) => {
+  const startSession = (grade: number, topic: string, tier: number = 1) => {
     const cfg = gradeConfigs.find((g) => g.grade === grade);
     const phase = cfg?.phase ?? "A";
     const sessCfg = sessionConfig[phase];
 
-    // Generate FRESH random questions every session — bypass cache entirely
-    const freshQuestions = generateSessionQuestions(grade, topic, 1, sessCfg.maxQuestions);
+    // Generate FRESH random questions every session with selected tier
+    const freshQuestions = generateSessionQuestions(grade, topic, tier, sessCfg.maxQuestions);
     const qs = freshQuestions.length > 0
       ? freshQuestions
-      : getQuestionsByGradeAndTopic(grade, topic, 1).slice(0, sessCfg.maxQuestions);
+      : getQuestionsByGradeAndTopic(grade, topic, tier).slice(0, sessCfg.maxQuestions);
 
     if (qs.length === 0) return;
 
@@ -67,6 +68,7 @@ export default function App() {
 
     setGrade(grade);
     setTopic(topic);
+    setTier(tier);
     setQIds(qs.map((q) => q.id));
     setSAt(new Date().toISOString());
     setSId(`sess-${Date.now()}`);
@@ -86,7 +88,7 @@ export default function App() {
         profileId={activeProfileId}
         grade={selectedGrade}
         topic={selectedTopic}
-        tier={1}
+        tier={selectedTier}
         showTimer={showTimer}
         onSessionComplete={() => goTo("report")}
         onGoHome={() => { resetSession(); goTo("main-menu"); }}
@@ -101,7 +103,7 @@ export default function App() {
         profileId={activeProfileId}
         grade={selectedGrade}
         topic={selectedTopic}
-        tier={1}
+        tier={selectedTier}
         startedAt={sessionStartedAt}
         sessionId={sessionId}
         onPlayAgain={() => { resetSession(); goTo("topic-select"); }}
@@ -124,6 +126,7 @@ export default function App() {
       <GradeSelectPage
         profileGrade={activeProfile?.grade ?? 1}
         profileName={activeProfile?.nickname ?? "Kamu"}
+        starsPerGrade={activeProfile?.starsPerGrade ?? {}}
         onBack={() => goTo("profile-select")}
         onSelectGrade={(g) => { setGrade(g); goTo("topic-select"); }}
       />
@@ -134,8 +137,9 @@ export default function App() {
     return (
       <TopicSelectPage
         grade={selectedGrade}
+        initialTier={selectedTier}
         onBack={() => goTo("grade-select")}
-        onSelectTopic={(t) => startSession(selectedGrade, t)}
+        onSelectTopic={(t, tier) => startSession(selectedGrade, t, tier)}
       />
     );
   }

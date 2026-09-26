@@ -40,6 +40,13 @@ export const translations = {
     topicPageSub: "Pilih materi yang ingin kamu latih hari ini.",
     available: "Tersedia",
     comingSoon: "Segera Hadir",
+    difficultyLabel: "Tingkat Kesulitan",
+    difficultyTier1: "Level 1 — Mudah",
+    difficultyTier1Desc: "Dasar konsep & angka terpandu",
+    difficultyTier2: "Level 2 — Sedang",
+    difficultyTier2Desc: "Standar simpan/pinjam & variasi",
+    difficultyTier3: "Level 3 — Tantangan",
+    difficultyTier3Desc: "Soal cerita multi-langkah & angka besar",
 
     // Topic Names
     topic_penjumlahan_dasar: "Penjumlahan Dasar",
@@ -156,6 +163,13 @@ export const translations = {
     topicPageSub: "Choose the topic you want to practice today.",
     available: "Available",
     comingSoon: "Coming Soon",
+    difficultyLabel: "Difficulty Level",
+    difficultyTier1: "Level 1 — Easy",
+    difficultyTier1Desc: "Core concepts & guided numbers",
+    difficultyTier2: "Level 2 — Medium",
+    difficultyTier2Desc: "Standard carry/borrow & variations",
+    difficultyTier3: "Level 3 — Challenge",
+    difficultyTier3Desc: "Multi-step word problems & larger values",
 
     // Topic Names
     topic_penjumlahan_dasar: "Basic Addition",

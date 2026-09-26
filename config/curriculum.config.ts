@@ -18,7 +18,7 @@ export const gradeConfigs: GradeConfig[] = [
     mascotEmoji: "ayam",
     color: "#FBBF24",
     bgColor: "#FEF9C3",
-    topics: ["penjumlahan-dasar", "pengurangan-dasar", "pola-bilangan", "soal-cerita"],
+    topics: ["penjumlahan-dasar", "pengurangan-dasar", "penjumlahan-dua-digit", "pola-bilangan", "soal-cerita"],
   },
   {
     grade: 2,

@@ -235,57 +235,179 @@ export function generateWordProblemQuestions(grade: number, tier: number, count:
       }
     }
 
-    // ── GRADE 2: 2-Digit Numbers up to 100 (A + B, A - B, A + B - C)
+    // ── GRADE 2: 2-Digit Numbers up to 100 (A + B, A - B, A + B - C, A + B + C, A - B - C, A + B + C - D)
     else if (grade === 2) {
       const mode = i % 3;
-      if (mode === 0) {
-        // A + B (2-digit)
-        const a = randInt(20, 55);
-        const b = randInt(15, 35);
-        const ans = a + b;
-        textId = `Di perpustakaan sekolah terdapat ${a} buku cerita dan ${b} buku sains. Berapa jumlah seluruh buku tersebut?`;
-        textEn = `The school library has ${a} storybooks and ${b} science books. How many books are there in total?`;
-        slots = [
-          { type: "number", target: String(a) },
-          { type: "operator", target: "+" },
-          { type: "number", target: String(b) },
-        ];
-        expectedAnswer = String(ans);
-        hintId = "Jumlahkan kedua jenis buku tersebut untuk mengetahui total seluruhnya.";
-        hintEn = "Add the two quantities together to find the grand total.";
-      } else if (mode === 1) {
-        // A - B (2-digit)
-        const a = randInt(45, 95);
-        const b = randInt(15, a - 10);
-        const ans = a - b;
-        textId = `Sebuah toko memiliki persediaan ${a} ${objId}. Hari ini terjual ${b} ${objId}. Berapa sisa ${objId} yang ada di toko?`;
-        textEn = `A stationery shop has a stock of ${a} ${objEn}. Today, ${b} ${objEn} were sold. How many ${objEn} remain in the shop?`;
-        slots = [
-          { type: "number", target: String(a) },
-          { type: "operator", target: "−" },
-          { type: "number", target: String(b) },
-        ];
-        expectedAnswer = String(ans);
-        hintId = "Kurangkan stok awal dengan jumlah barang yang sudah terjual.";
-        hintEn = "Subtract the sold items from the initial inventory.";
+      if (tier === 1) {
+        if (mode === 0) {
+          // A + B (2-digit dasar)
+          const a = randInt(20, 55);
+          const b = randInt(15, 35);
+          const ans = a + b;
+          textId = `Di perpustakaan sekolah terdapat ${a} buku cerita dan ${b} buku sains. Berapa jumlah seluruh buku tersebut?`;
+          textEn = `The school library has ${a} storybooks and ${b} science books. How many books are there in total?`;
+          slots = [
+            { type: "number", target: String(a) },
+            { type: "operator", target: "+" },
+            { type: "number", target: String(b) },
+          ];
+          expectedAnswer = String(ans);
+          hintId = "Jumlahkan kedua jenis buku tersebut untuk mengetahui total seluruhnya.";
+          hintEn = "Add the two quantities together to find the grand total.";
+        } else if (mode === 1) {
+          // A - B (2-digit dasar)
+          const a = randInt(45, 95);
+          const b = randInt(15, a - 10);
+          const ans = a - b;
+          textId = `Sebuah toko memiliki persediaan ${a} ${objId}. Hari ini terjual ${b} ${objId}. Berapa sisa ${objId} yang ada di toko?`;
+          textEn = `A stationery shop has a stock of ${a} ${objEn}. Today, ${b} ${objEn} were sold. How many ${objEn} remain in the shop?`;
+          slots = [
+            { type: "number", target: String(a) },
+            { type: "operator", target: "−" },
+            { type: "number", target: String(b) },
+          ];
+          expectedAnswer = String(ans);
+          hintId = "Kurangkan stok awal dengan jumlah barang yang sudah terjual.";
+          hintEn = "Subtract the sold items from the initial inventory.";
+        } else {
+          // A + B - C (2-step dasar)
+          const a = randInt(25, 45);
+          const b = randInt(15, 35);
+          const c = randInt(10, 25);
+          const ans = a + b - c;
+          textId = `Paman memanen ${a} ${objId} di pagi hari dan ${b} ${objId} di siang hari. Sebanyak ${c} ${objId} dibagikan ke tetangga. Berapa sisa ${objId} Paman?`;
+          textEn = `Uncle harvested ${a} ${objEn} in the morning and ${b} ${objEn} in the afternoon. He gave ${c} ${objEn} to neighbors. How many ${objEn} does Uncle have left?`;
+          slots = [
+            { type: "number", target: String(a) },
+            { type: "operator", target: "+" },
+            { type: "number", target: String(b) },
+            { type: "operator", target: "−" },
+            { type: "number", target: String(c) },
+          ];
+          expectedAnswer = String(ans);
+          hintId = "Jumlahkan hasil panen pagi dan siang, lalu kurangkan dengan yang dibagikan.";
+          hintEn = "Add morning and afternoon harvests, then subtract the shared amount.";
+        }
+      } else if (tier === 2) {
+        // TIER 2: 3-step operations (3x penambahan / pengurangan berturut-turut)
+        if (mode === 0) {
+          // 3x Penambahan: A + B + C
+          const a = randInt(15, 35);
+          const b = randInt(15, 30);
+          const c = randInt(10, 25);
+          const ans = a + b + c;
+          textId = `Petani memetik ${a} ${objId} di kebun pertama, ${b} ${objId} di kebun kedua, dan ${c} ${objId} di kebun ketiga. Berapa total seluruh ${objId} yang dipetik?`;
+          textEn = `A farmer picked ${a} ${objEn} from the first orchard, ${b} ${objEn} from the second, and ${c} ${objEn} from the third. What is the total count of ${objEn}?`;
+          slots = [
+            { type: "number", target: String(a) },
+            { type: "operator", target: "+" },
+            { type: "number", target: String(b) },
+            { type: "operator", target: "+" },
+            { type: "number", target: String(c) },
+          ];
+          expectedAnswer = String(ans);
+          hintId = "Jumlahkan hasil dari ketiga kebun secara berurutan: pertama + kedua + ketiga.";
+          hintEn = "Add the yields from all three orchards in sequence: first + second + third.";
+        } else if (mode === 1) {
+          // 3x Pengurangan: A - B - C
+          const a = randInt(65, 95);
+          const b = randInt(15, 30);
+          const c = randInt(10, 25);
+          const ans = a - b - c;
+          textId = `Sebuah toko roti memiliki ${a} roti. Pada pagi hari laku terjual ${b} roti, lalu pada siang hari terjual lagi ${c} roti. Berapa sisa roti di toko sekarang?`;
+          textEn = `A bakery holds ${a} bread loaves. In the morning ${b} loaves were sold, and in the afternoon ${c} more loaves were sold. How many loaves remain now?`;
+          slots = [
+            { type: "number", target: String(a) },
+            { type: "operator", target: "−" },
+            { type: "number", target: String(b) },
+            { type: "operator", target: "−" },
+            { type: "number", target: String(c) },
+          ];
+          expectedAnswer = String(ans);
+          hintId = "Kurangkan stok mula-mula dengan penjualan pagi, lalu kurangkan lagi dengan penjualan siang.";
+          hintEn = "Subtract morning sales from starting inventory, then subtract afternoon sales.";
+        } else {
+          // Kombinasi dengan simpan/pinjam: A + B - C
+          const a = randInt(35, 58);
+          const b = randInt(25, 48);
+          const c = randInt(18, 39);
+          const ans = a + b - c;
+          textId = `${name} mengumpulkan ${a} stiker, lalu mendapatkan ${b} stiker baru dari temannya. Sebanyak ${c} stiker kemudian ditempelkan di buku gambar. Berapa sisa stiker ${name}?`;
+          textEn = `${name} collects ${a} stickers, then receives ${b} new stickers from a friend. Later, ${c} stickers are pasted into a sketchbook. How many stickers are left?`;
+          slots = [
+            { type: "number", target: String(a) },
+            { type: "operator", target: "+" },
+            { type: "number", target: String(b) },
+            { type: "operator", target: "−" },
+            { type: "number", target: String(c) },
+          ];
+          expectedAnswer = String(ans);
+          hintId = "Hitung dulu total stiker yang dimiliki (tambah), lalu kurangkan dengan yang sudah ditempel.";
+          hintEn = "Calculate the total stickers owned (addition), then subtract those that were pasted.";
+        }
       } else {
-        // A + B - C (2-digit)
-        const a = randInt(25, 45);
-        const b = randInt(15, 35);
-        const c = randInt(10, 25);
-        const ans = a + b - c;
-        textId = `Paman memanen ${a} ${objId} di pagi hari dan ${b} ${objId} di siang hari. Sebanyak ${c} ${objId} dibagikan ke tetangga. Berapa sisa ${objId} Paman?`;
-        textEn = `Uncle harvested ${a} ${objEn} in the morning and ${b} ${objEn} in the afternoon. He gave ${c} ${objEn} to neighbors. How many ${objEn} does Uncle have left?`;
-        slots = [
-          { type: "number", target: String(a) },
-          { type: "operator", target: "+" },
-          { type: "number", target: String(b) },
-          { type: "operator", target: "−" },
-          { type: "number", target: String(c) },
-        ];
-        expectedAnswer = String(ans);
-        hintId = "Jumlahkan hasil panen pagi dan siang, lalu kurangkan dengan yang dibagikan.";
-        hintEn = "Add morning and afternoon harvests, then subtract the shared amount.";
+        // TIER 3 (Tantangan): Multi-langkah lebih tinggi (A + B + C - D atau A - B - C + D)
+        if (mode === 0) {
+          // A + B + C - D (3x penambahan & pengurangan)
+          const a = randInt(25, 40);
+          const b = randInt(15, 30);
+          const c = randInt(15, 25);
+          const d = randInt(20, 35);
+          const ans = a + b + c - d;
+          textId = `Koperasi sekolah memiliki ${a} buku tulis, mendapat pasokan ${b} buku di pagi hari dan ${c} buku di siang hari. Sore harinya terjual ${d} buku kepada siswa. Berapa sisa buku di koperasi?`;
+          textEn = `The school cooperative has ${a} notebooks, receives ${b} books in morning and ${c} books at noon. In the afternoon, ${d} books are sold to students. How many books remain?`;
+          slots = [
+            { type: "number", target: String(a) },
+            { type: "operator", target: "+" },
+            { type: "number", target: String(b) },
+            { type: "operator", target: "+" },
+            { type: "number", target: String(c) },
+            { type: "operator", target: "−" },
+            { type: "number", target: String(d) },
+          ];
+          expectedAnswer = String(ans);
+          hintId = "Jumlahkan seluruh stok yang ada (awal + pagi + siang), lalu kurangkan buku yang terjual.";
+          hintEn = "Add all incoming inventory (start + morning + noon), then subtract the sold books.";
+        } else if (mode === 1) {
+          // A - B - C + D
+          const a = randInt(70, 95);
+          const b = randInt(15, 25);
+          const c = randInt(15, 25);
+          const d = randInt(10, 20);
+          const ans = a - b - c + d;
+          textId = `Dalam sebuah kotak terdapat ${a} krayon. Dipinjam kelompok A sebanyak ${b} krayon dan kelompok B sebanyak ${c} krayon, lalu guru menambahkan ${d} krayon baru. Berapa jumlah krayon sekarang?`;
+          textEn = `There are ${a} crayons in a box. Team A borrows ${b} crayons and Team B borrows ${c} crayons, then the teacher adds ${d} new crayons. How many crayons are there now?`;
+          slots = [
+            { type: "number", target: String(a) },
+            { type: "operator", target: "−" },
+            { type: "number", target: String(b) },
+            { type: "operator", target: "−" },
+            { type: "number", target: String(c) },
+            { type: "operator", target: "+" },
+            { type: "number", target: String(d) },
+          ];
+          expectedAnswer = String(ans);
+          hintId = "Kurangkan krayon yang dipinjam satu per satu, kemudian tambahkan dengan krayon baru dari guru.";
+          hintEn = "Subtract borrowed crayons one by one, then add the new crayons from the teacher.";
+        } else {
+          // 3x Penambahan angka besar: A + B + C
+          const a = randInt(30, 48);
+          const b = randInt(25, 45);
+          const c = randInt(20, 35);
+          const ans = a + b + c;
+          textId = `Di kebun binatang ada ${a} burung kakatua, ${b} burung jalak, dan ${c} burung merpati. Berapa jumlah seluruh burung tersebut?`;
+          textEn = `At the zoo there are ${a} cockatoos, ${b} starlings, and ${c} doves. What is the grand total of birds?`;
+          slots = [
+            { type: "number", target: String(a) },
+            { type: "operator", target: "+" },
+            { type: "number", target: String(b) },
+            { type: "operator", target: "+" },
+            { type: "number", target: String(c) },
+          ];
+          expectedAnswer = String(ans);
+          hintId = "Gunakan penjumlahan bersusun 3 bilangan: simpan puluhan pada kolom berikutnya jika satuan melebihi 9.";
+          hintEn = "Use 3-number column addition: carry over tens if the ones sum exceeds 9.";
+        }
       }
     }
 
@@ -607,18 +729,28 @@ export function generateBasicArithmeticQuestions(
       if (tier === 1) {
         a = randInt(2, 6);
         b = randInt(1, 9 - a);
-      } else {
+      } else if (tier === 2) {
+        // Crossing 10 (carry-over concept)
         a = randInt(5, 9);
-        b = randInt(3, 9);
+        b = randInt(4, 9);
+      } else {
+        // Tier 3: 2-digit bridge
+        a = randInt(11, 18);
+        b = randInt(4, 9);
       }
       ans = a + b;
     } else {
       if (tier === 1) {
         a = randInt(4, 9);
         b = randInt(1, a - 1);
+      } else if (tier === 2) {
+        // Crossing 10 (borrowing concept)
+        a = randInt(11, 18);
+        b = randInt(4, 9);
       } else {
-        a = randInt(10, 18);
-        b = randInt(3, 9);
+        // Tier 3: 2-digit borrow
+        a = randInt(21, 35);
+        b = randInt(5, 9);
       }
       ans = a - b;
     }
@@ -688,11 +820,19 @@ export function generateColumnArithmeticQuestions(
         const unitsB = randInt(1, 9 - unitsA);
         a = tensA * 10 + unitsA;
         b = tensB * 10 + unitsB;
-      } else {
-        // With carry
+      } else if (tier === 2) {
+        // With carry (menyimpan puluhan)
         const tensA = randInt(2, 6);
         const unitsA = randInt(5, 9);
         const tensB = randInt(1, 3);
+        const unitsB = randInt(10 - unitsA, 9);
+        a = tensA * 10 + unitsA;
+        b = tensB * 10 + unitsB;
+      } else {
+        // Tier 3: Double carry / higher sum
+        const tensA = randInt(4, 8);
+        const unitsA = randInt(6, 9);
+        const tensB = randInt(4, 7);
         const unitsB = randInt(10 - unitsA, 9);
         a = tensA * 10 + unitsA;
         b = tensB * 10 + unitsB;
@@ -707,13 +847,21 @@ export function generateColumnArithmeticQuestions(
         const unitsB = randInt(1, unitsA);
         a = tensA * 10 + unitsA;
         b = tensB * 10 + unitsB;
-      } else {
-        // With regrouping (pinjam)
+      } else if (tier === 2) {
+        // With regrouping (meminjam puluhan)
         const tensA = randInt(5, 9);
         const unitsA = randInt(1, 5);
         const tensB = randInt(1, tensA - 2);
         const unitsB = randInt(unitsA + 2, 9);
         a = tensA * 10 + unitsA;
+        b = tensB * 10 + unitsB;
+      } else {
+        // Tier 3: 3-digit borrow
+        const tensA = randInt(11, 15);
+        const unitsA = randInt(1, 5);
+        a = tensA * 10 + unitsA;
+        const tensB = randInt(4, 8);
+        const unitsB = randInt(unitsA + 2, 9);
         b = tensB * 10 + unitsB;
       }
       ans = a - b;
@@ -729,6 +877,7 @@ export function generateColumnArithmeticQuestions(
       ? "Calculate the ones column on the right first, then move to the tens column."
       : "Subtract the ones column on the right first. If the top digit is smaller, regroup (borrow) 1 ten from the left.";
 
+    const colCount = Math.max(2, String(a).length, String(b).length, String(ans).length);
     const qId = `dyn-col-${topic}-${Date.now()}-${i}-${randInt(100, 999)}`;
     list.push({
       id: qId,
@@ -740,7 +889,7 @@ export function generateColumnArithmeticQuestions(
         type: "column-arithmetic",
         operation: isAdd ? "add" : "subtract",
         operands: [a, b],
-        digitCount: 2,
+        digitCount: colCount,
       },
       options: [
         { value: String(ans), isCorrect: true },

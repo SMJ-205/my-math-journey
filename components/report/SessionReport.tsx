@@ -1,8 +1,9 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { motion } from "framer-motion";
 import { useSessionStore } from "@/store/sessionStore";
+import { useProfileStore } from "@/store/profileStore";
 import { useLanguageStore } from "@/store/languageStore";
 import { translations, getTopicLabel } from "@/lib/translations";
 import { LanguageSwitch } from "@/components/shared/LanguageSwitch";
@@ -36,8 +37,15 @@ export function SessionReportPage({
   const topicLabel = getTopicLabel(topic, language);
   const recommendation = getRecommendationText(report, language, topicLabel);
 
-  // Confetti on mount for high scores
+  const starsAwardedRef = useRef(false);
+
+  // Confetti on mount for high scores & award stars to child profile
   useEffect(() => {
+    if (!starsAwardedRef.current && profileId && report.starsEarned > 0) {
+      starsAwardedRef.current = true;
+      useProfileStore.getState().addStars(profileId, report.starsEarned, grade);
+    }
+
     if (report.starsEarned >= 2 && typeof window !== "undefined") {
       import("canvas-confetti").then((mod) => {
         const confetti = mod.default;
