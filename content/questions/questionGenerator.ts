@@ -1901,161 +1901,151 @@ export function generateGCFLCMQuestions(grade: number, tier: number, count: numb
 export function generateCommercialPercentageQuestions(grade: number, tier: number, count: number): Question[] {
   const list: Question[] = [];
 
+  // Helper: pick clean circle segments for a percentage value
+  function pctToSegments(pct: number): { total: number; filled: number } {
+    // Use the smallest denominator that cleanly represents (100-pct)/100
+    const payPct = 100 - pct;
+    if (payPct % 25 === 0) return { total: 4, filled: payPct / 25 };
+    if (payPct % 10 === 0) return { total: 10, filled: payPct / 10 };
+    if (payPct % 5 === 0)  return { total: 20, filled: payPct / 5 };
+    return { total: 10, filled: Math.round(payPct / 10) };
+  }
+
   for (let i = 0; i < count; i++) {
     const qId = `dyn-pctcom-${Date.now()}-${i}-${randInt(100, 999)}`;
     const mode = i % 3;
 
     if (mode === 0) {
-      // Diskon (Discount) — formula: harga − (harga × disc ÷ 100) = bayar
-      const prices = tier === 1 ? [50000, 80000, 100000, 120000] : [150000, 200000, 250000, 350000];
+      // ── Diskon ──────────────────────────────────────────────────────────
+      const prices    = tier === 1 ? [50000, 80000, 100000, 120000, 160000] : [150000, 200000, 250000, 350000, 400000];
       const discounts = tier === 1 ? [10, 20, 25, 50] : [15, 20, 25, 30];
-      const price = pickRandom(prices);
-      const disc = pickRandom(discounts);
-      const discAmt = (price * disc) / 100;
-      const finalPrice = price - discAmt;
-      const priceStr = (price / 1000).toFixed(0);
-      const discAmtStr = (discAmt / 1000).toFixed(0);
-      const finalStr = (finalPrice / 1000).toFixed(0);
-      const storyTextId = `Harga sebuah buku Rp ${priceStr}.000. Ada diskon ${disc}%. Susun kalimat matematika untuk menghitung harga yang harus dibayar!`;
-      const storyTextEn = `A book costs Rp ${priceStr},000 with a ${disc}% discount. Build the math expression to calculate the price to pay!`;
-      const correctVal = `Rp ${finalStr}.000`;
+      const price       = pickRandom(prices);
+      const disc        = pickRandom(discounts);
+      const discAmt     = (price * disc) / 100;
+      const finalPrice  = price - discAmt;
+      const priceStr    = price.toLocaleString("id-ID");
+      const finalStr    = finalPrice.toLocaleString("id-ID");
+      const discAmtStr  = discAmt.toLocaleString("id-ID");
+      const payPct      = 100 - disc;
+      const { total: segTotal, filled: segFilled } = pctToSegments(disc);
+
+      // Distractors: harga asal, hanya nilai diskon, salah hitung
       const distractors = [
-        `Rp ${priceStr}.000`,
-        `Rp ${discAmtStr}.000`,
-        `Rp ${((finalPrice + 10000) / 1000).toFixed(0)}.000`,
-      ].filter((v) => v !== correctVal);
+        `Rp ${priceStr}`,
+        `Rp ${discAmtStr}`,
+        `Rp ${((finalPrice + 5000) / 1000 * 1000).toLocaleString("id-ID")}`,
+      ].filter((v) => v !== `Rp ${finalStr}`);
 
       list.push({
-        id: qId,
-        grade,
-        difficultyTier: tier,
+        id: qId, grade, difficultyTier: tier,
         topic: "persen-komersial",
         question: {
-          id: `Harga sebuah buku Rp ${priceStr}.000. Ada diskon ${disc}%. Berapa harga yang harus dibayar?`,
-          en: `A book costs Rp ${priceStr},000. There is a ${disc}% discount. How much must be paid?`,
+          id: `Harga suatu barang Rp ${priceStr}. Mendapat diskon ${disc}%. Berapa harga yang harus dibayar?`,
+          en: `An item costs Rp ${priceStr}. It has a ${disc}% discount. What is the price to pay?`,
         },
         simulator: {
-          type: "word-problem-builder",
-          storyText: storyTextId,
-          storyTextEn: storyTextEn,
-          slots: [
-            { type: "number", target: priceStr },
-            { type: "operator", target: "×" },
-            { type: "number", target: String(disc) },
-            { type: "operator", target: "÷" },
-            { type: "number", target: "100" },
-          ],
-          expectedAnswer: discAmtStr,
+          type: "circle-fraction",
+          totalSegments: segTotal,
+          filledSegments: segFilled,
+          interactive: false,
+          showFractionLabel: false,
         },
         options: shuffle([
-          { value: correctVal, isCorrect: true },
+          { value: `Rp ${finalStr}`, isCorrect: true },
           ...distractors.slice(0, 3).map((v) => ({ value: v, isCorrect: false })),
         ]),
         smartHint: {
-          id: `Langkah 1: Hitung diskon = ${disc}% × Rp ${priceStr}.000 = Rp ${discAmtStr}.000. Langkah 2: Harga bayar = Rp ${priceStr}.000 − Rp ${discAmtStr}.000 = Rp ${finalStr}.000.`,
-          en: `Step 1: Discount = ${disc}% × Rp ${priceStr},000 = Rp ${discAmtStr},000. Step 2: Price to pay = Rp ${priceStr},000 − Rp ${discAmtStr},000 = Rp ${finalStr},000.`,
+          id: `💡 Rumus Harga Bayar:\n\nH' = (100 − % diskon) ÷ 100 × Harga Awal\n\nArtinya: jika diskon ${disc}%, maka yang dibayar adalah ${payPct}% dari harga awal. Hitung ${payPct}% × harga awal untuk mendapat jawabannya.`,
+          en: `💡 Formula:\n\nH' = (100 − discount%) ÷ 100 × Original Price\n\nThis means: with a ${disc}% discount, you pay ${payPct}% of the original price. Calculate ${payPct}% of the price to find your answer.`,
         },
       });
+
     } else if (mode === 1) {
-      // Untung/Rugi (Profit/Loss) — formula: |jual − beli| ÷ beli × 100
-      const buyPrices = tier === 1 ? [40, 60, 80, 100] : [120, 150, 200, 240];
-      const buy = pickRandom(buyPrices);
-      const isProfitQ = i % 4 < 2;
-      const pctChange = tier === 1 ? pickRandom([10, 20, 25]) : pickRandom([15, 20, 25, 30]);
-      const change = (buy * pctChange) / 100;
-      const sell = isProfitQ ? buy + change : buy - change;
+      // ── Untung / Rugi ────────────────────────────────────────────────────
+      const buyPrices  = tier === 1 ? [40000, 60000, 80000, 100000] : [120000, 150000, 200000, 240000];
+      const buy        = pickRandom(buyPrices);
+      const isProfitQ  = i % 4 < 2;
+      const pctChange  = tier === 1 ? pickRandom([10, 20, 25]) : pickRandom([15, 20, 25, 30]);
+      const change     = (buy * pctChange) / 100;
+      const sell       = isProfitQ ? buy + change : buy - change;
+      const buyStr     = buy.toLocaleString("id-ID");
+      const sellStr    = sell.toLocaleString("id-ID");
       const correctVal = `${pctChange}%`;
       const distractors = [
         `${pctChange + 5}%`,
         `${Math.max(5, pctChange - 5)}%`,
         `${pctChange * 2}%`,
       ].filter((v) => v !== correctVal);
-      const diff = Math.abs(sell - buy);
-      const storyTextId = `Pedagang membeli barang Rp ${buy}.000, jual Rp ${sell}.000. Susun rumus untuk menghitung persen ${isProfitQ ? "keuntungan" : "kerugian"}!`;
-      const storyTextEn = `A merchant buys for Rp ${buy},000, sells for Rp ${sell},000. Build the formula to find the ${isProfitQ ? "profit" : "loss"} percentage!`;
+      const diffAbs = Math.abs(sell - buy);
 
       list.push({
-        id: qId,
-        grade,
-        difficultyTier: tier,
+        id: qId, grade, difficultyTier: tier,
         topic: "persen-komersial",
         question: {
-          id: `Pedagang membeli barang seharga Rp ${buy}.000 dan menjualnya Rp ${sell}.000. Berapa persen ${isProfitQ ? "keuntungan" : "kerugian"}-nya?`,
-          en: `A merchant buys goods for Rp ${buy},000 and sells them for Rp ${sell},000. What is the percentage ${isProfitQ ? "profit" : "loss"}?`,
+          id: `Seorang pedagang membeli barang seharga Rp ${buyStr}, kemudian dijual Rp ${sellStr}. Berapa persen ${isProfitQ ? "keuntungan" : "kerugian"}-nya?`,
+          en: `A merchant buys goods for Rp ${buyStr} and sells for Rp ${sellStr}. What is the percentage ${isProfitQ ? "profit" : "loss"}?`,
         },
         simulator: {
-          type: "word-problem-builder",
-          storyText: storyTextId,
-          storyTextEn: storyTextEn,
-          slots: [
-            { type: "number", target: String(diff) },
-            { type: "operator", target: "÷" },
-            { type: "number", target: String(buy) },
-            { type: "operator", target: "×" },
-            { type: "number", target: "100" },
-          ],
-          expectedAnswer: String(pctChange),
+          type: "circle-fraction",
+          totalSegments: 10,
+          filledSegments: Math.round(pctChange / 10),
+          interactive: false,
+          showFractionLabel: false,
         },
         options: shuffle([
           { value: correctVal, isCorrect: true },
           ...distractors.slice(0, 3).map((v) => ({ value: v, isCorrect: false })),
         ]),
         smartHint: {
-          id: `Persen ${isProfitQ ? "untung" : "rugi"} = (|jual − beli| ÷ beli) × 100% = (${diff} ÷ ${buy}) × 100% = ${pctChange}%.`,
-          en: `% ${isProfitQ ? "profit" : "loss"} = (|sell − buy| ÷ buy) × 100% = (${diff} ÷ ${buy}) × 100% = ${pctChange}%.`,
+          id: `💡 Rumus % ${isProfitQ ? "Untung" : "Rugi"}:\n\n% = Selisih Harga ÷ Harga Beli × 100\n\nLangkah:\n1. Cari selisih harga jual dan harga beli: Rp ${sellStr} − Rp ${buyStr}\n2. Bagi selisihnya dengan harga beli\n3. Kalikan dengan 100 untuk mendapat %`,
+          en: `💡 Formula % ${isProfitQ ? "Profit" : "Loss"}:\n\n% = Price Difference ÷ Cost Price × 100\n\nSteps:\n1. Find the difference between selling price and cost: Rp ${sellStr} − Rp ${buyStr}\n2. Divide by the cost price\n3. Multiply by 100 to get the percentage`,
         },
       });
+
     } else {
-      // Persentase nilai (percentage of quantity) — formula: total × pct ÷ 100
+      // ── Persen dari nilai ────────────────────────────────────────────────
       const totals = tier === 1 ? [100, 200, 400, 500] : [250, 400, 600, 800];
-      const total = pickRandom(totals);
-      const pct = tier === 1 ? pickRandom([10, 20, 25, 50, 75]) : pickRandom([15, 30, 35, 40, 60]);
-      const ans = (total * pct) / 100;
+      const pct    = tier === 1 ? pickRandom([10, 20, 25, 50, 75]) : pickRandom([15, 30, 35, 40, 60]);
+      const total  = pickRandom(totals);
+      const ans    = (total * pct) / 100;
       const correctVal = String(ans);
       const distractors = [
-        String(ans + 10),
-        String(Math.max(1, ans - 10)),
+        String(ans + total * 0.1),
+        String(Math.max(1, ans - total * 0.1)),
         String(total - ans),
-      ].filter((v) => v !== correctVal);
-      const storyTextId = `Susun kalimat matematika untuk menghitung ${pct}% dari ${total}!`;
-      const storyTextEn = `Build the math expression to calculate ${pct}% of ${total}!`;
+      ].map(v => String(Math.round(Number(v)))).filter((v) => v !== correctVal);
+
+      // Clean circle: show pct/100 visually
+      const pctSegTotal  = pct % 25 === 0 ? 4 : pct % 10 === 0 ? 10 : 20;
+      const pctSegFilled = pct % 25 === 0 ? pct / 25 : pct % 10 === 0 ? pct / 10 : pct / 5;
 
       list.push({
-        id: qId,
-        grade,
-        difficultyTier: tier,
+        id: qId, grade, difficultyTier: tier,
         topic: "persen-komersial",
         question: {
           id: `Berapa ${pct}% dari ${total}?`,
           en: `What is ${pct}% of ${total}?`,
         },
         simulator: {
-          type: "word-problem-builder",
-          storyText: storyTextId,
-          storyTextEn: storyTextEn,
-          slots: [
-            { type: "number", target: String(total) },
-            { type: "operator", target: "×" },
-            { type: "number", target: String(pct) },
-            { type: "operator", target: "÷" },
-            { type: "number", target: "100" },
-          ],
-          expectedAnswer: String(ans),
+          type: "circle-fraction",
+          totalSegments: pctSegTotal,
+          filledSegments: pctSegFilled,
+          interactive: false,
+          showFractionLabel: false,
         },
         options: shuffle([
           { value: correctVal, isCorrect: true },
           ...distractors.slice(0, 3).map((v) => ({ value: v, isCorrect: false })),
         ]),
         smartHint: {
-          id: `${pct}% dari ${total} = (${total} × ${pct}) ÷ 100 = ${ans}.`,
-          en: `${pct}% of ${total} = (${total} × ${pct}) ÷ 100 = ${ans}.`,
+          id: `💡 Rumus Persen:\n\nHasil = % ÷ 100 × Bilangan\n\nLangkah:\n1. Ubah ${pct}% menjadi pecahan: ${pct}/100\n2. Kalikan pecahan tersebut dengan ${total}\n3. Sederhanakan jika perlu`,
+          en: `💡 Formula:\n\nResult = % ÷ 100 × Number\n\nSteps:\n1. Convert ${pct}% to a fraction: ${pct}/100\n2. Multiply that fraction by ${total}\n3. Simplify if needed`,
         },
       });
     }
   }
   return list;
 }
-
 
 // ─── 19. Master Generator ─────────────────────────────────────────────────────
 export function generateSessionQuestions(grade: number, topic: string, tier: number = 1, count: number = 10): Question[] {
