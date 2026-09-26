@@ -852,3 +852,9 @@ export function getQuestionById(id: string): Question | undefined {
   return questionBank.find((q) => q.id === id);
 }
 
+/** Register a batch of freshly-generated questions into the runtime lookup cache. */
+export function registerQuestionsToCache(questions: Question[]): void {
+  questions.forEach((q) => runtimeQuestionCache.set(q.id, q));
+}
+
+

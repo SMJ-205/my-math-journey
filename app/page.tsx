@@ -13,7 +13,8 @@ import { SessionReportPage } from "@/components/report/SessionReport";
 // Stores / data
 import { useProfileStore }  from "@/store/profileStore";
 import { useSessionStore }  from "@/store/sessionStore";
-import { getQuestionsByGradeAndTopic } from "@/content/questions/questionBank";
+import { getQuestionsByGradeAndTopic, registerQuestionsToCache } from "@/content/questions/questionBank";
+import { generateSessionQuestions } from "@/content/questions/questionGenerator";
 import { gradeConfigs, sessionConfig } from "@/config/curriculum.config";
 
 type AppView =
@@ -52,8 +53,18 @@ export default function App() {
     const cfg = gradeConfigs.find((g) => g.grade === grade);
     const phase = cfg?.phase ?? "A";
     const sessCfg = sessionConfig[phase];
-    const qs = getQuestionsByGradeAndTopic(grade, topic, 1).slice(0, sessCfg.maxQuestions);
+
+    // Generate FRESH random questions every session — bypass cache entirely
+    const freshQuestions = generateSessionQuestions(grade, topic, 1, sessCfg.maxQuestions);
+    const qs = freshQuestions.length > 0
+      ? freshQuestions
+      : getQuestionsByGradeAndTopic(grade, topic, 1).slice(0, sessCfg.maxQuestions);
+
     if (qs.length === 0) return;
+
+    // Register new IDs into cache so SessionPlayer can look them up by ID
+    registerQuestionsToCache(qs);
+
     setGrade(grade);
     setTopic(topic);
     setQIds(qs.map((q) => q.id));
