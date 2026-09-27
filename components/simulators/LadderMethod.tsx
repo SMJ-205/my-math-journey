@@ -74,22 +74,22 @@ export function LadderMethodSimulator({
     <div className="flex flex-col items-center gap-3.5 py-2 w-full max-w-lg mx-auto">
       {/* Title / Description */}
       <div className="text-center">
-        <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-[#EFE4D3] text-[#6B4E2B] border border-[#DECDB7]">
+        <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-[#E4EEF8] text-[#1D3556] border border-[#CADDF0]">
           {isEn ? "Ladder Method (Sengkedan)" : "Metode Tangga / Sengkedan"}
         </span>
-        {label && <p className="text-xs text-[#7A644D] font-medium mt-1">{label}</p>}
+        {label && <p className="text-xs text-[#415777] font-medium mt-1">{label}</p>}
       </div>
 
       {/* Mode toggle */}
       {highlightMode === "both" && (
-        <div className="flex bg-[#F5EFEB] p-1 rounded-2xl gap-1 border border-[#DFD1BD]">
+        <div className="flex bg-[#EDF3FA] p-1 rounded-2xl gap-1 border border-[#D0DFEF]">
           <button
             type="button"
             onClick={() => setActiveTab("fpb")}
-            className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all ${
+            className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
               activeTab === "fpb"
-                ? "bg-[#9A7342] text-white shadow-xs"
-                : "text-[#6B5339] hover:text-[#3E2D1A]"
+                ? "bg-[#2B4A75] text-white shadow-xs"
+                : "text-[#3B5478] hover:text-[#182C48]"
             }`}
           >
             {isEn ? "GCF: 'I' Shape" : "FPB: Huruf 'I' (Kolom Kiri)"}
@@ -97,10 +97,10 @@ export function LadderMethodSimulator({
           <button
             type="button"
             onClick={() => setActiveTab("kpk")}
-            className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all ${
+            className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
               activeTab === "kpk"
-                ? "bg-[#5D4632] text-white shadow-xs"
-                : "text-[#6B5339] hover:text-[#3E2D1A]"
+                ? "bg-[#1E3250] text-white shadow-xs"
+                : "text-[#3B5478] hover:text-[#182C48]"
             }`}
           >
             {isEn ? "LCM: 'L' Shape" : "KPK: Huruf 'L' (Kiri & Bawah)"}
@@ -109,7 +109,7 @@ export function LadderMethodSimulator({
       )}
 
       {/* Ladder Grid Card */}
-      <div className="w-full bg-white rounded-2xl border-2 border-[#E5DACE] p-4 shadow-xs">
+      <div className="w-full bg-white rounded-2xl border-2 border-[#D2E1F0] p-4 shadow-xs">
         <div className="overflow-x-auto flex justify-center">
           <table className="border-collapse text-center text-sm md:text-base font-bold">
             <tbody>
@@ -136,14 +136,14 @@ export function LadderMethodSimulator({
                       initial={{ opacity: 0, y: -4 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: sIdx * 0.1 }}
-                      className="border-b-2 border-amber-300"
+                      className="border-b-2 border-[#CADDF0]"
                     >
                       {/* Left Divisor */}
                       <td className="pr-3 py-2 text-right">
                         <span
                           className={`inline-block px-3 py-1 rounded-xl text-sm font-black transition-all ${
                             isFpbActive || activeTab === "kpk"
-                              ? "bg-emerald-500 text-white shadow-sm ring-2 ring-emerald-300"
+                              ? "bg-[#2B4A75] text-white shadow-xs ring-2 ring-[#B9D2EC]"
                               : "bg-gray-100 text-gray-700"
                           }`}
                         >
@@ -152,12 +152,12 @@ export function LadderMethodSimulator({
                       </td>
 
                       {/* Numbers being divided */}
-                      <td className="pl-4 py-2 border-l-4 border-amber-400 text-left">
+                      <td className="pl-4 py-2 border-l-4 border-[#3B629B] text-left">
                         <div className="flex gap-4 sm:gap-6">
                           {st.prevValues.map((val, vIdx) => (
                             <span
                               key={vIdx}
-                              className="min-w-[32px] text-center font-mono font-bold text-gray-800"
+                              className="min-w-[32px] text-center font-mono font-bold text-[#182C48]"
                             >
                               {val}
                             </span>
@@ -171,11 +171,11 @@ export function LadderMethodSimulator({
 
               {/* Bottom Quotients Row */}
               {steps.length > 0 && (
-                <tr className="bg-amber-50/50">
+                <tr className="bg-[#F1F6FC]">
                   <td className="pr-3 py-2 text-right text-xs text-gray-400">
                     {/* Empty left column */}
                   </td>
-                  <td className="pl-4 py-2 border-l-4 border-amber-400 text-left">
+                  <td className="pl-4 py-2 border-l-4 border-[#3B629B] text-left">
                     <div className="flex gap-4 sm:gap-6">
                       {bottomRow.map((val, bIdx) => {
                         const isKpkActive = activeTab === "kpk";
@@ -184,8 +184,8 @@ export function LadderMethodSimulator({
                             key={bIdx}
                             className={`min-w-[32px] text-center font-mono font-bold px-2 py-0.5 rounded-lg transition-all ${
                               isKpkActive
-                                ? "bg-indigo-500 text-white shadow-sm ring-2 ring-indigo-300"
-                                : "text-gray-600 bg-gray-100"
+                                ? "bg-[#1E3250] text-white shadow-xs ring-2 ring-[#9FB8D6]"
+                                : "text-[#415777] bg-white border border-[#CADDF0]"
                             }`}
                           >
                             {val}
@@ -201,11 +201,11 @@ export function LadderMethodSimulator({
         </div>
 
         {/* Legend & Formula summary */}
-        <div className="mt-4 pt-3 border-t border-amber-100 flex flex-col gap-2">
+        <div className="mt-4 pt-3 border-t border-[#D2E1F0] flex flex-col gap-2">
           {activeTab === "fpb" && (
-            <div className="flex items-center justify-between text-xs sm:text-sm bg-emerald-50 text-emerald-900 p-2.5 rounded-xl border border-emerald-200">
+            <div className="flex items-center justify-between text-xs sm:text-sm bg-[#EEF6FB] text-[#16385E] p-2.5 rounded-xl border border-[#B6D3ED]">
               <div className="flex items-center gap-1.5 font-bold">
-                <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 inline-block" />
+                <span className="w-2.5 h-2.5 rounded-full bg-[#2B4A75] inline-block" />
                 <span>{isEn ? "GCF (Vertical 'I')" : "FPB (Tegak 'I')"}</span>
               </div>
               <div className="font-mono font-bold">
@@ -219,9 +219,9 @@ export function LadderMethodSimulator({
           )}
 
           {activeTab === "kpk" && (
-            <div className="flex items-center justify-between text-xs sm:text-sm bg-indigo-50 text-indigo-900 p-2.5 rounded-xl border border-indigo-200">
+            <div className="flex items-center justify-between text-xs sm:text-sm bg-[#EAF1F9] text-[#183153] p-2.5 rounded-xl border border-[#CADDF0]">
               <div className="flex items-center gap-1.5 font-bold">
-                <span className="w-2.5 h-2.5 rounded-full bg-indigo-500 inline-block" />
+                <span className="w-2.5 h-2.5 rounded-full bg-[#1E3250] inline-block" />
                 <span>{isEn ? "LCM (Shape 'L')" : "KPK (Bentuk 'L')"}</span>
               </div>
               <div className="font-mono font-bold text-xs sm:text-sm">
@@ -230,7 +230,7 @@ export function LadderMethodSimulator({
             </div>
           )}
 
-          <p className="text-[11px] text-gray-500 text-center italic">
+          <p className="text-[11px] text-[#516B8E] text-center italic">
             {activeTab === "fpb"
               ? isEn
                 ? "Multiply all prime divisors on the left vertical line ('I' shape)."

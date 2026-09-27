@@ -100,24 +100,24 @@ export function GradeSelectPage({
               type="button"
               id="speed-math-masterclass-card"
               onClick={onSelectSpeedMath}
-              className="w-full text-left p-5 sm:p-6 rounded-3xl bg-gradient-to-br from-[#E8DAC5] via-[#DFCEB7] to-[#CEBA9F] text-[#4A3928] shadow-sm hover:shadow-md hover:-translate-y-0.5 active:scale-[0.99] transition-all cursor-pointer relative overflow-hidden group border-2 border-[#D5C2A8]"
+              className="w-full text-left p-5 sm:p-6 rounded-3xl bg-gradient-to-br from-[#EAF1F9] via-[#DEEAF6] to-[#CBDDF1] text-[#1E3352] shadow-sm hover:shadow-md hover:-translate-y-0.5 active:scale-[0.99] transition-all cursor-pointer relative overflow-hidden group border-2 border-[#B9D1EC]"
             >
               <div className="relative z-10 flex items-center justify-between gap-4">
                 <div className="flex items-center gap-4">
-                  <div className="w-13 h-13 sm:w-14 sm:h-14 rounded-2xl bg-white/70 backdrop-blur-md flex items-center justify-center text-[#7F5E36] shadow-xs border border-white/80 group-hover:scale-105 transition-transform shrink-0">
-                    <Sparkles size={26} className="text-[#8B673A]" />
+                  <div className="w-13 h-13 sm:w-14 sm:h-14 rounded-2xl bg-white/80 backdrop-blur-md flex items-center justify-center text-[#2B4B77] shadow-xs border border-white/90 group-hover:scale-105 transition-transform shrink-0">
+                    <Sparkles size={26} className="text-[#2B4B77]" />
                   </div>
                   <div>
                     <div className="flex items-center gap-2 mb-1">
-                      <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-white/80 text-[#73532C] border border-[#D5C2A8] shadow-2xs">
-                        <Zap size={11} className="text-[#8B673A] fill-[#8B673A]" />
+                      <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-white/85 text-[#213C63] border border-[#BFD5ED] shadow-2xs">
+                        <Zap size={11} className="text-[#2B4B77] fill-[#2B4B77]" />
                         {language === "en" ? "Visual Tutorial & Tips" : "Panduan & Trik Cepat"}
                       </span>
                     </div>
-                    <h3 className="font-black text-lg sm:text-xl text-[#3D2C1B]">
+                    <h3 className="font-black text-lg sm:text-xl text-[#182C48]">
                       {language === "en" ? "Speed Math Masterclass" : "Kelas Mahir Hitungan"}
                     </h3>
-                    <p className="text-xs sm:text-sm text-[#665039] font-medium line-clamp-1 mt-0.5">
+                    <p className="text-xs sm:text-sm text-[#3F587D] font-medium line-clamp-1 mt-0.5">
                       {language === "en"
                         ? "Case-by-case visual guidelines and mental arithmetic tricks (Grades 1–6)"
                         : "Panduan studi kasus visual & jurus mental hitung cepat (Kelas 1–6 SD)"}
@@ -125,7 +125,7 @@ export function GradeSelectPage({
                   </div>
                 </div>
 
-                <div className="w-10 h-10 rounded-2xl bg-white/60 flex items-center justify-center text-[#665039] border border-white/80 shrink-0 group-hover:translate-x-1 transition-transform">
+                <div className="w-10 h-10 rounded-2xl bg-white/70 flex items-center justify-center text-[#2C4A73] border border-white/80 shrink-0 group-hover:translate-x-1 transition-transform">
                   <ChevronRight size={22} />
                 </div>
               </div>
