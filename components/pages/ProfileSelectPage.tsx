@@ -75,13 +75,13 @@ function AddProfileModal({ onClose }: { onClose: () => void }) {
             {AVATARS.map((av, i) => (
               <button
                 key={av}
+                type="button"
                 onClick={() => setAvatarId(av)}
-                className={`w-10 h-10 rounded-full border-2 font-black text-sm transition-all ${AVATAR_COLORS[i]} ${
-                  avatarId === av ? "ring-4 ring-amber-400 ring-offset-1 scale-110" : ""
+                aria-label={`Avatar warna ${i + 1}`}
+                className={`w-10 h-10 rounded-full border-2 transition-all cursor-pointer ${AVATAR_COLORS[i]} ${
+                  avatarId === av ? "ring-4 ring-amber-400 ring-offset-2 scale-110 shadow-sm" : "hover:scale-105"
                 }`}
-              >
-                {String.fromCharCode(65 + i)}
-              </button>
+              />
             ))}
           </div>
         </div>
