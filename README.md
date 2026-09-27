@@ -80,10 +80,47 @@ graph TD
 
 1. **Halaman Beranda:** Memilih preferensi bahasa (ID/EN) dan membaca panduan orang tua.
 2. **Profil Belajar:** Mendukung multi-profil anak dalam satu gawai tanpa registrasi email/password. Menampilkan akumulasi total bintang yang diraih.
-3. **Pilih Kelas (1–6):** Bebas memilih kelas sesuai fase kesiapan anak, lengkap dengan informasi akumulasi bintang per kelas.
+3. **Pilih Kelas (1–6) & Kelas Mahir Hitungan:** Bebas memilih kelas sesuai fase kesiapan anak, atau memilih **⚡ Kelas Mahir Hitungan (Speed Math Masterclass)** untuk tutorial jurus trik visual hitung cepat.
 4. **Pilih Topik & Tingkat Kesulitan:** Memilih materi yang ingin dilatih serta menentukan level tantangan (**Level 1: Mudah**, **Level 2: Sedang**, atau **Level 3: Tantangan**).
-5. **Sesi Latihan (10 Soal):** Mengerjakan soal interaktif dengan bantuan simulator manipulatif visual, mini numberpad, dan audio pembaca soal.
+5. **Sesi Latihan (10 Soal):** Mengerjakan soal interaktif dengan bantuan simulator manipulatif visual (Bingkai Sepuluh, Pohon Faktor, Model Tangga Sengkedan FPB/KPK, Diagram Pecahan, Timbangan Aljabar, dll.), mini numberpad, dan audio pembaca soal.
 6. **Laporan Sesi & Deteksi Miskonsepsi:** Merayakan keberhasilan dengan animasi confetti, menyimpan perolehan bintang ke profil anak, serta membaca telaah miskonsepsi untuk orang tua/pendidik.
+
+---
+
+## ⚡ Modul Khusus: Kelas Mahir Hitungan (*Speed Math Masterclass*)
+
+Berdasarkan referensi kurikulum **Panduan Hitung Cepat Matematika SD**, modul ini dirancang khusus bukan sebagai bank soal biasa, melainkan **panduan tutorial interaktif langkah demi langkah (*case-by-case guideline*)** dengan visualisasi CPA (*Concrete-Pictorial-Abstract*):
+
+1. **Modul 1: Fondasi Bilangan Cacah (Fase A / Kelas 1–2):**
+   * *Pasangan Sahabat 10 (Friends of 10)* dengan Bingkai Sepuluh (*Ten-Frames 5×2*).
+   * *Lompatan Melampaui 10 (Bridging Through 10)* memecah bilangan kedua untuk mendarat mulus di angka 10 ($8 + 5 = 8 + 2 + 3 = 13$).
+   * *Near-Doubles (Hampir-Kembar)* mengaitkan dengan fakta kembar terhafal ($6 + 7 = 6 + 6 + 1 = 13$).
+   * *Pengurangan Selisih Tetap (Constant Difference)* menghilangkan kerumitan meminjam ($52 - 19 = 53 - 20 = 33$).
+
+2. **Modul 2: Perkalian Mental & Spasial (Fase B / Kelas 3–4):**
+   * *Model Area 4 Kuadran* dekomposisi perkalian dua digit ($14 \times 12 = 100 + 40 + 20 + 8 = 168$).
+   * *Bagi Dua & Kali Dua (Halving & Doubling)* untuk bilangan genap & kelipatan 5 ($16 \times 35 = 8 \times 70 = 560$).
+   * *Jurus Pengali Spesial:* $\times 5$ ($n0 \div 2$), $\times 9$ ($n0 - n$), $\times 11$ (sisipkan jumlah kedua digit di tengah: $53 \times 11 = 583$), $\times 25$ ($n00 \div 4$).
+
+3. **Modul 3: Teori Bilangan: KPK & FPB Ramah Anak (Kelas 4–5):**
+   * *Metode Tangga / Sengkedan Petak Sawah:*
+     * **Konfigurasi Huruf "I" (FPB):** Kalikan seluruh pembagi prima di kolom vertikal kiri.
+     * **Konfigurasi Huruf "L" (KPK):** Kalikan pembagi kolom kiri dengan sisa baris alas bawah.
+   * *Teorema Emas:* $\text{FPB}(a, b) \times \text{KPK}(a, b) = a \times b$.
+
+4. **Modul 4: Pecahan Acuan & Persentase Kilat (Fase C / Kelas 5–6):**
+   * *Bank Pecahan Acuan Mental:* $50\% \leftrightarrow 1/2$, $25\% \leftrightarrow 1/4$, $12.5\% \leftrightarrow 1/8$, $10\% \leftrightarrow 1/10$, $33.3\% \leftrightarrow 1/3$.
+   * *Sifat Pertukaran Persen:* $x\%$ dari $y = y\%$ dari $x$ (contoh: $16\%$ dari $50 = 50\%$ dari $16 = 8$).
+
+5. **Modul 5: Pangkat, Kuadrat & Penarikan Akar Cepat (Kelas 5–6 & Olimpiade):**
+   * *Kuadrat Bilangan Berakhiran 5:* $a5^2 = [a \times (a + 1)][25]$ (contoh: $35^2 = 1225$, $65^2 = 4225$).
+   * *Kuadrat Dekat Basis 50:* $(50 \pm d)^2 = [25 \pm d][d^2]$ (contoh: $53^2 = 2809$).
+   * *Tarik Akar Pangkat Tiga dalam 3 Detik (Tirai 3 Digit):* Pemetaan satuan unik ($2 \leftrightarrow 8, 3 \leftrightarrow 7$, lainnya tetap).
+
+6. **Modul 6: Analisis Lanjut & Olimpiade (OSN & SASMO):**
+   * *Misteri Bilangan $1001 = 7 \times 11 \times 13$* & sifat pengulangan $abcabc$.
+   * *Penjumlahan Deret Simetris Gauss (Metode Lipat Pita):* $1 + 2 + \dots + 100 = 50 \times 101 = 5050$.
+   * *Deret Teleskopik Efek Domino:* $\frac{1}{n(n+1)} = \frac{1}{n} - \frac{1}{n+1}$.
 
 ---
 

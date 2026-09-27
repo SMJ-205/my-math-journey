@@ -2065,10 +2065,32 @@ export function generateMultDivQuestions(
           { value: String(ans + a), isCorrect: false, misconceptionTag: "multiplication-table-error" },
           { value: String(Math.max(1, ans - a)), isCorrect: false, misconceptionTag: "multiplication-table-error" },
         ]),
-        smartHint: {
-          id: `Gunakan perkalian bersusun: kalikan satuan terlebih dahulu (${b} × satuan), lalu kalikan puluhan dan tambahkan simpanan.`,
-          en: `Use column multiplication: multiply the ones digit first, then multiply the tens digit and add any carry.`,
-        },
+        smartHint: (() => {
+          if (b === 5 || a === 5) {
+            const target = b === 5 ? a : b;
+            return {
+              id: `💡 Jurus Hitung Cepat × 5: Kalikan 10 lalu bagi 2! (${target} × 10) ÷ 2 = ${target * 10} ÷ 2 = ${ans}.`,
+              en: `💡 Speed Math × 5 Trick: Multiply by 10 and divide by 2! (${target} × 10) ÷ 2 = ${ans}.`,
+            };
+          }
+          if (b === 9 || a === 9) {
+            const target = b === 9 ? a : b;
+            return {
+              id: `💡 Jurus Hitung Cepat × 9: Kalikan 10 lalu kurangi bilangan itu sendiri! (${target} × 10) − ${target} = ${target * 10} − ${target} = ${ans}.`,
+              en: `💡 Speed Math × 9 Trick: Multiply by 10 and subtract the number! (${target} × 10) − ${target} = ${ans}.`,
+            };
+          }
+          if (a % 2 === 0 && (b === 15 || b === 25 || b === 35 || b === 45)) {
+            return {
+              id: `💡 Jurus Bagi Dua & Kali Dua: ${a} × ${b} = (${a} ÷ 2) × (${b} × 2) = ${a / 2} × ${b * 2} = ${ans}!`,
+              en: `💡 Halving & Doubling Trick: ${a} × ${b} = (${a} ÷ 2) × (${b} × 2) = ${a / 2} × ${b * 2} = ${ans}!`,
+            };
+          }
+          return {
+            id: `Gunakan perkalian bersusun: kalikan satuan terlebih dahulu (${b} × satuan), lalu kalikan puluhan dan tambahkan simpanan.`,
+            en: `Use column multiplication: multiply the ones digit first, then multiply the tens digit and add any carry.`,
+          };
+        })(),
       });
     } else {
       if (tier === 1) {
@@ -3068,10 +3090,36 @@ export function generatePercentageQuestions(grade: number, tier: number, count: 
             { value: correctVal, isCorrect: true },
             ...distractors.slice(0, 3).map((v) => ({ value: v, isCorrect: false })),
           ]),
-          smartHint: {
-            id: `Hitung dengan cara: (${pct} ÷ 100) × ${total} = ${ans}.`,
-            en: `Calculate: (${pct} ÷ 100) × ${total} = ${ans}.`,
-          },
+          smartHint: (() => {
+            if (total === 50) {
+              return {
+                id: `💡 Jurus Sakti Pertukaran Persen: ${pct}% dari 50 = 50% dari ${pct} (setengah dari ${pct}) = ${ans}!`,
+                en: `💡 Speed Math Percent Swap: ${pct}% of 50 = 50% of ${pct} (half of ${pct}) = ${ans}!`,
+              };
+            }
+            if (pct === 25) {
+              return {
+                id: `💡 Pecahan Acuan 25%: 25% sama dengan 1/4. Cukup bagi ${total} dengan 4: ${total} ÷ 4 = ${ans}!`,
+                en: `💡 Benchmark Fraction 25%: 25% is 1/4. Simply divide ${total} by 4: ${total} ÷ 4 = ${ans}!`,
+              };
+            }
+            if (pct === 10) {
+              return {
+                id: `💡 Jurus 10%: Cukup geser koma atau bagi 10: ${total} ÷ 10 = ${ans}!`,
+                en: `💡 10% Trick: Simply divide by 10: ${total} ÷ 10 = ${ans}!`,
+              };
+            }
+            if (pct === 50) {
+              return {
+                id: `💡 Pecahan Acuan 50%: 50% adalah setengahnya: ${total} ÷ 2 = ${ans}!`,
+                en: `💡 Benchmark Fraction 50%: 50% is half: ${total} ÷ 2 = ${ans}!`,
+              };
+            }
+            return {
+              id: `Hitung dengan cara: (${pct} ÷ 100) × ${total} = ${ans}.`,
+              en: `Calculate: (${pct} ÷ 100) × ${total} = ${ans}.`,
+            };
+          })(),
         });
       }
     } else {
@@ -3992,7 +4040,7 @@ export function generateNumberTheoryQuestions(grade: number, tier: number, count
       const mode = i % 3;
       if (mode === 0) {
         const num = pickRandom([8, 10, 12, 14, 15, 16, 18, 20]);
-        const factors = [];
+        const factors: number[] = [];
         for (let f = 1; f <= num; f++) if (num % f === 0) factors.push(f);
         const correctVal = `${factors.length}`;
         const distractors = [String(factors.length + 1), String(Math.max(1, factors.length - 1)), String(factors.length + 2)].filter(v => v !== correctVal);
@@ -4003,13 +4051,13 @@ export function generateNumberTheoryQuestions(grade: number, tier: number, count
             id: `Bilangan ${num} memiliki berapa faktor (bilangan pembagi habis)?`,
             en: `How many factors does the number ${num} have?`,
           },
-          simulator: { type: "pattern-sequence", sequence: factors, missingIndices: [], correctValues: [], ruleDescription: `Faktor dari ${num}` },
+          simulator: { type: "number-theory", mode: "factors", number: num, factors },
           options: shuffle([
             { value: correctVal, isCorrect: true },
             ...distractors.slice(0, 3).map((v) => ({ value: v, isCorrect: false })),
           ]),
           smartHint: {
-            id: `Faktor dari ${num} adalah: ${factors.join(", ")}. Totalnya ada ${factors.length} faktor.`,
+            id: `Faktor dari ${num} adalah: ${factors.join(", ")}. Totalnya ada ${factors.length} faktor pembagi habis.`,
             en: `Factors of ${num} are: ${factors.join(", ")}. There are ${factors.length} factors in total.`,
           },
         });
@@ -4021,18 +4069,18 @@ export function generateNumberTheoryQuestions(grade: number, tier: number, count
         list.push({
           id: qId, grade, difficultyTier: tier, topic: "teori-bilangan",
           question: {
-            id: `Bilangan ${num} termasuk bilangan...`,
-            en: `The number ${num} is a...`,
+            id: `Bilangan ${num} termasuk jenis bilangan apa?`,
+            en: `What type of number is ${num}?`,
           },
-          simulator: { type: "circle-fraction", totalSegments: isPrimeQ ? 2 : 4, filledSegments: isPrimeQ ? 2 : 3, interactive: false, showFractionLabel: false },
+          simulator: { type: "number-theory", mode: "prime-check", number: num, isPrime: isPrimeQ },
           options: shuffle([
             { value: correctVal, isCorrect: true },
             { value: isPrimeQ ? "Komposit" : "Prima", isCorrect: false },
             { value: "Pecahan", isCorrect: false },
           ]),
           smartHint: {
-            id: isPrimeQ ? `${num} adalah prima karena hanya habis dibagi 1 dan ${num}.` : `${num} adalah komposit karena memiliki lebih dari 2 faktor.`,
-            en: isPrimeQ ? `${num} is prime because it is only divisible by 1 and ${num}.` : `${num} is composite because it has more than 2 factors.`,
+            id: isPrimeQ ? `${num} adalah bilangan prima karena hanya memiliki tepat 2 faktor (1 dan ${num}).` : `${num} adalah bilangan komposit karena memiliki lebih dari 2 faktor pembagi.`,
+            en: isPrimeQ ? `${num} is prime because it has exactly 2 factors (1 and ${num}).` : `${num} is composite because it has more than 2 factors.`,
           },
         });
       } else {
@@ -4047,7 +4095,7 @@ export function generateNumberTheoryQuestions(grade: number, tier: number, count
             id: `Berapakah kelipatan ke-${nth} dari bilangan ${base}?`,
             en: `What is the ${nth}${nth === 2 ? "nd" : nth === 3 ? "rd" : "th"} multiple of ${base}?`,
           },
-          simulator: { type: "pattern-sequence", sequence: Array.from({ length: nth }, (_, k) => (k + 1) * base), missingIndices: [nth - 1], correctValues: [base * nth], ruleDescription: `Kelipatan ${base}` },
+          simulator: { type: "number-theory", mode: "multiples", multiples: { base, count: nth } },
           options: shuffle([
             { value: correctVal, isCorrect: true },
             ...distractors.slice(0, 3).map((v) => ({ value: v, isCorrect: false })),
@@ -4063,7 +4111,7 @@ export function generateNumberTheoryQuestions(grade: number, tier: number, count
       const mode = i % 3;
       if (mode === 0) {
         const num = pickRandom([24, 28, 30, 36, 40, 48]);
-        const factors = [];
+        const factors: number[] = [];
         for (let f = 1; f <= num; f++) if (num % f === 0) factors.push(f);
         const correctVal = `${factors.length}`;
         const distractors = [String(factors.length + 1), String(Math.max(1, factors.length - 1)), String(factors.length + 2)].filter(v => v !== correctVal);
@@ -4074,14 +4122,14 @@ export function generateNumberTheoryQuestions(grade: number, tier: number, count
             id: `Berapa banyak faktor pembagi habis dari bilangan ${num}?`,
             en: `How many factors does the number ${num} have?`,
           },
-          simulator: { type: "pattern-sequence", sequence: factors, missingIndices: [], correctValues: [], ruleDescription: `Faktor ${num}` },
+          simulator: { type: "number-theory", mode: "factors", number: num, factors },
           options: shuffle([
             { value: correctVal, isCorrect: true },
             ...distractors.slice(0, 3).map((v) => ({ value: v, isCorrect: false })),
           ]),
           smartHint: {
-            id: `Faktor dari ${num}: ${factors.join(", ")}. Ada ${factors.length} bilangan.`,
-            en: `Factors of ${num}: ${factors.join(", ")}. Total ${factors.length} numbers.`,
+            id: `Faktor dari ${num}: ${factors.join(", ")}. Ada ${factors.length} bilangan pembagi habis.`,
+            en: `Factors of ${num}: ${factors.join(", ")}. Total ${factors.length} factors.`,
           },
         });
       } else if (mode === 1) {
@@ -4096,14 +4144,14 @@ export function generateNumberTheoryQuestions(grade: number, tier: number, count
             id: `Apakah bilangan ${num} merupakan bilangan prima atau komposit?`,
             en: `Is the number ${num} prime or composite?`,
           },
-          simulator: { type: "circle-fraction", totalSegments: isPrime ? 2 : 4, filledSegments: isPrime ? 2 : 3, interactive: false, showFractionLabel: false },
+          simulator: { type: "number-theory", mode: "prime-check", number: num, isPrime },
           options: shuffle([
             { value: correctVal, isCorrect: true },
             { value: isPrime ? "Komposit" : "Prima", isCorrect: false },
             { value: "Kelipatan 10", isCorrect: false },
           ]),
           smartHint: {
-            id: isPrime ? `${num} hanya habis dibagi 1 dan ${num}, maka ia bilangan prima.` : `${num} memiliki faktor lain (misal: habis dibagi 3 atau 5), maka ia komposit.`,
+            id: isPrime ? `${num} hanya habis dibagi 1 dan ${num}, maka ia bilangan prima.` : `${num} memiliki faktor lain (misal habis dibagi 3 atau 5), maka ia komposit.`,
             en: isPrime ? `${num} is divisible only by 1 and itself, so it is prime.` : `${num} has other factors, so it is composite.`,
           },
         });
@@ -4111,7 +4159,6 @@ export function generateNumberTheoryQuestions(grade: number, tier: number, count
         // Common multiple / Kelipatan persekutuan
         const a = pickRandom([3, 4, 6]);
         const b = a === 3 ? 4 : a === 4 ? 6 : 8;
-        // Smallest common multiple
         const lcm = a === 3 && b === 4 ? 12 : a === 4 && b === 6 ? 12 : 24;
         const correctVal = String(lcm);
         const distractors = [String(a * b), String(lcm + a), String(Math.max(1, lcm - a))].filter(v => v !== correctVal);
@@ -4122,14 +4169,14 @@ export function generateNumberTheoryQuestions(grade: number, tier: number, count
             id: `Kelipatan persekutuan terkecil (pertama) dari ${a} dan ${b} adalah:`,
             en: `The lowest common multiple of ${a} and ${b} is:`,
           },
-          simulator: { type: "pattern-sequence", sequence: [a, b, lcm], missingIndices: [2], correctValues: [lcm], ruleDescription: `KPK ${a} & ${b}` },
+          simulator: { type: "ladder-method", numbers: [a, b], highlightMode: "kpk", lcm },
           options: shuffle([
             { value: correctVal, isCorrect: true },
             ...distractors.slice(0, 3).map((v) => ({ value: v, isCorrect: false })),
           ]),
           smartHint: {
-            id: `Kelipatan ${a}: ${a}, ${a*2}, ${a*3}, … dan ${b}: ${b}, ${b*2}, … Bilangan sama terkecil adalah ${lcm}.`,
-            en: `Multiples of ${a}: ${a}, ${a*2}, … and ${b}: ${b}, ${b*2}, … Smallest shared is ${lcm}.`,
+            id: `Kelipatan ${a}: ${a}, ${a*2}, ${a*3}, … dan ${b}: ${b}, ${b*2}, … Bilangan sama terkecil adalah KPK = ${lcm}.`,
+            en: `Multiples of ${a}: ${a}, ${a*2}, … and ${b}: ${b}, ${b*2}, … Smallest shared is LCM = ${lcm}.`,
           },
         });
       }
@@ -4154,7 +4201,7 @@ export function generateNumberTheoryQuestions(grade: number, tier: number, count
             id: `Bentuk faktorisasi prima dari bilangan ${item.num} adalah:`,
             en: `The prime factorization of ${item.num} is:`,
           },
-          simulator: { type: "pattern-sequence", sequence: [2, 3, 5], missingIndices: [], correctValues: [], ruleDescription: `Faktor Prima ${item.num}` },
+          simulator: { type: "number-theory", mode: "prime-factorization", number: item.num, factorization: item.fact },
           options: shuffle([
             { value: correctVal, isCorrect: true },
             ...item.fake.map((v) => ({ value: v, isCorrect: false })),
@@ -4167,10 +4214,10 @@ export function generateNumberTheoryQuestions(grade: number, tier: number, count
       } else if (mode === 1) {
         // Counting primes in range
         const ranges = [
-          { start: 10, end: 30, count: 6, primesStr: "11, 13, 17, 19, 23, 29" },
-          { start: 20, end: 40, count: 4, primesStr: "23, 29, 31, 37" },
-          { start: 1, end: 20, count: 8, primesStr: "2, 3, 5, 7, 11, 13, 17, 19" },
-          { start: 30, end: 50, count: 5, primesStr: "31, 37, 41, 43, 47" },
+          { start: 10, end: 30, count: 6, primes: [11, 13, 17, 19, 23, 29] },
+          { start: 20, end: 40, count: 4, primes: [23, 29, 31, 37] },
+          { start: 1, end: 20, count: 8, primes: [2, 3, 5, 7, 11, 13, 17, 19] },
+          { start: 30, end: 50, count: 5, primes: [31, 37, 41, 43, 47] },
         ];
         const rng = pickRandom(ranges);
         const correctVal = String(rng.count);
@@ -4182,14 +4229,14 @@ export function generateNumberTheoryQuestions(grade: number, tier: number, count
             id: `Berapa banyak bilangan prima yang terletak di antara ${rng.start} dan ${rng.end}?`,
             en: `How many prime numbers lie between ${rng.start} and ${rng.end}?`,
           },
-          simulator: { type: "pattern-sequence", sequence: [rng.start, rng.end], missingIndices: [], correctValues: [], ruleDescription: `Prima ${rng.start}..${rng.end}` },
+          simulator: { type: "number-theory", mode: "primes-in-range", range: rng },
           options: shuffle([
             { value: correctVal, isCorrect: true },
             ...distractors.slice(0, 3).map((v) => ({ value: v, isCorrect: false })),
           ]),
           smartHint: {
-            id: `Bilangan prima antara ${rng.start} dan ${rng.end} adalah: ${rng.primesStr}. Jumlahnya ada ${rng.count} bilangan.`,
-            en: `Prime numbers between ${rng.start} and ${rng.end} are: ${rng.primesStr}. Total is ${rng.count}.`,
+            id: `Bilangan prima antara ${rng.start} dan ${rng.end} adalah: ${rng.primes.join(", ")}. Jumlahnya ada ${rng.count} bilangan.`,
+            en: `Prime numbers between ${rng.start} and ${rng.end} are: ${rng.primes.join(", ")}. Total is ${rng.count}.`,
           },
         });
       } else {
@@ -4209,14 +4256,14 @@ export function generateNumberTheoryQuestions(grade: number, tier: number, count
             id: `Bilangan manakah di bawah ini yang habis dibagi ${ch.d1} dan ${ch.d2} sekaligus?`,
             en: `Which of the following numbers is divisible by both ${ch.d1} and ${ch.d2}?`,
           },
-          simulator: { type: "pattern-sequence", sequence: [ch.d1, ch.d2, ch.ans], missingIndices: [2], correctValues: [ch.ans], ruleDescription: `Kelipatan ${ch.d1} & ${ch.d2}` },
+          simulator: { type: "ladder-method", numbers: [ch.d1, ch.d2], highlightMode: "kpk", lcm: ch.ans },
           options: shuffle([
             { value: correctVal, isCorrect: true },
             ...ch.fake.map((v) => ({ value: String(v), isCorrect: false })),
           ]),
           smartHint: {
-            id: `Bilangan yang habis dibagi ${ch.d1} dan ${ch.d2} haruslah merupakan kelipatan dari KPK(${ch.d1}, ${ch.d2}). ${ch.ans} habis dibagi ${ch.d1} dan ${ch.d2}.`,
-            en: `A number divisible by both ${ch.d1} and ${ch.d2} must be a multiple of their LCM. ${ch.ans} is divisible by both.`,
+            id: `Bilangan yang habis dibagi ${ch.d1} dan ${ch.d2} haruslah merupakan kelipatan dari KPK(${ch.d1}, ${ch.d2}). KPK = ${ch.ans}.`,
+            en: `A number divisible by both ${ch.d1} and ${ch.d2} must be a multiple of their LCM. LCM = ${ch.ans}.`,
           },
         });
       }
@@ -4434,14 +4481,14 @@ export function generateGCFLCMQuestions(grade: number, tier: number, count: numb
             id: `Berapakah FPB (Faktor Persekutuan Terbesar) dari ${pair.a} dan ${pair.b}?`,
             en: `What is the GCF of ${pair.a} and ${pair.b}?`,
           },
-          simulator: { type: "circle-fraction", totalSegments: pair.a, filledSegments: pair.gcf, interactive: false, showFractionLabel: false },
+          simulator: { type: "ladder-method", numbers: [pair.a, pair.b], highlightMode: "fpb", gcf: pair.gcf },
           options: shuffle([
             { value: correctVal, isCorrect: true },
             ...distractors.slice(0, 3).map((v) => ({ value: v, isCorrect: false })),
           ]),
           smartHint: {
-            id: `Faktor terbesar yang membagi habis ${pair.a} dan ${pair.b} sekaligus adalah ${pair.gcf}.`,
-            en: `The greatest factor dividing both ${pair.a} and ${pair.b} is ${pair.gcf}.`,
+            id: `Metode Tangga FPB: Kalikan semua pembagi di kolom kiri (tegak lurus 'I'). FPB(${pair.a}, ${pair.b}) = ${pair.gcf}.`,
+            en: `Ladder Method for GCF: Multiply prime divisors on left vertical column ('I' shape). GCF(${pair.a}, ${pair.b}) = ${pair.gcf}.`,
           },
         });
       } else {
@@ -4454,14 +4501,14 @@ export function generateGCFLCMQuestions(grade: number, tier: number, count: numb
             id: `Berapakah KPK (Kelipatan Persekutuan Terkecil) dari ${pair.a} dan ${pair.b}?`,
             en: `What is the LCM of ${pair.a} and ${pair.b}?`,
           },
-          simulator: { type: "circle-fraction", totalSegments: pair.b, filledSegments: pair.gcf, interactive: false, showFractionLabel: false },
+          simulator: { type: "ladder-method", numbers: [pair.a, pair.b], highlightMode: "kpk", lcm: pair.lcm },
           options: shuffle([
             { value: correctVal, isCorrect: true },
             ...distractors.slice(0, 3).map((v) => ({ value: v, isCorrect: false })),
           ]),
           smartHint: {
-            id: `Kelipatan terkecil yang merupakan kelipatan dari ${pair.a} dan ${pair.b} adalah ${pair.lcm}.`,
-            en: `The smallest multiple shared by ${pair.a} and ${pair.b} is ${pair.lcm}.`,
+            id: `Metode Tangga KPK: Kalikan semua pembagi kiri dan angka sisa bawah (bentuk 'L'). KPK(${pair.a}, ${pair.b}) = ${pair.lcm}.`,
+            en: `Ladder Method for LCM: Multiply left divisors and bottom row ('L' shape). LCM(${pair.a}, ${pair.b}) = ${pair.lcm}.`,
           },
         });
       }
@@ -4488,14 +4535,14 @@ export function generateGCFLCMQuestions(grade: number, tier: number, count: numb
             id: `Tentukan FPB dari bilangan ${pair.a} dan ${pair.b}:`,
             en: `Determine the GCF of ${pair.a} and ${pair.b}:`,
           },
-          simulator: { type: "circle-fraction", totalSegments: pair.a, filledSegments: pair.gcf, interactive: false, showFractionLabel: false },
+          simulator: { type: "ladder-method", numbers: [pair.a, pair.b], highlightMode: "fpb", gcf: pair.gcf },
           options: shuffle([
             { value: correctVal, isCorrect: true },
             ...distractors.slice(0, 3).map((v) => ({ value: v, isCorrect: false })),
           ]),
           smartHint: {
-            id: `Faktorisasi prima: ${pair.a} dan ${pair.b}. Ambil faktor prima yang sama dengan pangkat terkecil: FPB = ${pair.gcf}.`,
-            en: `Prime factors: ${pair.a} and ${pair.b}. Product of lowest powers of common prime factors: GCF = ${pair.gcf}.`,
+            id: `Faktorisasi prima atau Metode Tangga: Pembagi kolom kiri (Huruf I) menghasilkan FPB = ${pair.gcf}.`,
+            en: `Ladder Method: Left divisors produce GCF = ${pair.gcf}.`,
           },
         });
       } else {
@@ -4508,14 +4555,14 @@ export function generateGCFLCMQuestions(grade: number, tier: number, count: numb
             id: `Tentukan KPK dari bilangan ${pair.a} dan ${pair.b}:`,
             en: `Determine the LCM of ${pair.a} and ${pair.b}:`,
           },
-          simulator: { type: "circle-fraction", totalSegments: pair.b, filledSegments: pair.gcf, interactive: false, showFractionLabel: false },
+          simulator: { type: "ladder-method", numbers: [pair.a, pair.b], highlightMode: "kpk", lcm: pair.lcm },
           options: shuffle([
             { value: correctVal, isCorrect: true },
             ...distractors.slice(0, 3).map((v) => ({ value: v, isCorrect: false })),
           ]),
           smartHint: {
-            id: `KPK didapat dari perkalian semua faktor prima dengan pangkat terbesar: KPK = ${pair.lcm}.`,
-            en: `LCM is the product of highest powers of all prime factors: LCM = ${pair.lcm}.`,
+            id: `KPK didapat dari perkalian bentuk 'L' (pembagi kiri × sisa bawah): KPK = ${pair.lcm}.`,
+            en: `LCM is obtained by 'L' shape multiplication (left divisors × bottom quotients): LCM = ${pair.lcm}.`,
           },
         });
       }
@@ -4537,7 +4584,7 @@ export function generateGCFLCMQuestions(grade: number, tier: number, count: numb
               id: `Lampu merah berkedip setiap ${t1} detik, dan lampu hijau berkedip setiap ${t2} detik. Jika keduanya berkedip bersamaan sekarang, berapa detik lagi kedua lampu akan berkedip bersamaan untuk pertama kalinya?`,
               en: `Red light blinks every ${t1} s, green light every ${t2} s. In how many seconds will both blink together?`,
             },
-            simulator: { type: "pattern-sequence", sequence: [t1, t2, lcmVal], missingIndices: [2], correctValues: [lcmVal], ruleDescription: `KPK(${t1}, ${t2}) = ${lcmVal}` },
+            simulator: { type: "ladder-method", numbers: [t1, t2], highlightMode: "kpk", lcm: lcmVal, label: `KPK(${t1}, ${t2})` },
             options: shuffle([
               { value: correctVal, isCorrect: true },
               ...distractors.slice(0, 3).map((v) => ({ value: v, isCorrect: false })),
@@ -4561,7 +4608,7 @@ export function generateGCFLCMQuestions(grade: number, tier: number, count: numb
               id: `Siti mempunyai ${a} buah jeruk dan ${b} buah apel. Siti ingin membagikannya ke dalam kantong plastik dengan jumlah jeruk dan apel yang sama rata tanpa sisa. Berapa jumlah kantong plastik terbanyak yang dapat dibuat?`,
               en: `Siti has ${a} oranges and ${b} apples. She wants to divide them into bags with equal amounts of each fruit and none left over. What is the maximum number of bags?`,
             },
-            simulator: { type: "circle-fraction", totalSegments: a, filledSegments: gcfVal, interactive: false, showFractionLabel: false },
+            simulator: { type: "ladder-method", numbers: [a, b], highlightMode: "fpb", gcf: gcfVal, label: `FPB(${a}, ${b})` },
             options: shuffle([
               { value: correctVal, isCorrect: true },
               ...distractors.slice(0, 3).map((v) => ({ value: v, isCorrect: false })),
@@ -4597,18 +4644,18 @@ export function generateGCFLCMQuestions(grade: number, tier: number, count: numb
               ? `Find the GCF of 3 numbers: ${trio.a}, ${trio.b}, and ${trio.c}:`
               : `Find the LCM of 3 numbers: ${trio.a}, ${trio.b}, and ${trio.c}:`,
           },
-          simulator: { type: "pattern-sequence", sequence: [trio.a, trio.b, trio.c], missingIndices: [], correctValues: [], ruleDescription: askGCF ? `FPB = ${trio.gcf}` : `KPK = ${trio.lcm}` },
+          simulator: { type: "ladder-method", numbers: [trio.a, trio.b, trio.c], highlightMode: askGCF ? "fpb" : "kpk", gcf: trio.gcf, lcm: trio.lcm },
           options: shuffle([
             { value: correctVal, isCorrect: true },
             ...distractors.slice(0, 3).map((v) => ({ value: v, isCorrect: false })),
           ]),
           smartHint: {
             id: askGCF
-              ? `Faktor prima yang dimiliki ketiga bilangan sekaligus adalah: FPB = ${trio.gcf}.`
-              : `Kelipatan terkecil yang habis dibagi ${trio.a}, ${trio.b}, dan ${trio.c} adalah: KPK = ${trio.lcm}.`,
+              ? `Metode Tangga: Pembagi bersama ketiga bilangan (kolom kiri) menghasilkan FPB = ${trio.gcf}.`
+              : `Metode Tangga: Perkalian pembagi kiri dan sisa bawah (huruf 'L') menghasilkan KPK = ${trio.lcm}.`,
             en: askGCF
-              ? `The common factor shared by all three is: GCF = ${trio.gcf}.`
-              : `Smallest multiple divisible by all three is: LCM = ${trio.lcm}.`,
+              ? `Ladder Method: Common divisors shared by all three give GCF = ${trio.gcf}.`
+              : `Ladder Method: Product of divisors and quotients ('L' shape) gives LCM = ${trio.lcm}.`,
           },
         });
       }

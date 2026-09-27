@@ -9,6 +9,7 @@ import { GradeSelectPage }  from "@/components/pages/GradeSelectPage";
 import { TopicSelectPage }  from "@/components/pages/TopicSelectPage";
 import { SessionPlayer }    from "@/components/session/SessionPlayer";
 import { SessionReportPage } from "@/components/report/SessionReport";
+import { SpeedMathMasterclassPage } from "@/components/pages/SpeedMathMasterclassPage";
 
 // Stores / data
 import { useProfileStore }  from "@/store/profileStore";
@@ -23,7 +24,8 @@ type AppView =
   | "grade-select"
   | "topic-select"
   | "session"
-  | "report";
+  | "report"
+  | "speed-math";
 
 export default function App() {
   const [view, setView]               = useState<AppView>("main-menu");
@@ -121,6 +123,14 @@ export default function App() {
     );
   }
 
+  if (view === "speed-math") {
+    return (
+      <SpeedMathMasterclassPage
+        onBack={() => goTo("grade-select")}
+      />
+    );
+  }
+
   if (view === "grade-select") {
     return (
       <GradeSelectPage
@@ -129,6 +139,7 @@ export default function App() {
         starsPerGrade={activeProfile?.starsPerGrade ?? {}}
         onBack={() => goTo("profile-select")}
         onSelectGrade={(g) => { setGrade(g); goTo("topic-select"); }}
+        onSelectSpeedMath={() => goTo("speed-math")}
       />
     );
   }

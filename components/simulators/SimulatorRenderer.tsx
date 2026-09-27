@@ -7,6 +7,8 @@ import { ColumnArithmeticSimulator } from "./ColumnArithmetic";
 import { PatternSequenceSimulator } from "./PatternSequence";
 import { WordProblemBuilderSimulator, WordProblemSlot } from "./WordProblemBuilder";
 import { AlgebraBalanceSimulator } from "./AlgebraBalance";
+import { LadderMethodSimulator } from "./LadderMethod";
+import { NumberTheoryVisualSimulator } from "./NumberTheoryVisual";
 
 interface SimulatorRendererProps {
   question: Question;
@@ -72,6 +74,35 @@ export function SimulatorRenderer({ question, onAnswer }: SimulatorRendererProps
           slots={simulator.slots as WordProblemSlot[]}
           expectedAnswer={simulator.expectedAnswer as string}
           onAnswer={onAnswer}
+        />
+      );
+    case "ladder-method":
+      return (
+        <LadderMethodSimulator
+          numbers={(simulator.numbers as number[]) ?? [12, 18]}
+          highlightMode={(simulator.highlightMode as "fpb" | "kpk" | "both") ?? "both"}
+          gcf={simulator.gcf as number | undefined}
+          lcm={simulator.lcm as number | undefined}
+          label={simulator.label as string | undefined}
+        />
+      );
+    case "number-theory":
+      return (
+        <NumberTheoryVisualSimulator
+          mode={
+            (simulator.mode as
+              | "factors"
+              | "prime-check"
+              | "prime-factorization"
+              | "multiples"
+              | "primes-in-range") ?? "factors"
+          }
+          number={simulator.number as number | undefined}
+          factors={simulator.factors as number[] | undefined}
+          isPrime={simulator.isPrime as boolean | undefined}
+          factorization={simulator.factorization as string | undefined}
+          multiples={simulator.multiples as { base: number; count: number } | undefined}
+          range={simulator.range as { start: number; end: number; primes: number[] } | undefined}
         />
       );
     default:

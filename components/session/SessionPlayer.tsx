@@ -215,7 +215,9 @@ export function SessionPlayer({
   // Typed-input simulators handle their own answer submission
   const isTypedInput =
     currentQ?.simulator.type === "column-arithmetic" ||
-    currentQ?.simulator.type === "pattern-sequence" ||
+    (currentQ?.simulator.type === "pattern-sequence" &&
+      Array.isArray(currentQ.simulator.missingIndices) &&
+      currentQ.simulator.missingIndices.length > 0) ||
     currentQ?.simulator.type === "word-problem-builder";
 
   // Path 1: multiple-choice answer (fruit-basket, circle-fraction)
