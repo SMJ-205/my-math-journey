@@ -5,7 +5,7 @@ import { gradeConfigs } from "@/config/curriculum.config";
 import { PageHeader } from "@/components/shared/PageHeader";
 import { useLanguageStore } from "@/store/languageStore";
 import { translations } from "@/lib/translations";
-import { Star, ChevronRight, Zap } from "lucide-react";
+import { Star, ChevronRight, Zap, Sparkles } from "lucide-react";
 
 const GRADE_COLORS: Record<number, { bg: string; border: string; text: string; number: string }> = {
   1: { bg: "bg-yellow-50",  border: "border-yellow-200", text: "text-yellow-700", number: "bg-yellow-400" },
@@ -100,24 +100,24 @@ export function GradeSelectPage({
               type="button"
               id="speed-math-masterclass-card"
               onClick={onSelectSpeedMath}
-              className="w-full text-left p-5 sm:p-6 rounded-3xl bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 text-white shadow-md hover:shadow-lg hover:-translate-y-0.5 active:scale-[0.99] transition-all cursor-pointer relative overflow-hidden group border-2 border-amber-300"
+              className="w-full text-left p-5 sm:p-6 rounded-3xl bg-gradient-to-br from-[#E8DAC5] via-[#DFCEB7] to-[#CEBA9F] text-[#4A3928] shadow-sm hover:shadow-md hover:-translate-y-0.5 active:scale-[0.99] transition-all cursor-pointer relative overflow-hidden group border-2 border-[#D5C2A8]"
             >
               <div className="relative z-10 flex items-center justify-between gap-4">
                 <div className="flex items-center gap-4">
-                  <div className="w-14 h-14 rounded-2xl bg-white/20 backdrop-blur-md flex items-center justify-center text-3xl shadow-inner border border-white/30 group-hover:scale-105 transition-transform">
-                    ⚡
+                  <div className="w-13 h-13 sm:w-14 sm:h-14 rounded-2xl bg-white/70 backdrop-blur-md flex items-center justify-center text-[#7F5E36] shadow-xs border border-white/80 group-hover:scale-105 transition-transform shrink-0">
+                    <Sparkles size={26} className="text-[#8B673A]" />
                   </div>
                   <div>
                     <div className="flex items-center gap-2 mb-1">
-                      <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-white/25 text-yellow-100 border border-white/30">
-                        <Zap size={11} className="text-yellow-300 fill-yellow-300" />
+                      <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-white/80 text-[#73532C] border border-[#D5C2A8] shadow-2xs">
+                        <Zap size={11} className="text-[#8B673A] fill-[#8B673A]" />
                         {language === "en" ? "Visual Tutorial & Tips" : "Panduan & Trik Cepat"}
                       </span>
                     </div>
-                    <h3 className="font-black text-lg sm:text-xl text-white">
+                    <h3 className="font-black text-lg sm:text-xl text-[#3D2C1B]">
                       {language === "en" ? "Speed Math Masterclass" : "Kelas Mahir Hitungan"}
                     </h3>
-                    <p className="text-xs sm:text-sm text-amber-100 font-medium line-clamp-1 mt-0.5">
+                    <p className="text-xs sm:text-sm text-[#665039] font-medium line-clamp-1 mt-0.5">
                       {language === "en"
                         ? "Case-by-case visual guidelines and mental arithmetic tricks (Grades 1–6)"
                         : "Panduan studi kasus visual & jurus mental hitung cepat (Kelas 1–6 SD)"}
@@ -125,7 +125,7 @@ export function GradeSelectPage({
                   </div>
                 </div>
 
-                <div className="w-10 h-10 rounded-2xl bg-white/20 flex items-center justify-center text-white shrink-0 group-hover:translate-x-1 transition-transform">
+                <div className="w-10 h-10 rounded-2xl bg-white/60 flex items-center justify-center text-[#665039] border border-white/80 shrink-0 group-hover:translate-x-1 transition-transform">
                   <ChevronRight size={22} />
                 </div>
               </div>

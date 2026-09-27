@@ -80,14 +80,14 @@ graph TD
 
 1. **Halaman Beranda:** Memilih preferensi bahasa (ID/EN) dan membaca panduan orang tua.
 2. **Profil Belajar:** Mendukung multi-profil anak dalam satu gawai tanpa registrasi email/password. Menampilkan akumulasi total bintang yang diraih.
-3. **Pilih Kelas (1–6) & Kelas Mahir Hitungan:** Bebas memilih kelas sesuai fase kesiapan anak, atau memilih **⚡ Kelas Mahir Hitungan (Speed Math Masterclass)** untuk tutorial jurus trik visual hitung cepat.
+3. **Pilih Kelas (1–6) & Kelas Mahir Hitungan:** Bebas memilih kelas sesuai fase kesiapan anak, atau memilih **Kelas Mahir Hitungan (Speed Math Masterclass)** untuk tutorial jurus trik visual hitung cepat.
 4. **Pilih Topik & Tingkat Kesulitan:** Memilih materi yang ingin dilatih serta menentukan level tantangan (**Level 1: Mudah**, **Level 2: Sedang**, atau **Level 3: Tantangan**).
 5. **Sesi Latihan (10 Soal):** Mengerjakan soal interaktif dengan bantuan simulator manipulatif visual (Bingkai Sepuluh, Pohon Faktor, Model Tangga Sengkedan FPB/KPK, Diagram Pecahan, Timbangan Aljabar, dll.), mini numberpad, dan audio pembaca soal.
 6. **Laporan Sesi & Deteksi Miskonsepsi:** Merayakan keberhasilan dengan animasi confetti, menyimpan perolehan bintang ke profil anak, serta membaca telaah miskonsepsi untuk orang tua/pendidik.
 
 ---
 
-## ⚡ Modul Khusus: Kelas Mahir Hitungan (*Speed Math Masterclass*)
+## Modul Khusus: Kelas Mahir Hitungan (*Speed Math Masterclass*)
 
 Berdasarkan referensi kurikulum **Panduan Hitung Cepat Matematika SD**, modul ini dirancang khusus bukan sebagai bank soal biasa, melainkan **panduan tutorial interaktif langkah demi langkah (*case-by-case guideline*)** dengan visualisasi CPA (*Concrete-Pictorial-Abstract*):
 

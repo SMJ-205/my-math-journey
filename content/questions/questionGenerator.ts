@@ -2069,21 +2069,21 @@ export function generateMultDivQuestions(
           if (b === 5 || a === 5) {
             const target = b === 5 ? a : b;
             return {
-              id: `💡 Jurus Hitung Cepat × 5: Kalikan 10 lalu bagi 2! (${target} × 10) ÷ 2 = ${target * 10} ÷ 2 = ${ans}.`,
-              en: `💡 Speed Math × 5 Trick: Multiply by 10 and divide by 2! (${target} × 10) ÷ 2 = ${ans}.`,
+              id: `Jurus Hitung Cepat × 5: Kalikan 10 lalu bagi 2! (${target} × 10) ÷ 2 = ${target * 10} ÷ 2 = ${ans}.`,
+              en: `Speed Math × 5 Trick: Multiply by 10 and divide by 2! (${target} × 10) ÷ 2 = ${ans}.`,
             };
           }
           if (b === 9 || a === 9) {
             const target = b === 9 ? a : b;
             return {
-              id: `💡 Jurus Hitung Cepat × 9: Kalikan 10 lalu kurangi bilangan itu sendiri! (${target} × 10) − ${target} = ${target * 10} − ${target} = ${ans}.`,
-              en: `💡 Speed Math × 9 Trick: Multiply by 10 and subtract the number! (${target} × 10) − ${target} = ${ans}.`,
+              id: `Jurus Hitung Cepat × 9: Kalikan 10 lalu kurangi bilangan itu sendiri! (${target} × 10) − ${target} = ${target * 10} − ${target} = ${ans}.`,
+              en: `Speed Math × 9 Trick: Multiply by 10 and subtract the number! (${target} × 10) − ${target} = ${ans}.`,
             };
           }
           if (a % 2 === 0 && (b === 15 || b === 25 || b === 35 || b === 45)) {
             return {
-              id: `💡 Jurus Bagi Dua & Kali Dua: ${a} × ${b} = (${a} ÷ 2) × (${b} × 2) = ${a / 2} × ${b * 2} = ${ans}!`,
-              en: `💡 Halving & Doubling Trick: ${a} × ${b} = (${a} ÷ 2) × (${b} × 2) = ${a / 2} × ${b * 2} = ${ans}!`,
+              id: `Jurus Bagi Dua & Kali Dua: ${a} × ${b} = (${a} ÷ 2) × (${b} × 2) = ${a / 2} × ${b * 2} = ${ans}!`,
+              en: `Halving & Doubling Trick: ${a} × ${b} = (${a} ÷ 2) × (${b} × 2) = ${a / 2} × ${b * 2} = ${ans}!`,
             };
           }
           return {
@@ -3093,26 +3093,26 @@ export function generatePercentageQuestions(grade: number, tier: number, count: 
           smartHint: (() => {
             if (total === 50) {
               return {
-                id: `💡 Jurus Sakti Pertukaran Persen: ${pct}% dari 50 = 50% dari ${pct} (setengah dari ${pct}) = ${ans}!`,
-                en: `💡 Speed Math Percent Swap: ${pct}% of 50 = 50% of ${pct} (half of ${pct}) = ${ans}!`,
+                id: `Jurus Sakti Pertukaran Persen: ${pct}% dari 50 = 50% dari ${pct} (setengah dari ${pct}) = ${ans}!`,
+                en: `Speed Math Percent Swap: ${pct}% of 50 = 50% of ${pct} (half of ${pct}) = ${ans}!`,
               };
             }
             if (pct === 25) {
               return {
-                id: `💡 Pecahan Acuan 25%: 25% sama dengan 1/4. Cukup bagi ${total} dengan 4: ${total} ÷ 4 = ${ans}!`,
-                en: `💡 Benchmark Fraction 25%: 25% is 1/4. Simply divide ${total} by 4: ${total} ÷ 4 = ${ans}!`,
+                id: `Pecahan Acuan 25%: 25% sama dengan 1/4. Cukup bagi ${total} dengan 4: ${total} ÷ 4 = ${ans}!`,
+                en: `Benchmark Fraction 25%: 25% is 1/4. Simply divide ${total} by 4: ${total} ÷ 4 = ${ans}!`,
               };
             }
             if (pct === 10) {
               return {
-                id: `💡 Jurus 10%: Cukup geser koma atau bagi 10: ${total} ÷ 10 = ${ans}!`,
-                en: `💡 10% Trick: Simply divide by 10: ${total} ÷ 10 = ${ans}!`,
+                id: `Jurus 10%: Cukup geser koma atau bagi 10: ${total} ÷ 10 = ${ans}!`,
+                en: `10% Trick: Simply divide by 10: ${total} ÷ 10 = ${ans}!`,
               };
             }
             if (pct === 50) {
               return {
-                id: `💡 Pecahan Acuan 50%: 50% adalah setengahnya: ${total} ÷ 2 = ${ans}!`,
-                en: `💡 Benchmark Fraction 50%: 50% is half: ${total} ÷ 2 = ${ans}!`,
+                id: `Pecahan Acuan 50%: 50% adalah setengahnya: ${total} ÷ 2 = ${ans}!`,
+                en: `Benchmark Fraction 50%: 50% is half: ${total} ÷ 2 = ${ans}!`,
               };
             }
             return {

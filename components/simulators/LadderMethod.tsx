@@ -71,25 +71,25 @@ export function LadderMethodSimulator({
       : numbers.reduce((a, b) => a * b, 1));
 
   return (
-    <div className="flex flex-col items-center gap-4 py-2 w-full max-w-lg mx-auto">
+    <div className="flex flex-col items-center gap-3.5 py-2 w-full max-w-lg mx-auto">
       {/* Title / Description */}
       <div className="text-center">
-        <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-amber-100 text-amber-800 border border-amber-300">
-          🌾 {isEn ? "Ladder Method (Sengkedan)" : "Metode Tangga / Sengkedan"}
+        <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-[#EFE4D3] text-[#6B4E2B] border border-[#DECDB7]">
+          {isEn ? "Ladder Method (Sengkedan)" : "Metode Tangga / Sengkedan"}
         </span>
-        {label && <p className="text-xs text-gray-500 font-medium mt-1">{label}</p>}
+        {label && <p className="text-xs text-[#7A644D] font-medium mt-1">{label}</p>}
       </div>
 
       {/* Mode toggle */}
       {highlightMode === "both" && (
-        <div className="flex bg-gray-100 p-1 rounded-2xl gap-1 border border-gray-200">
+        <div className="flex bg-[#F5EFEB] p-1 rounded-2xl gap-1 border border-[#DFD1BD]">
           <button
             type="button"
             onClick={() => setActiveTab("fpb")}
-            className={`px-4 py-1.5 rounded-xl text-xs font-bold transition-all ${
+            className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all ${
               activeTab === "fpb"
-                ? "bg-emerald-500 text-white shadow-sm"
-                : "text-gray-600 hover:text-gray-900"
+                ? "bg-[#9A7342] text-white shadow-xs"
+                : "text-[#6B5339] hover:text-[#3E2D1A]"
             }`}
           >
             {isEn ? "GCF: 'I' Shape" : "FPB: Huruf 'I' (Kolom Kiri)"}
@@ -97,10 +97,10 @@ export function LadderMethodSimulator({
           <button
             type="button"
             onClick={() => setActiveTab("kpk")}
-            className={`px-4 py-1.5 rounded-xl text-xs font-bold transition-all ${
+            className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all ${
               activeTab === "kpk"
-                ? "bg-indigo-500 text-white shadow-sm"
-                : "text-gray-600 hover:text-gray-900"
+                ? "bg-[#5D4632] text-white shadow-xs"
+                : "text-[#6B5339] hover:text-[#3E2D1A]"
             }`}
           >
             {isEn ? "LCM: 'L' Shape" : "KPK: Huruf 'L' (Kiri & Bawah)"}
@@ -109,7 +109,7 @@ export function LadderMethodSimulator({
       )}
 
       {/* Ladder Grid Card */}
-      <div className="w-full bg-white rounded-2xl border-2 border-amber-200 p-4 shadow-sm">
+      <div className="w-full bg-white rounded-2xl border-2 border-[#E5DACE] p-4 shadow-xs">
         <div className="overflow-x-auto flex justify-center">
           <table className="border-collapse text-center text-sm md:text-base font-bold">
             <tbody>
