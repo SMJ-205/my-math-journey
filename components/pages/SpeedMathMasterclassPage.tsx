@@ -54,6 +54,7 @@ export function SpeedMathMasterclassPage({ onBack }: SpeedMathMasterclassPagePro
 
   // Modul 6
   const [gaussN, setGaussN] = useState<number>(100);
+  const [mystery1001Num, setMystery1001Num] = useState<number>(523);
 
   const modules = [
     {
@@ -180,7 +181,7 @@ export function SpeedMathMasterclassPage({ onBack }: SpeedMathMasterclassPagePro
                 {/* 1.1 Pasangan Sahabat 10 */}
                 <div className="bg-white rounded-3xl border-2 border-[#D2E1F0] p-4 sm:p-6 shadow-xs">
                   <div className="flex items-center gap-2 mb-2.5">
-                    <span className="w-7 h-7 rounded-xl bg-[#2B4A75] text-white font-black text-xs flex items-center justify-center">
+                    <span className="w-7 h-7 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-black text-xs flex items-center justify-center shadow-xs">
                       1.1
                     </span>
                     <h2 className="text-base sm:text-lg font-black text-[#182C48]">
@@ -206,7 +207,7 @@ export function SpeedMathMasterclassPage({ onBack }: SpeedMathMasterclassPagePro
                             onClick={() => setBondsTarget(n)}
                             className={`w-8 h-8 rounded-xl text-xs font-black transition-all cursor-pointer ${
                               bondsTarget === n
-                                ? "bg-[#2B4A75] text-white shadow-xs"
+                                ? "bg-indigo-600 text-white shadow-xs"
                                 : "bg-white text-[#253D5F] border border-[#CADDF0] hover:bg-[#E8F1FB]"
                             }`}
                           >
@@ -216,7 +217,7 @@ export function SpeedMathMasterclassPage({ onBack }: SpeedMathMasterclassPagePro
                       </div>
                     </div>
 
-                    {/* 5x2 Ten-Frame with responsive cells */}
+                    {/* 5x2 Ten-Frame with kid-friendly color distinction: Indigo for filled, Warm Amber for friend slots */}
                     <div className="grid grid-cols-5 gap-1.5 sm:gap-2 p-2.5 sm:p-3 bg-white rounded-2xl border-2 border-[#CADDF0] shadow-2xs max-w-full">
                       {Array.from({ length: 10 }).map((_, i) => {
                         const isFilled = i < bondsTarget;
@@ -226,11 +227,11 @@ export function SpeedMathMasterclassPage({ onBack }: SpeedMathMasterclassPagePro
                             layout
                             className={`w-10 h-10 sm:w-12 sm:h-12 rounded-xl border-2 flex items-center justify-center font-black text-sm transition-all ${
                               isFilled
-                                ? "bg-[#3D6494] border-[#294B74] text-white shadow-2xs"
-                                : "bg-[#F5F8FC] border-dashed border-[#CADDF0] text-[#9FB3C9]"
+                                ? "bg-gradient-to-br from-indigo-500 to-blue-600 border-indigo-600 text-white shadow-xs"
+                                : "bg-amber-50/80 border-dashed border-amber-300 text-amber-500"
                             }`}
                           >
-                            <span className="w-4 h-4 rounded-full inline-block bg-current opacity-80" />
+                            <span className="w-4 h-4 rounded-full inline-block bg-current opacity-90" />
                           </motion.div>
                         );
                       })}
@@ -238,12 +239,21 @@ export function SpeedMathMasterclassPage({ onBack }: SpeedMathMasterclassPagePro
 
                     <div className="text-center">
                       <span className="text-sm sm:text-base font-black text-[#182C48] bg-white px-4 py-1.5 rounded-xl border border-[#CADDF0] shadow-2xs">
-                        {bondsTarget} + <span className="text-[#1F5F40] font-black">{10 - bondsTarget}</span> = 10
+                        <span className="text-indigo-600 font-black">{bondsTarget}</span> +{" "}
+                        <span className="text-amber-600 font-black">{10 - bondsTarget}</span> = 10
                       </span>
                       <p className="text-xs text-[#415777] mt-2 font-medium">
-                        {isEn
-                          ? `Friend of ${bondsTarget} is ${10 - bondsTarget} (the empty slots).`
-                          : `Sahabat dari ${bondsTarget} adalah ${10 - bondsTarget} (kotak kosong yang tersisa).`}
+                        {isEn ? (
+                          <>
+                            Friend of <span className="font-bold text-indigo-600">{bondsTarget}</span> is{" "}
+                            <span className="font-bold text-amber-600">{10 - bondsTarget}</span> (the amber slots).
+                          </>
+                        ) : (
+                          <>
+                            Sahabat dari <span className="font-bold text-indigo-600">{bondsTarget}</span> adalah{" "}
+                            <span className="font-bold text-amber-600">{10 - bondsTarget}</span> (kotak jingga).
+                          </>
+                        )}
                       </p>
                     </div>
                   </div>
@@ -252,7 +262,7 @@ export function SpeedMathMasterclassPage({ onBack }: SpeedMathMasterclassPagePro
                 {/* 1.2 Bridging Through 10 */}
                 <div className="bg-white rounded-3xl border-2 border-[#D2E1F0] p-4 sm:p-6 shadow-xs">
                   <div className="flex items-center gap-2 mb-2.5">
-                    <span className="w-7 h-7 rounded-xl bg-[#2B4A75] text-white font-black text-xs flex items-center justify-center">
+                    <span className="w-7 h-7 rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-black text-xs flex items-center justify-center shadow-xs">
                       1.2
                     </span>
                     <h2 className="text-base sm:text-lg font-black text-[#182C48]">
@@ -267,38 +277,38 @@ export function SpeedMathMasterclassPage({ onBack }: SpeedMathMasterclassPagePro
 
                   <div className="bg-[#F1F6FC] p-3.5 sm:p-4 rounded-2xl border border-[#CFDFEF] flex flex-col items-center gap-3">
                     <div className="flex items-center gap-2 font-mono font-black text-xl sm:text-2xl text-[#182C48]">
-                      <span>{bridgeA}</span>
+                      <span className="text-blue-600">{bridgeA}</span>
                       <span>+</span>
-                      <span>{bridgeB}</span>
+                      <span className="text-purple-600">{bridgeB}</span>
                       <span>=</span>
-                      <span className="text-[#1F5F40]">{bridgeA + bridgeB}</span>
+                      <span className="text-emerald-600">{bridgeA + bridgeB}</span>
                     </div>
 
-                    {/* Step breakdown - responsive wrap */}
+                    {/* Step breakdown - colorful kid-friendly progression */}
                     <div className="w-full flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-2 text-xs sm:text-sm">
-                      <div className="p-2.5 sm:p-3 bg-white rounded-xl border border-[#CADDF0] text-center">
-                        <span className="text-[#647C9E] font-bold block text-[10px] sm:text-xs mb-0.5">
+                      <div className="p-2.5 sm:p-3 bg-blue-50/90 rounded-xl border border-blue-200 text-center">
+                        <span className="text-blue-600 font-bold block text-[10px] sm:text-xs mb-0.5">
                           Langkah 1: Teman 10
                         </span>
-                        <span className="font-bold text-[#182C48]">
-                          {bridgeA} butuh <span className="underline decoration-[#1F5F40] font-black">{10 - bridgeA}</span> untuk jadi 10
+                        <span className="font-bold text-blue-950">
+                          {bridgeA} butuh <span className="underline decoration-blue-500 font-black">{10 - bridgeA}</span> untuk jadi 10
                         </span>
                       </div>
                       <span className="text-[#7B94B2] font-black text-center sm:text-left">→</span>
-                      <div className="p-2.5 sm:p-3 bg-white rounded-xl border border-[#CADDF0] text-center">
-                        <span className="text-[#647C9E] font-bold block text-[10px] sm:text-xs mb-0.5">
+                      <div className="p-2.5 sm:p-3 bg-purple-50/90 rounded-xl border border-purple-200 text-center">
+                        <span className="text-purple-600 font-bold block text-[10px] sm:text-xs mb-0.5">
                           Langkah 2: Pecah Angka Kedua
                         </span>
-                        <span className="font-bold text-[#182C48]">
+                        <span className="font-bold text-purple-950">
                           {bridgeB} dipecah: ({10 - bridgeA} + {bridgeB - (10 - bridgeA)})
                         </span>
                       </div>
                       <span className="text-[#7B94B2] font-black text-center sm:text-left">→</span>
-                      <div className="p-2.5 sm:p-3 bg-[#EEF5F0] rounded-xl border border-[#BDD7C6] text-center">
-                        <span className="text-[#2B5E41] font-bold block text-[10px] sm:text-xs mb-0.5">
+                      <div className="p-2.5 sm:p-3 bg-emerald-50 rounded-xl border border-emerald-300 text-center shadow-2xs">
+                        <span className="text-emerald-700 font-bold block text-[10px] sm:text-xs mb-0.5">
                           Hasil Kilat
                         </span>
-                        <span className="font-black text-[#1C422D]">
+                        <span className="font-black text-emerald-900">
                           10 + {bridgeB - (10 - bridgeA)} = {bridgeA + bridgeB}
                         </span>
                       </div>
@@ -310,7 +320,7 @@ export function SpeedMathMasterclassPage({ onBack }: SpeedMathMasterclassPagePro
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="bg-white rounded-3xl border-2 border-[#D2E1F0] p-4 sm:p-5 shadow-xs flex flex-col justify-between">
                     <div>
-                      <span className="inline-block px-2.5 py-0.5 rounded-full text-[10px] font-black bg-[#E4EEF8] text-[#1D3556] mb-2 border border-[#CADDF0]">
+                      <span className="inline-block px-2.5 py-0.5 rounded-full text-[10px] font-black bg-amber-100 text-amber-800 mb-2 border border-amber-200">
                         1.3 Near-Doubles (Hampir-Kembar)
                       </span>
                       <h3 className="font-black text-sm sm:text-base text-[#182C48] mb-1.5">
@@ -322,14 +332,14 @@ export function SpeedMathMasterclassPage({ onBack }: SpeedMathMasterclassPagePro
                           : "Gunakan jangkar angka kembar yang sudah dihafal (6+6=12). Karena 7 adalah 6+1, maka 6+7 = 12+1 = 13."}
                       </p>
                     </div>
-                    <div className="mt-3 p-2.5 bg-[#F1F6FC] rounded-xl text-center font-mono font-bold text-xs text-[#1B3150] border border-[#CFDFEF]">
+                    <div className="mt-3 p-2.5 bg-amber-50/70 rounded-xl text-center font-mono font-bold text-xs text-amber-900 border border-amber-200">
                       7 + 8 = (7 × 2) + 1 = 15 | 8 + 9 = (8 × 2) + 1 = 17
                     </div>
                   </div>
 
                   <div className="bg-white rounded-3xl border-2 border-[#D2E1F0] p-4 sm:p-5 shadow-xs flex flex-col justify-between">
                     <div>
-                      <span className="inline-block px-2.5 py-0.5 rounded-full text-[10px] font-black bg-[#E4EEF8] text-[#1D3556] mb-2 border border-[#CADDF0]">
+                      <span className="inline-block px-2.5 py-0.5 rounded-full text-[10px] font-black bg-teal-100 text-teal-800 mb-2 border border-teal-200">
                         1.4 Selisih Tetap (Tanpa Meminjam)
                       </span>
                       <h3 className="font-black text-sm sm:text-base text-[#182C48] mb-1.5">
@@ -341,7 +351,7 @@ export function SpeedMathMasterclassPage({ onBack }: SpeedMathMasterclassPagePro
                           : "Tambahkan nilai yang sama pada kedua bilangan agar pengurang menjadi bilangan bulat puluhan tanpa perlu meminjam."}
                       </p>
                     </div>
-                    <div className="mt-3 p-2.5 bg-[#F1F6FC] rounded-xl text-center font-mono font-bold text-xs text-[#1B3150] border border-[#CFDFEF]">
+                    <div className="mt-3 p-2.5 bg-teal-50/70 rounded-xl text-center font-mono font-bold text-xs text-teal-900 border border-teal-200">
                       84 − 38 = (84 + 2) − (38 + 2) = 86 − 40 = 46
                     </div>
                   </div>
@@ -357,7 +367,7 @@ export function SpeedMathMasterclassPage({ onBack }: SpeedMathMasterclassPagePro
                 {/* 2.1 Area Model 4 Kuadran */}
                 <div className="bg-white rounded-3xl border-2 border-[#D2E1F0] p-4 sm:p-6 shadow-xs">
                   <div className="flex items-center gap-2 mb-2.5">
-                    <span className="w-7 h-7 rounded-xl bg-[#2B4A75] text-white font-black text-xs flex items-center justify-center">
+                    <span className="w-7 h-7 rounded-xl bg-gradient-to-r from-blue-600 to-cyan-600 text-white font-black text-xs flex items-center justify-center shadow-xs">
                       2.1
                     </span>
                     <h2 className="text-base sm:text-lg font-black text-[#182C48]">
@@ -371,27 +381,28 @@ export function SpeedMathMasterclassPage({ onBack }: SpeedMathMasterclassPagePro
                   </p>
 
                   <div className="max-w-md mx-auto p-3.5 bg-[#F1F6FC] rounded-2xl border border-[#CFDFEF]">
-                    <div className="grid grid-cols-2 gap-2 text-center font-mono font-bold">
-                      <div className="p-2.5 bg-white border border-[#CADDF0] rounded-xl">
-                        <span className="text-[10px] text-[#647C9E] block">10 × 10</span>
-                        <span className="text-base sm:text-lg text-[#182C48] font-black">100</span>
+                    {/* 4 Colorful Quadrants for Visual Distinction */}
+                    <div className="grid grid-cols-2 gap-2.5 text-center font-mono font-bold">
+                      <div className="p-2.5 bg-indigo-50/90 border-2 border-indigo-200 rounded-xl shadow-2xs">
+                        <span className="text-[10px] text-indigo-600 font-bold block">10 × 10</span>
+                        <span className="text-base sm:text-lg text-indigo-950 font-black">100</span>
                       </div>
-                      <div className="p-2.5 bg-white border border-[#CADDF0] rounded-xl">
-                        <span className="text-[10px] text-[#647C9E] block">4 × 10</span>
-                        <span className="text-base sm:text-lg text-[#182C48] font-black">40</span>
+                      <div className="p-2.5 bg-amber-50/90 border-2 border-amber-200 rounded-xl shadow-2xs">
+                        <span className="text-[10px] text-amber-600 font-bold block">4 × 10</span>
+                        <span className="text-base sm:text-lg text-amber-950 font-black">40</span>
                       </div>
-                      <div className="p-2.5 bg-white border border-[#CADDF0] rounded-xl">
-                        <span className="text-[10px] text-[#647C9E] block">10 × 2</span>
-                        <span className="text-base sm:text-lg text-[#182C48] font-black">20</span>
+                      <div className="p-2.5 bg-sky-50/90 border-2 border-sky-200 rounded-xl shadow-2xs">
+                        <span className="text-[10px] text-sky-600 font-bold block">10 × 2</span>
+                        <span className="text-base sm:text-lg text-sky-950 font-black">20</span>
                       </div>
-                      <div className="p-2.5 bg-white border border-[#CADDF0] rounded-xl">
-                        <span className="text-[10px] text-[#647C9E] block">4 × 2</span>
-                        <span className="text-base sm:text-lg text-[#182C48] font-black">8</span>
+                      <div className="p-2.5 bg-rose-50/90 border-2 border-rose-200 rounded-xl shadow-2xs">
+                        <span className="text-[10px] text-rose-600 font-bold block">4 × 2</span>
+                        <span className="text-base sm:text-lg text-rose-950 font-black">8</span>
                       </div>
                     </div>
 
                     <div className="mt-3 pt-2.5 border-t border-[#CADDF0] text-center font-bold text-xs sm:text-sm text-[#182C48]">
-                      Total = 100 + 40 + 20 + 8 = <span className="text-[#1F5F40] font-black text-base">168</span>
+                      Total = 100 + 40 + 20 + 8 = <span className="text-emerald-600 font-black text-base">168</span>
                     </div>
                   </div>
                 </div>
@@ -399,7 +410,7 @@ export function SpeedMathMasterclassPage({ onBack }: SpeedMathMasterclassPagePro
                 {/* 2.2 Halving and Doubling */}
                 <div className="bg-white rounded-3xl border-2 border-[#D2E1F0] p-4 sm:p-6 shadow-xs">
                   <div className="flex items-center gap-2 mb-2.5">
-                    <span className="w-7 h-7 rounded-xl bg-[#2B4A75] text-white font-black text-xs flex items-center justify-center">
+                    <span className="w-7 h-7 rounded-xl bg-gradient-to-r from-sky-600 to-blue-600 text-white font-black text-xs flex items-center justify-center shadow-xs">
                       2.2
                     </span>
                     <h2 className="text-base sm:text-lg font-black text-[#182C48]">
@@ -419,29 +430,29 @@ export function SpeedMathMasterclassPage({ onBack }: SpeedMathMasterclassPagePro
                       <span className="px-2.5 py-1 bg-white rounded-xl border border-[#CADDF0]">{halveDoubleB}</span>
                     </div>
 
-                    <div className="flex flex-col items-center text-[#2B4A75] font-bold text-xs">
+                    <div className="flex flex-col items-center text-blue-600 font-bold text-xs">
                       <span>(÷2) ⇄ (×2)</span>
                       <span>⟹</span>
                     </div>
 
                     <div className="flex items-center gap-1.5 font-mono font-black text-lg sm:text-xl text-[#182C48]">
-                      <span className="px-2.5 py-1 bg-[#2B4A75] text-white rounded-xl shadow-2xs">{halveDoubleA / 2}</span>
+                      <span className="px-2.5 py-1 bg-sky-500 text-white rounded-xl shadow-2xs">{halveDoubleA / 2}</span>
                       <span>×</span>
-                      <span className="px-2.5 py-1 bg-[#2B4A75] text-white rounded-xl shadow-2xs">{halveDoubleB * 2}</span>
+                      <span className="px-2.5 py-1 bg-amber-500 text-white rounded-xl shadow-2xs">{halveDoubleB * 2}</span>
                       <span>=</span>
-                      <span className="text-[#1F5F40] font-black text-xl sm:text-2xl">
+                      <span className="text-emerald-600 font-black text-xl sm:text-2xl">
                         {(halveDoubleA / 2) * (halveDoubleB * 2)}
                       </span>
                     </div>
                   </div>
                 </div>
 
-                {/* 2.3 Jurus Pengali Spesial: x11, x5, x9, x25 */}
+                {/* 2.3 & 2.4 Jurus Pengali Spesial */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  {/* Jurus x11 */}
+                  {/* 2.3 Jurus x11 */}
                   <div className="bg-white rounded-3xl border-2 border-[#D2E1F0] p-4 sm:p-5 shadow-xs">
-                    <span className="inline-block px-2.5 py-0.5 rounded-full text-[10px] font-black bg-[#E4EEF8] text-[#1D3556] mb-2 border border-[#CADDF0]">
-                      Jurus × 11 (Sandwich Digit)
+                    <span className="inline-block px-2.5 py-0.5 rounded-full text-[10px] font-black bg-purple-100 text-purple-800 mb-2 border border-purple-200">
+                      2.3 Jurus × 11 (Sandwich Digit)
                     </span>
                     <p className="text-xs text-[#415777] mb-3">
                       {isEn
@@ -459,7 +470,7 @@ export function SpeedMathMasterclassPage({ onBack }: SpeedMathMasterclassPagePro
                             onClick={() => setMultElevenNum(val)}
                             className={`px-2.5 py-1 rounded-xl text-xs font-bold transition-all cursor-pointer ${
                               multElevenNum === val
-                                ? "bg-[#2B4A75] text-white shadow-2xs"
+                                ? "bg-purple-600 text-white shadow-2xs"
                                 : "bg-[#F1F6FC] text-[#253D5F] border border-[#CADDF0] hover:bg-[#E8F1FB]"
                             }`}
                           >
@@ -475,13 +486,13 @@ export function SpeedMathMasterclassPage({ onBack }: SpeedMathMasterclassPagePro
                       const sum = d1 + d2;
                       const ans = multElevenNum * 11;
                       return (
-                        <div className="p-3 bg-[#F1F6FC] rounded-xl border border-[#CFDFEF] text-center font-mono">
-                          <p className="text-xs sm:text-sm font-bold text-[#182C48]">
+                        <div className="p-3 bg-purple-50/70 rounded-xl border border-purple-200 text-center font-mono">
+                          <p className="text-xs sm:text-sm font-bold text-purple-950">
                             {multElevenNum} × 11 = {d1} [{d1}+{d2}] {d2} ={" "}
-                            <span className="text-[#1F5F40] font-black text-sm sm:text-base">{ans}</span>
+                            <span className="text-emerald-600 font-black text-sm sm:text-base">{ans}</span>
                           </p>
                           {sum >= 10 && (
-                            <p className="text-[11px] text-[#2B4A75] font-sans mt-1">
+                            <p className="text-[11px] text-purple-700 font-sans mt-1">
                               Karena {d1}+{d2}={sum} (≥10), simpan 1 ke depan: ({d1}+1){sum % 10}{d2} = {ans}
                             </p>
                           )}
@@ -490,24 +501,24 @@ export function SpeedMathMasterclassPage({ onBack }: SpeedMathMasterclassPagePro
                     })()}
                   </div>
 
-                  {/* Jurus x5, x9 & x25 */}
+                  {/* 2.4 Jurus x5, x9 & x25 */}
                   <div className="bg-white rounded-3xl border-2 border-[#D2E1F0] p-4 sm:p-5 shadow-xs flex flex-col justify-between">
                     <div>
-                      <span className="inline-block px-2.5 py-0.5 rounded-full text-[10px] font-black bg-[#E4EEF8] text-[#1D3556] mb-2 border border-[#CADDF0]">
-                        Jurus × 5, × 9, & × 25
+                      <span className="inline-block px-2.5 py-0.5 rounded-full text-[10px] font-black bg-orange-100 text-orange-800 mb-2 border border-orange-200">
+                        2.4 Jurus × 5, × 9, & × 25
                       </span>
                       <div className="flex flex-col gap-2 text-xs font-mono">
-                        <div className="p-2 bg-[#F1F6FC] rounded-lg border border-[#CFDFEF]">
-                          <span className="font-bold text-[#2B4A75]">× 5:</span> n0 ÷ 2
-                          <span className="text-[#415777] block text-[11px]">48 × 5 = 480 ÷ 2 = 240</span>
+                        <div className="p-2 bg-emerald-50/70 rounded-lg border border-emerald-200">
+                          <span className="font-bold text-emerald-800">× 5:</span> n0 ÷ 2
+                          <span className="text-emerald-950 block text-[11px]">48 × 5 = 480 ÷ 2 = 240</span>
                         </div>
-                        <div className="p-2 bg-[#F1F6FC] rounded-lg border border-[#CFDFEF]">
-                          <span className="font-bold text-[#2B4A75]">× 9:</span> n0 − n
-                          <span className="text-[#415777] block text-[11px]">37 × 9 = 370 − 37 = 333</span>
+                        <div className="p-2 bg-amber-50/70 rounded-lg border border-amber-200">
+                          <span className="font-bold text-amber-800">× 9:</span> n0 − n
+                          <span className="text-amber-950 block text-[11px]">37 × 9 = 370 − 37 = 333</span>
                         </div>
-                        <div className="p-2 bg-[#F1F6FC] rounded-lg border border-[#CFDFEF]">
-                          <span className="font-bold text-[#2B4A75]">× 25:</span> n00 ÷ 4
-                          <span className="text-[#415777] block text-[11px]">36 × 25 = 3.600 ÷ 4 = 900</span>
+                        <div className="p-2 bg-blue-50/70 rounded-lg border border-blue-200">
+                          <span className="font-bold text-blue-800">× 25:</span> n00 ÷ 4
+                          <span className="text-blue-950 block text-[11px]">36 × 25 = 3.600 ÷ 4 = 900</span>
                         </div>
                       </div>
                     </div>
@@ -521,9 +532,10 @@ export function SpeedMathMasterclassPage({ onBack }: SpeedMathMasterclassPagePro
             {/* ========================================================= */}
             {activeModule === 3 && (
               <div className="flex flex-col gap-5">
+                {/* 3.1 Metode Tangga (Sengkedan) */}
                 <div className="bg-white rounded-3xl border-2 border-[#D2E1F0] p-4 sm:p-6 shadow-xs">
                   <div className="flex items-center gap-2 mb-2.5">
-                    <span className="w-7 h-7 rounded-xl bg-[#2B4A75] text-white font-black text-xs flex items-center justify-center">
+                    <span className="w-7 h-7 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 text-white font-black text-xs flex items-center justify-center shadow-xs">
                       3.1
                     </span>
                     <h2 className="text-base sm:text-lg font-black text-[#182C48]">
@@ -554,7 +566,7 @@ export function SpeedMathMasterclassPage({ onBack }: SpeedMathMasterclassPagePro
                           }}
                           className={`px-3 py-1 rounded-xl text-xs font-bold transition-all cursor-pointer ${
                             ladderA === a && ladderB === b
-                              ? "bg-[#2B4A75] text-white shadow-2xs"
+                              ? "bg-emerald-600 text-white shadow-2xs"
                               : "bg-[#F1F6FC] text-[#253D5F] border border-[#CADDF0] hover:bg-[#E8F1FB]"
                           }`}
                         >
@@ -570,7 +582,7 @@ export function SpeedMathMasterclassPage({ onBack }: SpeedMathMasterclassPagePro
                       onClick={() => setLadderTab("fpb")}
                       className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
                         ladderTab === "fpb"
-                          ? "bg-[#2B4A75] text-white shadow-2xs"
+                          ? "bg-emerald-600 text-white shadow-2xs"
                           : "bg-[#EDF3FA] text-[#364F73] border border-[#D0DFEF] hover:bg-[#E3EDF8]"
                       }`}
                     >
@@ -580,7 +592,7 @@ export function SpeedMathMasterclassPage({ onBack }: SpeedMathMasterclassPagePro
                       onClick={() => setLadderTab("kpk")}
                       className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
                         ladderTab === "kpk"
-                          ? "bg-[#1E3250] text-white shadow-2xs"
+                          ? "bg-indigo-600 text-white shadow-2xs"
                           : "bg-[#EDF3FA] text-[#364F73] border border-[#D0DFEF] hover:bg-[#E3EDF8]"
                       }`}
                     >
@@ -596,16 +608,16 @@ export function SpeedMathMasterclassPage({ onBack }: SpeedMathMasterclassPagePro
                           <tr className="border-b-2 border-[#CADDF0]">
                             <td className="pr-3 py-1.5 text-right">
                               <span
-                                className={`px-2 py-0.5 rounded-lg text-xs font-black ${
+                                className={`px-2 py-0.5 rounded-lg text-xs font-black shadow-2xs ${
                                   ladderTab === "fpb" || ladderTab === "kpk"
-                                    ? "bg-[#2B4A75] text-white"
+                                    ? "bg-emerald-500 text-white"
                                     : "bg-gray-200"
                                 }`}
                               >
                                 ÷ 2
                               </span>
                             </td>
-                            <td className="pl-3 py-1.5 border-l-4 border-[#3B629B]">
+                            <td className="pl-3 py-1.5 border-l-4 border-emerald-400">
                               <span className="mr-5 text-[#182C48]">{ladderA}</span>
                               <span className="text-[#182C48]">{ladderB}</span>
                             </td>
@@ -613,33 +625,33 @@ export function SpeedMathMasterclassPage({ onBack }: SpeedMathMasterclassPagePro
                           <tr className="border-b-2 border-[#CADDF0]">
                             <td className="pr-3 py-1.5 text-right">
                               <span
-                                className={`px-2 py-0.5 rounded-lg text-xs font-black ${
+                                className={`px-2 py-0.5 rounded-lg text-xs font-black shadow-2xs ${
                                   ladderTab === "fpb" || ladderTab === "kpk"
-                                    ? "bg-[#2B4A75] text-white"
+                                    ? "bg-emerald-500 text-white"
                                     : "bg-gray-200"
                                 }`}
                               >
                                 ÷ 3
                               </span>
                             </td>
-                            <td className="pl-3 py-1.5 border-l-4 border-[#3B629B]">
+                            <td className="pl-3 py-1.5 border-l-4 border-emerald-400">
                               <span className="mr-5 text-[#182C48]">{ladderA / 2}</span>
                               <span className="text-[#182C48]">{ladderB / 2}</span>
                             </td>
                           </tr>
                           <tr>
                             <td className="pr-3 py-1.5 text-right text-xs text-[#8299B5]">-</td>
-                            <td className="pl-3 py-1.5 border-l-4 border-[#3B629B]">
+                            <td className="pl-3 py-1.5 border-l-4 border-emerald-400">
                               <span
                                 className={`px-2 py-0.5 rounded-lg mr-3 ${
-                                  ladderTab === "kpk" ? "bg-[#1E3250] text-white" : "text-[#203657]"
+                                  ladderTab === "kpk" ? "bg-indigo-600 text-white shadow-2xs" : "text-[#203657]"
                                 }`}
                               >
                                 {ladderA / 6}
                               </span>
                               <span
                                 className={`px-2 py-0.5 rounded-lg ${
-                                  ladderTab === "kpk" ? "bg-[#1E3250] text-white" : "text-[#203657]"
+                                  ladderTab === "kpk" ? "bg-indigo-600 text-white shadow-2xs" : "text-[#203657]"
                                 }`}
                               >
                                 {ladderB / 6}
@@ -652,36 +664,51 @@ export function SpeedMathMasterclassPage({ onBack }: SpeedMathMasterclassPagePro
 
                     <div className="mt-3.5 pt-3 border-t border-[#CADDF0] text-center">
                       {ladderTab === "fpb" ? (
-                        <div className="text-[#182C48] font-bold text-xs sm:text-sm">
+                        <div className="p-2.5 bg-emerald-50 rounded-xl border border-emerald-200 text-emerald-950 font-bold text-xs sm:text-sm">
                           FPB (Huruf I Tegak) = 2 × 3 ={" "}
-                          <span className="text-[#1F5F40] font-black text-base">6</span>
-                          <p className="text-[11px] text-[#516B8E] font-sans font-normal mt-1">
+                          <span className="text-emerald-700 font-black text-base">6</span>
+                          <p className="text-[11px] text-emerald-700 font-sans font-normal mt-0.5">
                             Hanya kalikan angka pembagi di sisi tegak kiri.
                           </p>
                         </div>
                       ) : (
-                        <div className="text-[#182C48] font-bold text-xs sm:text-sm">
+                        <div className="p-2.5 bg-indigo-50 rounded-xl border border-indigo-200 text-indigo-950 font-bold text-xs sm:text-sm">
                           KPK (Bentuk L) = 2 × 3 × {ladderA / 6} × {ladderB / 6} ={" "}
-                          <span className="text-[#1F5F40] font-black text-base">
+                          <span className="text-indigo-700 font-black text-base">
                             {(ladderA * ladderB) / 6}
                           </span>
-                          <p className="text-[11px] text-[#516B8E] font-sans font-normal mt-1">
+                          <p className="text-[11px] text-indigo-700 font-sans font-normal mt-0.5">
                             Kalikan seluruh angka di sisi tegak dan baris alas paling bawah (huruf L).
                           </p>
                         </div>
                       )}
                     </div>
                   </div>
+                </div>
 
-                  {/* 3.2 Rumus Emas FPB x KPK */}
-                  <div className="mt-3.5 p-3 bg-[#F1F6FC] rounded-xl border border-[#CFDFEF] text-center font-mono text-xs text-[#203657]">
-                    <span className="font-black text-[#182C48] font-sans block mb-0.5">
-                      Rumus Emas Teorema Bilangan:
+                {/* 3.2 Rumus Emas FPB x KPK */}
+                <div className="bg-white rounded-3xl border-2 border-[#D2E1F0] p-4 sm:p-6 shadow-xs">
+                  <div className="flex items-center gap-2 mb-2.5">
+                    <span className="w-7 h-7 rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 text-white font-black text-xs flex items-center justify-center shadow-xs">
+                      3.2
                     </span>
-                    FPB(a, b) × KPK(a, b) = a × b
-                    <span className="block text-[11px] text-[#516B8E] font-sans mt-0.5">
-                      6 × 36 = 12 × 18 = 216 (Terbukti selalu sama)
-                    </span>
+                    <h2 className="text-base sm:text-lg font-black text-[#182C48]">
+                      {isEn ? "Golden Rule of Number Theory" : "Rumus Emas Hubungan FPB & KPK"}
+                    </h2>
+                  </div>
+                  <p className="text-xs sm:text-sm text-[#415777] mb-3 leading-relaxed">
+                    {isEn
+                      ? "The product of two numbers is ALWAYS equal to the product of their GCF and LCM."
+                      : "Hasil kali dua bilangan selalu tepat sama dengan perkalian antara FPB dan KPK kedua bilangan tersebut."}
+                  </p>
+
+                  <div className="p-3.5 bg-gradient-to-r from-amber-50 via-orange-50 to-amber-50 rounded-2xl border-2 border-amber-200 text-center font-mono">
+                    <div className="text-sm sm:text-base font-black text-amber-950">
+                      FPB(a, b) × KPK(a, b) = a × b
+                    </div>
+                    <div className="text-xs text-amber-800 font-sans font-semibold mt-1">
+                      Contoh angka 12 & 18: <span className="font-bold">6 × 36 = 12 × 18 = 216</span> (Terbukti selalu sama)
+                    </div>
                   </div>
                 </div>
               </div>
@@ -692,11 +719,62 @@ export function SpeedMathMasterclassPage({ onBack }: SpeedMathMasterclassPagePro
             {/* ========================================================= */}
             {activeModule === 4 && (
               <div className="flex flex-col gap-5">
-                {/* 4.3 Sifat Pertukaran Persen */}
+                {/* 4.1 Bank Pecahan Acuan (Kamus Mental) */}
+                <div className="bg-white rounded-3xl border-2 border-[#D2E1F0] p-4 sm:p-5 shadow-xs">
+                  <div className="flex items-center gap-2 mb-2.5">
+                    <span className="w-7 h-7 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-black text-xs flex items-center justify-center shadow-xs">
+                      4.1
+                    </span>
+                    <h2 className="text-base sm:text-lg font-black text-[#182C48]">
+                      {isEn ? "Benchmark Fraction Memory Bank" : "Bank Pecahan Acuan (Kamus Mental)"}
+                    </h2>
+                  </div>
+                  <p className="text-xs sm:text-sm text-[#415777] mb-3 leading-relaxed">
+                    {isEn
+                      ? "Memorize these essential fraction-percentage anchors to solve percent problems instantaneously."
+                      : "Hafalkan pasangan pecahan-persentase jangkar ini agar dapat menghitung diskon dan persen dalam hitungan detik."}
+                  </p>
+                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-center font-mono text-xs">
+                    <div className="p-2.5 bg-sky-50/90 border-2 border-sky-200 rounded-xl shadow-2xs">
+                      <span className="text-sky-700 font-bold block text-[11px]">50%</span>
+                      <span className="text-sky-950 font-black text-base">1/2</span>
+                    </div>
+                    <div className="p-2.5 bg-emerald-50/90 border-2 border-emerald-200 rounded-xl shadow-2xs">
+                      <span className="text-emerald-700 font-bold block text-[11px]">25%</span>
+                      <span className="text-emerald-950 font-black text-base">1/4</span>
+                    </div>
+                    <div className="p-2.5 bg-teal-50/90 border-2 border-teal-200 rounded-xl shadow-2xs">
+                      <span className="text-teal-700 font-bold block text-[11px]">12.5%</span>
+                      <span className="text-teal-950 font-black text-base">1/8</span>
+                    </div>
+                    <div className="p-2.5 bg-purple-50/90 border-2 border-purple-200 rounded-xl shadow-2xs">
+                      <span className="text-purple-700 font-bold block text-[11px]">33.3%</span>
+                      <span className="text-purple-950 font-black text-base">1/3</span>
+                    </div>
+                    <div className="p-2.5 bg-amber-50/90 border-2 border-amber-200 rounded-xl shadow-2xs">
+                      <span className="text-amber-700 font-bold block text-[11px]">20%</span>
+                      <span className="text-amber-950 font-black text-base">1/5</span>
+                    </div>
+                    <div className="p-2.5 bg-orange-50/90 border-2 border-orange-200 rounded-xl shadow-2xs">
+                      <span className="text-orange-700 font-bold block text-[11px]">10%</span>
+                      <span className="text-orange-950 font-black text-base">1/10</span>
+                    </div>
+                    <div className="p-2.5 bg-rose-50/90 border-2 border-rose-200 rounded-xl shadow-2xs">
+                      <span className="text-rose-700 font-bold block text-[11px]">5%</span>
+                      <span className="text-rose-950 font-black text-base">1/20</span>
+                    </div>
+                    <div className="p-2.5 bg-indigo-50/90 border-2 border-indigo-200 rounded-xl shadow-2xs">
+                      <span className="text-indigo-700 font-bold block text-[11px]">1%</span>
+                      <span className="text-indigo-950 font-black text-base">1/100</span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* 4.2 Jurus Sakti Pertukaran Persen */}
                 <div className="bg-white rounded-3xl border-2 border-[#D2E1F0] p-4 sm:p-6 shadow-xs">
                   <div className="flex items-center gap-2 mb-2.5">
-                    <span className="w-7 h-7 rounded-xl bg-[#2B4A75] text-white font-black text-xs flex items-center justify-center">
-                      4.3
+                    <span className="w-7 h-7 rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-black text-xs flex items-center justify-center shadow-xs">
+                      4.2
                     </span>
                     <h2 className="text-base sm:text-lg font-black text-[#182C48]">
                       {isEn ? "Percent Swap Trick (x% of y = y% of x)" : "Jurus Sakti Pertukaran Persen"}
@@ -709,7 +787,7 @@ export function SpeedMathMasterclassPage({ onBack }: SpeedMathMasterclassPagePro
                   </p>
 
                   <div className="bg-[#F1F6FC] p-3.5 sm:p-4 rounded-2xl border border-[#CFDFEF] flex flex-col items-center gap-3.5">
-                    {/* Selector - stacked label and wrap buttons */}
+                    {/* Selector */}
                     <div className="w-full flex flex-col gap-1.5">
                       <span className="text-xs font-bold text-[#253D5F]">Coba Kasus:</span>
                       <div className="flex flex-wrap items-center gap-1.5">
@@ -728,7 +806,7 @@ export function SpeedMathMasterclassPage({ onBack }: SpeedMathMasterclassPagePro
                             }}
                             className={`px-2.5 py-1 rounded-xl text-xs font-bold transition-all cursor-pointer ${
                               swapX === x && swapY === y
-                                ? "bg-[#2B4A75] text-white shadow-2xs"
+                                ? "bg-purple-600 text-white shadow-2xs"
                                 : "bg-white text-[#253D5F] border border-[#CADDF0] hover:bg-[#E8F1FB]"
                             }`}
                           >
@@ -738,80 +816,34 @@ export function SpeedMathMasterclassPage({ onBack }: SpeedMathMasterclassPagePro
                       </div>
                     </div>
 
-                    {/* Calculation step cards - responsive layout */}
+                    {/* Calculation step cards with distinct kid-friendly color palettes */}
                     <div className="w-full flex flex-col sm:flex-row items-center justify-center gap-2">
-                      <div className="p-2.5 sm:p-3 bg-white rounded-xl border border-[#CADDF0] text-center font-mono w-full sm:w-auto">
-                        <span className="text-[10px] text-[#647C9E] font-sans font-bold block mb-0.5">
-                          Soal Awal (Sulit)
+                      <div className="p-2.5 sm:p-3 bg-rose-50/80 rounded-xl border-2 border-rose-200 text-center font-mono w-full sm:w-auto shadow-2xs">
+                        <span className="text-[10px] text-rose-700 font-sans font-bold block mb-0.5">
+                          Soal Awal (Terlihat Rumit)
                         </span>
-                        <span className="font-bold text-xs sm:text-sm text-[#182C48]">{swapX}% × {swapY}</span>
+                        <span className="font-bold text-xs sm:text-sm text-rose-950">{swapX}% × {swapY}</span>
                       </div>
 
                       <span className="text-[#7B94B2] font-black text-sm">⇄</span>
 
-                      <div className="p-2.5 sm:p-3 bg-white rounded-xl border-2 border-[#B9D2EC] text-center font-mono w-full sm:w-auto shadow-2xs">
-                        <span className="text-[10px] text-[#2B4A75] font-sans font-bold block mb-0.5">
+                      <div className="p-2.5 sm:p-3 bg-emerald-50/80 rounded-xl border-2 border-emerald-300 text-center font-mono w-full sm:w-auto shadow-2xs">
+                        <span className="text-[10px] text-emerald-700 font-sans font-bold block mb-0.5">
                           Ditukar (Sangat Mudah)
                         </span>
-                        <span className="font-black text-xs sm:text-sm text-[#182C48]">{swapY}% × {swapX}</span>
+                        <span className="font-black text-xs sm:text-sm text-emerald-950">{swapY}% × {swapX}</span>
                       </div>
 
                       <span className="text-[#7B94B2] font-black text-sm">=</span>
 
-                      <div className="p-2.5 sm:p-3 bg-[#EEF5F0] rounded-xl border border-[#BDD7C6] text-center font-mono w-full sm:w-auto">
-                        <span className="text-[10px] text-[#2B5E41] font-sans font-bold block mb-0.5">
+                      <div className="p-2.5 sm:p-3 bg-gradient-to-r from-blue-700 to-indigo-800 text-white rounded-xl shadow-xs text-center font-mono w-full sm:w-auto">
+                        <span className="text-[10px] text-blue-200 font-sans font-bold block mb-0.5">
                           Hasil Kilat
                         </span>
-                        <span className="font-black text-sm sm:text-base text-[#1C422D]">
+                        <span className="font-black text-sm sm:text-base text-white">
                           {(swapX * swapY) / 100}
                         </span>
                       </div>
-                    </div>
-                  </div>
-                </div>
-
-                {/* 4.1 Benchmark Fractions */}
-                <div className="bg-white rounded-3xl border-2 border-[#D2E1F0] p-4 sm:p-5 shadow-xs">
-                  <div className="flex items-center gap-2 mb-2.5">
-                    <span className="w-7 h-7 rounded-xl bg-[#2B4A75] text-white font-black text-xs flex items-center justify-center">
-                      4.1
-                    </span>
-                    <h2 className="text-base sm:text-lg font-black text-[#182C48]">
-                      {isEn ? "Benchmark Fraction Memory Bank" : "Bank Pecahan Acuan (Kamus Mental)"}
-                    </h2>
-                  </div>
-                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-center font-mono text-xs">
-                    <div className="p-2.5 bg-[#F1F6FC] border border-[#CFDFEF] rounded-xl">
-                      <span className="text-[#2B4A75] font-bold block">50%</span>
-                      <span className="text-[#182C48] font-black">1/2</span>
-                    </div>
-                    <div className="p-2.5 bg-[#F1F6FC] border border-[#CFDFEF] rounded-xl">
-                      <span className="text-[#2B4A75] font-bold block">25%</span>
-                      <span className="text-[#182C48] font-black">1/4</span>
-                    </div>
-                    <div className="p-2.5 bg-[#F1F6FC] border border-[#CFDFEF] rounded-xl">
-                      <span className="text-[#2B4A75] font-bold block">12.5%</span>
-                      <span className="text-[#182C48] font-black">1/8</span>
-                    </div>
-                    <div className="p-2.5 bg-[#F1F6FC] border border-[#CFDFEF] rounded-xl">
-                      <span className="text-[#2B4A75] font-bold block">33.3%</span>
-                      <span className="text-[#182C48] font-black">1/3</span>
-                    </div>
-                    <div className="p-2.5 bg-[#F1F6FC] border border-[#CFDFEF] rounded-xl">
-                      <span className="text-[#2B4A75] font-bold block">20%</span>
-                      <span className="text-[#182C48] font-black">1/5</span>
-                    </div>
-                    <div className="p-2.5 bg-[#F1F6FC] border border-[#CFDFEF] rounded-xl">
-                      <span className="text-[#2B4A75] font-bold block">10%</span>
-                      <span className="text-[#182C48] font-black">1/10</span>
-                    </div>
-                    <div className="p-2.5 bg-[#F1F6FC] border border-[#CFDFEF] rounded-xl">
-                      <span className="text-[#2B4A75] font-bold block">5%</span>
-                      <span className="text-[#182C48] font-black">1/20</span>
-                    </div>
-                    <div className="p-2.5 bg-[#F1F6FC] border border-[#CFDFEF] rounded-xl">
-                      <span className="text-[#2B4A75] font-bold block">1%</span>
-                      <span className="text-[#182C48] font-black">1/100</span>
                     </div>
                   </div>
                 </div>
@@ -823,10 +855,10 @@ export function SpeedMathMasterclassPage({ onBack }: SpeedMathMasterclassPagePro
             {/* ========================================================= */}
             {activeModule === 5 && (
               <div className="flex flex-col gap-5">
-                {/* 5.1 Kuadrat Berakhiran 5 (Fixed Mobile Overlapping) */}
+                {/* 5.1 Kuadrat Berakhiran 5 */}
                 <div className="bg-white rounded-3xl border-2 border-[#D2E1F0] p-4 sm:p-6 shadow-xs">
                   <div className="flex items-center gap-2 mb-2.5">
-                    <span className="w-7 h-7 rounded-xl bg-[#2B4A75] text-white font-black text-xs flex items-center justify-center">
+                    <span className="w-7 h-7 rounded-xl bg-gradient-to-r from-indigo-600 to-blue-600 text-white font-black text-xs flex items-center justify-center shadow-xs">
                       5.1
                     </span>
                     <h2 className="text-base sm:text-lg font-black text-[#182C48]">
@@ -840,7 +872,7 @@ export function SpeedMathMasterclassPage({ onBack }: SpeedMathMasterclassPagePro
                   </p>
 
                   <div className="p-3.5 sm:p-4 bg-[#F1F6FC] rounded-2xl border border-[#CFDFEF] flex flex-col items-center gap-3.5">
-                    {/* Fixed: Label on top, buttons wrap cleanly on any screen */}
+                    {/* Selector */}
                     <div className="w-full flex flex-col gap-1.5">
                       <span className="text-xs font-bold text-[#253D5F]">Pilih Bilangan:</span>
                       <div className="flex flex-wrap items-center gap-1.5">
@@ -850,7 +882,7 @@ export function SpeedMathMasterclassPage({ onBack }: SpeedMathMasterclassPagePro
                             onClick={() => setSquareFiveTens(tens)}
                             className={`w-9 h-8 rounded-xl text-xs font-black transition-all cursor-pointer ${
                               squareFiveTens === tens
-                                ? "bg-[#2B4A75] text-white shadow-2xs"
+                                ? "bg-indigo-600 text-white shadow-2xs"
                                 : "bg-white text-[#253D5F] border border-[#CADDF0] hover:bg-[#E8F1FB]"
                             }`}
                           >
@@ -860,37 +892,37 @@ export function SpeedMathMasterclassPage({ onBack }: SpeedMathMasterclassPagePro
                       </div>
                     </div>
 
-                    {/* Calculation step cards - responsive wrapping */}
+                    {/* Calculation step cards */}
                     <div className="w-full flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-3">
-                      <div className="px-4 py-2 bg-white rounded-xl border border-[#CADDF0] text-center font-mono font-black text-lg sm:text-xl text-[#182C48] shadow-2xs">
+                      <div className="px-4 py-2 bg-white rounded-xl border-2 border-indigo-200 text-center font-mono font-black text-lg sm:text-xl text-indigo-950 shadow-2xs">
                         {squareFiveTens}5²
                       </div>
 
                       <span className="text-[#7B94B2] font-black text-sm">=</span>
 
-                      <div className="flex items-center gap-1 font-mono">
-                        <span className="px-3 py-1.5 bg-[#2B4A75] text-white font-black text-sm sm:text-base rounded-xl shadow-2xs">
+                      <div className="flex items-center gap-1.5 font-mono">
+                        <span className="px-3 py-1.5 bg-indigo-600 text-white font-black text-sm sm:text-base rounded-xl shadow-2xs">
                           {squareFiveTens} × {squareFiveTens + 1} = {squareFiveTens * (squareFiveTens + 1)}
                         </span>
-                        <span className="px-3 py-1.5 bg-[#3D6494] text-white font-black text-sm sm:text-base rounded-xl shadow-2xs">
+                        <span className="px-3 py-1.5 bg-amber-500 text-white font-black text-sm sm:text-base rounded-xl shadow-2xs">
                           25
                         </span>
                       </div>
 
                       <span className="text-[#7B94B2] font-black text-sm">=</span>
 
-                      <div className="px-4 py-2 bg-[#EEF5F0] text-[#1C422D] font-mono font-black text-xl sm:text-2xl rounded-xl border border-[#BDD7C6]">
+                      <div className="px-4 py-2 bg-emerald-50 text-emerald-900 font-mono font-black text-xl sm:text-2xl rounded-xl border-2 border-emerald-300 shadow-2xs">
                         {squareFiveTens * (squareFiveTens + 1)}25
                       </div>
                     </div>
                   </div>
                 </div>
 
-                {/* 5.4 Tarik Akar Pangkat Tiga (Tirai 3 Digit - Fixed Mobile Overlapping) */}
+                {/* 5.2 Tarik Akar Pangkat Tiga (Tirai 3 Digit) */}
                 <div className="bg-white rounded-3xl border-2 border-[#D2E1F0] p-4 sm:p-6 shadow-xs">
                   <div className="flex items-center gap-2 mb-2.5">
-                    <span className="w-7 h-7 rounded-xl bg-[#2B4A75] text-white font-black text-xs flex items-center justify-center">
-                      5.4
+                    <span className="w-7 h-7 rounded-xl bg-gradient-to-r from-teal-600 to-cyan-600 text-white font-black text-xs flex items-center justify-center shadow-xs">
+                      5.2
                     </span>
                     <h2 className="text-base sm:text-lg font-black text-[#182C48]">
                       {isEn ? "Cube Root in 3 Seconds (3-Digit Curtain)" : "Tarik Akar Pangkat Tiga dalam 3 Detik"}
@@ -903,7 +935,7 @@ export function SpeedMathMasterclassPage({ onBack }: SpeedMathMasterclassPagePro
                   </p>
 
                   <div className="p-3.5 sm:p-4 bg-[#F1F6FC] rounded-2xl border border-[#CFDFEF] flex flex-col items-center gap-3">
-                    {/* Fixed: Label on top, buttons wrap cleanly without overflowing */}
+                    {/* Selector */}
                     <div className="w-full flex flex-col gap-1.5">
                       <span className="text-xs font-bold text-[#253D5F]">Contoh:</span>
                       <div className="flex flex-wrap items-center gap-1.5">
@@ -918,7 +950,7 @@ export function SpeedMathMasterclassPage({ onBack }: SpeedMathMasterclassPagePro
                             onClick={() => setCubeRootInput(item.val)}
                             className={`px-2.5 py-1 rounded-xl text-xs font-bold font-mono transition-all cursor-pointer ${
                               cubeRootInput === item.val
-                                ? "bg-[#2B4A75] text-white shadow-2xs"
+                                ? "bg-teal-600 text-white shadow-2xs"
                                 : "bg-white text-[#253D5F] border border-[#CADDF0] hover:bg-[#E8F1FB]"
                             }`}
                           >
@@ -939,29 +971,29 @@ export function SpeedMathMasterclassPage({ onBack }: SpeedMathMasterclassPagePro
                       const ansTens = Math.round(Math.cbrt(cubeRootInput) - ansUnit) / 10;
                       return (
                         <div className="w-full flex flex-col sm:flex-row items-center justify-center gap-2 font-mono">
-                          <div className="p-2.5 bg-white rounded-xl border border-[#CADDF0] text-center w-full sm:w-auto">
-                            <span className="text-[10px] text-[#647C9E] font-sans block mb-0.5">Depan Tirai</span>
-                            <span className="font-bold text-sm sm:text-base text-[#182C48]">{leftPart}</span>
-                            <span className="text-[10px] text-[#647C9E] font-sans block mt-0.5">
+                          <div className="p-2.5 bg-sky-50/90 rounded-xl border-2 border-sky-200 text-center w-full sm:w-auto shadow-2xs">
+                            <span className="text-[10px] text-sky-700 font-sans font-bold block mb-0.5">Depan Tirai</span>
+                            <span className="font-bold text-sm sm:text-base text-sky-950">{leftPart}</span>
+                            <span className="text-[10px] text-sky-700 font-sans block mt-0.5">
                               ³√{leftPart} mendekati {ansTens}³
                             </span>
                           </div>
 
                           <span className="text-[#7B94B2] font-black text-sm">|</span>
 
-                          <div className="p-2.5 bg-white rounded-xl border border-[#CADDF0] text-center w-full sm:w-auto">
-                            <span className="text-[10px] text-[#647C9E] font-sans block mb-0.5">Belakang Tirai</span>
-                            <span className="font-bold text-sm sm:text-base text-[#182C48]">
-                              ...<span className="text-[#2B4A75] underline font-black">{lastDigit}</span>
+                          <div className="p-2.5 bg-amber-50/90 rounded-xl border-2 border-amber-200 text-center w-full sm:w-auto shadow-2xs">
+                            <span className="text-[10px] text-amber-700 font-sans font-bold block mb-0.5">Belakang Tirai</span>
+                            <span className="font-bold text-sm sm:text-base text-amber-950">
+                              ...<span className="text-amber-800 underline font-black">{lastDigit}</span>
                             </span>
-                            <span className="text-[10px] text-[#647C9E] font-sans block mt-0.5">
+                            <span className="text-[10px] text-amber-800 font-sans font-bold block mt-0.5">
                               Satuan {lastDigit} ⟹ {ansUnit}
                             </span>
                           </div>
 
                           <span className="text-[#7B94B2] font-black text-sm">=</span>
 
-                          <div className="px-4 py-2 bg-[#EEF5F0] text-[#1C422D] font-black text-xl sm:text-2xl rounded-xl border border-[#BDD7C6]">
+                          <div className="px-4 py-2 bg-emerald-600 text-white font-black text-xl sm:text-2xl rounded-xl shadow-xs">
                             {ansTens}{ansUnit}
                           </div>
                         </div>
@@ -977,10 +1009,84 @@ export function SpeedMathMasterclassPage({ onBack }: SpeedMathMasterclassPagePro
             {/* ========================================================= */}
             {activeModule === 6 && (
               <div className="flex flex-col gap-5">
-                {/* 6.2 Penjumlahan Gauss */}
+                {/* 6.1 Keajaiban Bilangan 1001 (Kunci Rahasia OSN & SASMO) */}
                 <div className="bg-white rounded-3xl border-2 border-[#D2E1F0] p-4 sm:p-6 shadow-xs">
                   <div className="flex items-center gap-2 mb-2.5">
-                    <span className="w-7 h-7 rounded-xl bg-[#2B4A75] text-white font-black text-xs flex items-center justify-center">
+                    <span className="w-7 h-7 rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 text-white font-black text-xs flex items-center justify-center shadow-xs">
+                      6.1
+                    </span>
+                    <h2 className="text-base sm:text-lg font-black text-[#182C48]">
+                      {isEn ? "The Magic of 1001 (Olympiad Secret)" : "Keajaiban Bilangan 1001 (Kunci Rahasia OSN)"}
+                    </h2>
+                  </div>
+                  <p className="text-xs sm:text-sm text-[#415777] mb-3.5 leading-relaxed">
+                    {isEn
+                      ? "The number 1001 is the product of three consecutive primes: 7 × 11 × 13. Any 3-digit number repeated twice (abc.abc) is equal to abc × 1001, so it is ALWAYS divisible by 7, 11, and 13."
+                      : "Bilangan 1001 adalah hasil kali tiga bilangan prima berurutan: 7 × 11 × 13. Setiap bilangan 3 digit yang berulang dua kali (abc.abc) sama dengan abc × 1001, sehingga PASTI selalu habis dibagi 7, 11, dan 13."}
+                  </p>
+
+                  <div className="bg-[#F1F6FC] p-3.5 sm:p-4 rounded-2xl border border-[#CFDFEF] flex flex-col items-center gap-3">
+                    {/* Prime factors display */}
+                    <div className="flex items-center gap-2 font-mono text-sm sm:text-base">
+                      <span className="px-3 py-1 bg-white rounded-xl border border-[#CADDF0] font-black text-[#182C48]">
+                        1001
+                      </span>
+                      <span className="text-[#7B94B2] font-black">=</span>
+                      <span className="px-2.5 py-1 bg-purple-100 text-purple-900 border border-purple-200 rounded-xl font-black">
+                        7
+                      </span>
+                      <span className="text-[#7B94B2] font-black">×</span>
+                      <span className="px-2.5 py-1 bg-sky-100 text-sky-900 border border-sky-200 rounded-xl font-black">
+                        11
+                      </span>
+                      <span className="text-[#7B94B2] font-black">×</span>
+                      <span className="px-2.5 py-1 bg-rose-100 text-rose-900 border border-rose-200 rounded-xl font-black">
+                        13
+                      </span>
+                    </div>
+
+                    {/* Interactive 3-digit selector */}
+                    <div className="w-full flex flex-col gap-1.5 mt-1">
+                      <span className="text-xs font-bold text-[#253D5F]">Coba Pilih Bilangan 3-Digit:</span>
+                      <div className="flex flex-wrap items-center gap-1.5">
+                        {[345, 523, 789, 412].map((num) => (
+                          <button
+                            key={num}
+                            onClick={() => setMystery1001Num(num)}
+                            className={`px-3 py-1 rounded-xl text-xs font-bold font-mono transition-all cursor-pointer ${
+                              mystery1001Num === num
+                                ? "bg-gradient-to-r from-amber-500 to-orange-500 text-white shadow-2xs"
+                                : "bg-white text-[#253D5F] border border-[#CADDF0] hover:bg-[#E8F1FB]"
+                            }`}
+                          >
+                            {num}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Step breakdown */}
+                    <div className="w-full p-3 bg-white rounded-xl border-2 border-amber-200 text-center font-mono">
+                      <div className="text-xs sm:text-sm font-bold text-[#182C48]">
+                        <span className="text-amber-700 font-black">{mystery1001Num}</span> × 1001 ={" "}
+                        <span className="text-emerald-700 font-black text-sm sm:text-base">
+                          {mystery1001Num}.{mystery1001Num}
+                        </span>
+                      </div>
+                      <div className="text-[11px] text-amber-800 font-sans font-medium mt-1">
+                        Artinya angka berulang {mystery1001Num}.{mystery1001Num} pasti habis dibagi{" "}
+                        <span className="font-bold text-purple-700">7</span>,{" "}
+                        <span className="font-bold text-sky-700">11</span>, dan{" "}
+                        <span className="font-bold text-rose-700">13</span> tanpa sisa!
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* 6.2 Deret Simetris Gauss (Lipat Pita) */}
+                <div className="bg-white rounded-3xl border-2 border-[#D2E1F0] p-4 sm:p-6 shadow-xs">
+                  <div className="flex items-center gap-2 mb-2.5">
+                    <span className="w-7 h-7 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-black text-xs flex items-center justify-center shadow-xs">
                       6.2
                     </span>
                     <h2 className="text-base sm:text-lg font-black text-[#182C48]">
@@ -993,23 +1099,54 @@ export function SpeedMathMasterclassPage({ onBack }: SpeedMathMasterclassPagePro
                       : "Pasangkan bilangan pertama dan terakhir (1 + 100 = 101, 2 + 99 = 101). Kalikan nilai pasangan tersebut dengan jumlah pasangan (N / 2)."}
                   </p>
 
-                  <div className="p-3.5 sm:p-4 bg-[#F1F6FC] rounded-2xl border border-[#CFDFEF] flex flex-col items-center gap-3">
-                    <div className="flex items-center gap-2 font-mono font-bold text-xs sm:text-sm text-[#203657]">
-                      <span>1 + 2 + 3 + ... + 100</span>
-                      <span>=</span>
-                      <span className="text-[#182C48] font-black">(100 ÷ 2) × (1 + 100)</span>
+                  <div className="p-3.5 sm:p-4 bg-[#F1F6FC] rounded-2xl border border-[#CFDFEF] flex flex-col items-center gap-3.5">
+                    {/* Quick selector for N */}
+                    <div className="w-full flex flex-col gap-1.5">
+                      <span className="text-xs font-bold text-[#253D5F]">Rentang Deret (1 s.d. N):</span>
+                      <div className="flex flex-wrap items-center gap-1.5">
+                        {[10, 20, 50, 100].map((n) => (
+                          <button
+                            key={n}
+                            onClick={() => setGaussN(n)}
+                            className={`px-3 py-1 rounded-xl text-xs font-bold font-mono transition-all cursor-pointer ${
+                              gaussN === n
+                                ? "bg-blue-600 text-white shadow-2xs"
+                                : "bg-white text-[#253D5F] border border-[#CADDF0] hover:bg-[#E8F1FB]"
+                            }`}
+                          >
+                            1 s.d. {n}
+                          </button>
+                        ))}
+                      </div>
                     </div>
 
-                    <div className="px-5 py-2 bg-[#2B4A75] text-white font-mono font-black text-xl sm:text-2xl rounded-2xl shadow-2xs">
-                      50 × 101 = 5.050
+                    {/* Step cards with vibrant SD color accents */}
+                    <div className="w-full flex flex-col sm:flex-row items-center justify-center gap-2 font-mono">
+                      <div className="p-2.5 bg-sky-50/90 rounded-xl border-2 border-sky-200 text-center w-full sm:w-auto shadow-2xs">
+                        <span className="text-[10px] text-sky-700 font-sans font-bold block mb-0.5">Nilai Pasangan</span>
+                        <span className="font-black text-xs sm:text-sm text-sky-950">1 + {gaussN} = {gaussN + 1}</span>
+                      </div>
+
+                      <span className="text-[#7B94B2] font-black text-sm">×</span>
+
+                      <div className="p-2.5 bg-amber-50/90 rounded-xl border-2 border-amber-200 text-center w-full sm:w-auto shadow-2xs">
+                        <span className="text-[10px] text-amber-700 font-sans font-bold block mb-0.5">Banyak Pasangan</span>
+                        <span className="font-black text-xs sm:text-sm text-amber-950">{gaussN} ÷ 2 = {gaussN / 2}</span>
+                      </div>
+
+                      <span className="text-[#7B94B2] font-black text-sm">=</span>
+
+                      <div className="px-4 py-2 bg-gradient-to-r from-blue-700 to-indigo-800 text-white font-black text-lg sm:text-xl rounded-xl shadow-xs">
+                        {((gaussN / 2) * (gaussN + 1)).toLocaleString("id-ID")}
+                      </div>
                     </div>
                   </div>
                 </div>
 
-                {/* 6.3 Deret Teleskopik */}
+                {/* 6.3 Deret Teleskopik (Efek Saling Meniadakan) */}
                 <div className="bg-white rounded-3xl border-2 border-[#D2E1F0] p-4 sm:p-6 shadow-xs">
                   <div className="flex items-center gap-2 mb-2.5">
-                    <span className="w-7 h-7 rounded-xl bg-[#2B4A75] text-white font-black text-xs flex items-center justify-center">
+                    <span className="w-7 h-7 rounded-xl bg-gradient-to-r from-teal-600 to-emerald-600 text-white font-black text-xs flex items-center justify-center shadow-xs">
                       6.3
                     </span>
                     <h2 className="text-base sm:text-lg font-black text-[#182C48]">
@@ -1022,37 +1159,25 @@ export function SpeedMathMasterclassPage({ onBack }: SpeedMathMasterclassPagePro
                       : "Setiap suku pecahan dipecah menjadi selisih: 1 / [n(n+1)] = 1/n − 1/(n+1). Semua suku di tengah saling menghabisi seperti efek domino."}
                   </p>
 
-                  <div className="p-3.5 bg-[#F1F6FC] rounded-2xl border border-[#CFDFEF] flex flex-col items-center gap-2 font-mono">
+                  <div className="p-3.5 bg-[#F1F6FC] rounded-2xl border border-[#CFDFEF] flex flex-col items-center gap-2.5 font-mono">
                     <div className="text-xs sm:text-sm text-[#182C48] text-center font-bold">
                       1/(1×2) + 1/(2×3) + 1/(3×4) + ... + 1/(9×10)
                     </div>
 
-                    <div className="text-xs text-[#415777] text-center font-semibold">
-                      = (1 − 1/2) + (1/2 − 1/3) + (1/3 − 1/4) + ... + (1/9 − 1/10)
+                    <div className="text-[11px] sm:text-xs text-[#415777] text-center font-semibold bg-white p-2.5 rounded-xl border border-[#CADDF0]">
+                      = <span className="text-emerald-700 font-bold bg-emerald-50 px-1 py-0.5 rounded border border-emerald-200">1</span>{" "}
+                      <span className="text-rose-400 line-through opacity-75">− 1/2 + 1/2 − 1/3 + 1/3 ... − 1/9 + 1/9</span>{" "}
+                      <span className="text-rose-700 font-bold bg-rose-50 px-1 py-0.5 rounded border border-rose-200">− 1/10</span>
                     </div>
 
-                    <div className="px-4 py-1.5 bg-[#EEF5F0] text-[#1C422D] border border-[#BDD7C6] rounded-xl font-black text-sm sm:text-base">
+                    <div className="px-4 py-1.5 bg-emerald-600 text-white rounded-xl font-black text-sm sm:text-base shadow-xs">
                       Tersisa: 1 − 1/10 = 9/10
                     </div>
                   </div>
                 </div>
-
-                {/* 6.1 Misteri 1001 */}
-                <div className="bg-white rounded-3xl border-2 border-[#D2E1F0] p-4 sm:p-5 shadow-xs">
-                  <span className="inline-block px-2.5 py-0.5 rounded-full text-[10px] font-black bg-[#E4EEF8] text-[#1D3556] mb-2 border border-[#CADDF0]">
-                    6.1 Keajaiban Bilangan 1001
-                  </span>
-                  <p className="text-xs sm:text-sm text-[#182C48] leading-relaxed font-mono font-bold">
-                    1001 = 7 × 11 × 13
-                  </p>
-                  <p className="text-xs text-[#415777] mt-1 leading-relaxed">
-                    {isEn
-                      ? "Any 3-digit number repeated twice (e.g. 523.523) is exactly equal to 523 × 1001, and is therefore ALWAYS divisible by 7, 11, and 13."
-                      : "Setiap bilangan 3 digit yang berulang dua kali (misal: 523.523) selalu bernilai 523 × 1001, sehingga PASTI habis dibagi oleh 7, 11, dan 13."}
-                  </p>
-                </div>
               </div>
             )}
+
           </motion.div>
         </AnimatePresence>
       </main>
