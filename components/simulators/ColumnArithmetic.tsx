@@ -345,6 +345,15 @@ export function ColumnArithmeticSimulator({
     setActiveCell({ type: "helper", index: i });
   };
 
+  // The column indices that actually contain result digits (e.g. for 68 in 3 cols -> [1, 2])
+  const resultIndices = useMemo(
+    () =>
+      Array.from({ length: cols })
+        .map((_, i) => i)
+        .filter((i) => resultDigits[i] !== ""),
+    [cols, resultDigits]
+  );
+
   const handleSelectDigit = useCallback((digit: string) => {
     if (!activeCell || submitted) return;
 
@@ -364,32 +373,50 @@ export function ColumnArithmeticSimulator({
     newFilled[activeCell.index] = digit;
     setFilledDigits(newFilled);
 
-    // If all result cells are filled, submit the answer automatically!
-    if (newFilled.every((v) => v !== null)) {
+    // If all actual result cells are filled, submit the answer automatically!
+    const allResultFilled = resultIndices.every((idx) => newFilled[idx] !== null);
+    if (allResultFilled) {
       setActiveCell(null);
-      const submittedStr = newFilled.join("");
-      const correctStr   = resultDigits.join("");
-      const isCorrect    = submittedStr === correctStr;
-      const correctness  = newFilled.map((v, i) => v === resultDigits[i]);
+      const submittedDigitsStr = resultIndices.map((idx) => newFilled[idx]).join("");
+      const expectedDigitsStr = String(result);
+
+      // Support exact digit matching OR numeric equivalence (accepts both "68" and "068")
+      const numericSubmitted = parseInt(submittedDigitsStr, 10);
+      const isCorrect = numericSubmitted === result || submittedDigitsStr === expectedDigitsStr;
+
+      const correctness = Array(cols).fill(null);
+      for (const idx of resultIndices) {
+        correctness[idx] =
+          newFilled[idx] === resultDigits[idx] || (isCorrect && !isNaN(Number(newFilled[idx])));
+      }
       setCellCorrectness(correctness);
       setSubmitted(true);
 
       let tag: string | undefined;
       if (!isCorrect) {
-        const unitsOk = correctness[cols - 1];
-        const tensOk  = cols > 1 && correctness[cols - 2];
+        const unitsIdx = cols - 1;
+        const tensIdx = cols - 2;
+        const unitsOk = correctness[unitsIdx];
+        const tensOk = cols > 1 && correctness[tensIdx];
         if (unitsOk && !tensOk) tag = "carry-omitted";
         else if (!unitsOk) tag = "off-by-one-count";
       }
 
-      setTimeout(() => onAnswer?.(submittedStr, isCorrect, tag), 600);
+      // Always pass the normalized value that matches question options (e.g. "68")
+      const finalSubmittedValue = isCorrect ? String(result) : submittedDigitsStr;
+      setTimeout(() => onAnswer?.(finalSubmittedValue, isCorrect, tag), 600);
     } else {
-      // Move to the next unfilled cell if any
+      // Move to the next unfilled result cell if any
+      const remaining = resultIndices.filter((idx) => newFilled[idx] === null);
       let nextIdx = -1;
-      if (activeCell.index > 0 && newFilled[activeCell.index - 1] === null) {
+      if (
+        activeCell.index > 0 &&
+        newFilled[activeCell.index - 1] === null &&
+        resultIndices.includes(activeCell.index - 1)
+      ) {
         nextIdx = activeCell.index - 1;
-      } else {
-        nextIdx = newFilled.findIndex((v) => v === null);
+      } else if (remaining.length > 0) {
+        nextIdx = remaining[0];
       }
 
       if (nextIdx !== -1) {
@@ -398,7 +425,7 @@ export function ColumnArithmeticSimulator({
         setActiveCell(null);
       }
     }
-  }, [activeCell, submitted, filledDigits, resultDigits, cols, onAnswer]);
+  }, [activeCell, submitted, filledDigits, resultIndices, resultDigits, result, cols, onAnswer]);
 
   const handleClearCell = useCallback(() => {
     if (!activeCell || submitted) return;
@@ -627,6 +654,11 @@ export function ColumnArithmeticSimulator({
         {/* Result row — tappable cells (main answer) */}
         <div style={gridStyle}>
           {Array.from({ length: cols }).map((_, i) => {
+            // If this column has no digit in the result (e.g. leading hundreds in 145 - 77 = 68), leave it empty
+            if (resultDigits[i] === "") {
+              return <div key={i} className="h-14 w-14" />;
+            }
+
             const filled = filledDigits[i];
             const isActive = activeCell?.type === "result" && activeCell.index === i;
             const ok = cellCorrectness[i];
@@ -707,12 +739,12 @@ export function ColumnArithmeticSimulator({
         {submitted ? (
           <span
             className={
-              filledDigits.join("") === resultDigits.join("")
+              resultIndices.every((idx) => cellCorrectness[idx] === true)
                 ? "text-green-600"
                 : "text-red-500"
             }
           >
-            {filledDigits.join("")}
+            {resultIndices.map((idx) => filledDigits[idx] ?? "").join("") || String(result)}
           </span>
         ) : (
           <span className="text-amber-400 text-2xl">?</span>
