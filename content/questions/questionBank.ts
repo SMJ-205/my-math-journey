@@ -815,7 +815,7 @@ export function getQuestionsByGradeAndTopic(
   dynamicQuestions.forEach((q) => runtimeQuestionCache.set(q.id, q));
 
   // 4. Combine matching questions: curated static first, then dynamic
-  let pool = [...staticMatches, ...dynamicQuestions].filter((q) => q.topic === topic);
+  const pool = [...staticMatches, ...dynamicQuestions].filter((q) => q.topic === topic);
 
   // Fallback generation if pool is somehow empty
   if (pool.length === 0) {
