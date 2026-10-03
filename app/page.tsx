@@ -126,6 +126,7 @@ export default function App() {
   if (view === "speed-math") {
     return (
       <SpeedMathMasterclassPage
+        initialGrade={activeProfile?.grade ?? 1}
         onBack={() => goTo("grade-select")}
       />
     );
